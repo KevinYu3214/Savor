@@ -1,0 +1,29 @@
+@import url("https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap");
+$syne-font: "Syne", sans-serif;
+
+$bg: rgb(255, 255, 255);
+$bg2: rgb(6, 9, 48);
+$text: rgb(15, 15, 15);
+$text2: rgb(240, 240, 240);
+$primary: rgb(252, 198, 204);
+
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-mdlg: 26px;
+$spacing-lg: 32px;
+$spacing-xlg: 90px;
+
+$header-height: 80px;
+
+$sm: 37.5em;
+$md: 48em;
+$lg: 64em;
+$xl: 75em;
+
+@mixin breakpoint($point) {
+  @if $point == md {
+    @media (min-width: $md) {
+      @content;
+    }
+  }
+}

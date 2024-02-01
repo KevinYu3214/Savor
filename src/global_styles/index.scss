@@ -1,0 +1,103 @@
+@import "./variables.scss";
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: $syne-font;
+  font-style: normal;
+  color: $bg;
+  background-color: $bg2;
+  // height: 200vh;
+}
+
+main {
+  height: calc(100vh - #{$header-height});
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .intro {
+    font-size: 38px;
+    text-align: center;
+    font-weight: 700;
+    color: $text2;
+    padding: $spacing-md $spacing-lg;
+    background: $bg2;
+    border-radius: $spacing-sm;
+    box-shadow: 0 0 10px $primary;
+    margin: 0 $spacing-md;
+
+    margin-top: -$header-height;
+
+    &__focus {
+      color: $primary;
+    }
+
+    @include breakpoint(md) {
+      font-size: 42px;
+    }
+  }
+}
+
+button {
+  // reset to default
+  font-family: inherit;
+  outline: none;
+  border: none;
+  background: none;
+  letter-spacing: inherit;
+  color: inherit;
+  font-size: inherit;
+  text-align: inherit;
+  padding: 0;
+}
+
+span {
+  color: $primary;
+}
+maintext {
+  position: absolute;
+  max-width: 200px;
+  margin-left: 8.7vw;
+  font-weight: 600;
+  font-size: calc(1.5vw + 3rem);
+  line-height: calc(1.5vw + 3.5rem);
+
+  @include breakpoint(md) {
+    max-width: 720px;
+  }
+}
+
+mainCompareText {
+  position: absolute;
+  max-width: 100px;
+  margin-left: 8.7vw;
+  font-weight: 600;
+  font-size: calc(1.5vw + 3rem);
+  line-height: calc(1.5vw + 3.5rem);
+
+  @include breakpoint(md) {
+    max-width: 720px;
+  }
+}
+
+subtitle {
+  position: absolute;
+  max-width: 300px;
+  margin-left: calc(8.7vw + 2.5px);
+  margin-top: 11.8em;
+  font-weight: 300;
+  font-size: calc(0.75vw + 1.25rem);
+  letter-spacing: 2px;
+
+  @include breakpoint(md) {
+    max-width: 720px;
+    margin-top: calc(2.8vw + 130px);
+  }
+}
+
