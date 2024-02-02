@@ -6,6 +6,10 @@ function Home() {
   return (
     <>
       <Header />
+      <maintext>
+        Savor <span>your</span> taste today!
+      </maintext>
+      <subtitle>Get tailored suggestions today based on your interests</subtitle>
     </>
   )
 }
