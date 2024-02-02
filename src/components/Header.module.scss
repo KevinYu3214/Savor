@@ -1,0 +1,123 @@
+@import "./../global_styles/variables.scss";
+
+.header {
+  height: $header-height;
+  background: $bg2;
+  color: $text2;
+  width: 100%;
+  margin-top: 2vh;
+  margin-bottom: 18.5vh;
+  &__company {
+    display: none;
+    display: flex;
+    align-items: center;
+  }
+
+  &__content {
+    max-width: 1920px;
+    margin-left: calc(1.5vw + 1px);
+
+    padding: 0 $spacing-md;
+    @include breakpoint(md) {
+      padding: 0 $spacing-lg;
+    }
+    transition: 0.3s ease padding;
+
+    height: 100%;
+    display: flex;
+    align-items: center;
+
+    & > div {
+      flex: 1;
+      white-space: nowrap;
+
+      &:nth-child(2) {
+        display: flex;
+        justify-content: flex-end;
+        height: 100%;
+
+        margin-right: $spacing-md;
+      }
+      &:last-of-type {
+        display: flex;
+        justify-content: flex-end;
+        flex: 0;
+      }
+    }
+  }
+  &__toggler {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    @include breakpoint(md) {
+      display: none;
+    }
+    & > svg {
+      display: block;
+      font-size: 60px;
+    }
+  }
+}
+
+.icon {
+  width: 80px;
+  height: 80px;
+  margin-right: 20px;
+}
+
+.logo {
+  font-size: 34px;
+  font-weight: 600;
+  color: $text2;
+  display: none;
+  @include breakpoint(md) {
+    display: flex;
+  }
+}
+
+.nav {
+  width: 100%;
+  position: fixed;
+  top: $header-height;
+  right: -100%;
+  background: rgba($bg2, 0.8);
+  text-align: center;
+  padding: $spacing-md 0;
+
+  &--open {
+    transition: 0.2s ease right;
+    right: 0;
+  }
+
+  &__item {
+    display: block;
+    padding: $spacing-md;
+    font-size: 20px;
+    text-decoration: none;
+    color: inherit;
+
+    height: 100%;
+
+    transition: 0.3s ease color;
+    &:hover {
+      color: $primary;
+    }
+  }
+
+  @include breakpoint(md) {
+    position: static;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    background: initial;
+    width: auto;
+    padding: 0;
+    margin-right: 5vh;
+    &__item {
+      padding: 0 $spacing-lg;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}
