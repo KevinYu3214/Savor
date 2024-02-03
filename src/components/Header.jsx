@@ -28,6 +28,9 @@ const Header = () => {
             <a className={styles.nav__item} href={"/compare"}>
               Compare
             </a>
+            <a className={styles.nav__item} href={"/playlists"}>
+              Playlists
+            </a>
           </nav>
         </div>
         <div>
