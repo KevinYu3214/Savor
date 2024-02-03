@@ -1,0 +1,43 @@
+@import "./../global_styles/variables.scss";
+
+.musicBox {
+  height: 400px;
+  background-color: $bg2;
+  width: 80%;
+  margin-top: 2vh;
+  margin-left: 10vh;
+  overflow-y: scroll;
+}
+
+.songItem {
+  height:90px;
+  width: 80%;
+  color: $bg2;
+  background-color: $bg;
+  border-radius: 25px;
+  margin-left: 5vh;
+  margin-top: .5vh;
+}
+
+.album {
+    margin-top: 1vh; 
+    margin-left: 2vh;
+    width: 80px;
+    height: 80px;
+    float: left;
+}
+
+.vl {
+  border-left: 6px solid $bg2;
+  height: 80px;
+  left: 50%;
+  float: left;
+}
+
+.songInfo{ 
+  float: left;
+
+}
+
+
+

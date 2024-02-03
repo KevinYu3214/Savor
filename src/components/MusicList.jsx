@@ -2,41 +2,54 @@ import React from "react";
 
 import styles from "./MusicList.module.scss";
 
+import icon from "../assets/icon.png";
+
 function MusicList() {
-    const [songs, setSongs] =  useState([
+    const songs = [
         {
             key: "1",
-            title: "Boy's a liar, Pt. 2",
-            artist: "Ice Spice",
-            album: "PinkPantheress & Ice Spice",
+            title: "Song 1",
+            artist: "Artist 1",
+            album: "Album 1",
             year: "2023"
         }, 
         {
             key: "2",
-            title: "Deli",
-            artist: "Ice Spice",
-            album: "Like..? Deluxe",
+            title: "Song 2",
+            artist: "Artist 2",
+            album: "Album 2",
             year: "2023"
         }, 
         {
             key: "3",
-            title: "Princess Diana",
-            artist: "Ice Spice",
-            album: "Princess Diana - Single",
+            title: "Song 3",
+            artist: "Artist 3",
+            album: "Album 3",
+            year: "2023"
+        },
+        {
+            key: "3",
+            title: "Song 4",
+            artist: "Artist 4",
+            album: "Album 4",
+            year: "2023"
+        },
+        {
+            key: "3",
+            title: "Song 5",
+            artist: "Artist 5",
+            album: "Album 5",
             year: "2023"
         }
-    ]);
+    ];
     return (
-        <div className={styles.MusicList}>
-            {songs.map((song) => {
-                return (
-                    <div key={song.key}>
-                        <h2>{song.title}</h2>
-                        <h3>{song.artist}</h3>
-                        <h3>{song.album} - {song.year}</h3>
-                    </div>
-                )
-            })}
+        <div className={styles.musicBox}>
+            {songs.map(song => (
+            <div className={styles.songItem}>
+                <img src={icon} className={styles.album} alt="" />
+                <div className="vl"></div> 
+                <p>{song.title}</p>
+            </div>))}
         </div>
     )
 }

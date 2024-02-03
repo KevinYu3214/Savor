@@ -4,13 +4,13 @@ import MusicList from "../components/MusicList";
 const Playlists = () => {  
 
     return (
-      <>
+      <body>
         <Header />
-          <mainCompareText>
-            Playlists for <span>you</span>
-          </mainCompareText> 
+          <h1>Music For <span>You</span></h1>
           <MusicList />
-      </>
+          <h1>Top Music<span>Today</span></h1>
+          <MusicList />
+      </body>
     );
   }
 
