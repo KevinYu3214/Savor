@@ -1,8 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap");
 $syne-font: "Syne", sans-serif;
 
+$num-navigation: 3;
+
 $bg: rgb(255, 255, 255);
 $bg2: rgb(119, 125, 213);
+$bg3: rgb(5, 7, 31);
 $text: rgb(15, 15, 15);
 $text2: rgb(240, 240, 240);
 $primary: rgb(252, 198, 204);
@@ -13,6 +16,7 @@ $spacing-mdlg: 26px;
 $spacing-lg: 32px;
 $spacing-xlg: 90px;
 
+$header-margin: 115px;
 $header-height: 80px;
 
 $sm: 37.5em;
