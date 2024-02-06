@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Savor Login</title>
+    <style> 
+    body {background-color: rgb(119, 125, 213);}
+    h1 {text-align: center;}
+    p {text-align: center;}
+    </style>
+</head>
+
+<body>
+<center><img src="SavorLogo.png" width="200" height="200"></center>
+<h1 style="color:azure ; font-family: Arial;">Welcome to Savor!</h1>
+<p style="color:azure ; font-family: Arial;">Please enter your username and password!</p>
+
+<form name = "logInInfo" action = "htmlTest.html">
+
+    <p style="color:azure ; font-family: Arial;"> Username: </p>
+    <center><input type = "text" id = "usernameForm" name = "usernameFormm"></center> </p>
+
+    <p style="color:azure ; font-family: Arial;"> Password: </p>
+    <center><input type = "text" id = "passwordForm" name = "passwordForm"> </center> </p>
+
+    <center> <input type = "button" value = "log in" onclick="login()"> </center>
+
+
+    <script>
+
+        function save() {
+        console.log('test');
+        const usernameForm = document.getElementById('usernameForm');
+        const username = usernameForm.value;
+        console.log(username);
+        const usernameString = JSON.stringify(username);
+        console.log(usernameString); 
+        localStorage.setItem("username", usernameString);
+        }
+
+        function welcome() {
+            location.href='loginMockup2.html';
+        }
+
+        function login(){
+            save();
+            welcome();
+        }
+
+    </script>
+
+</form>
+
+</body>
+</html>

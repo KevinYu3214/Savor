@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Savor</title>
+        <style> body {background-color: rgb(119, 125, 213);} </style>
+    </head>
+
+    <body>
+        <img src="SavorLogo.png" width="75" height="75">
+        <p id = "test" style="color:azure ; font-family: Arial; font-size: large;">
+        <script>
+            let usernameString2 = localStorage.getItem("username"); 
+            console.log(usernameString2);
+            const username2 = JSON.parse(usernameString2);
+            console.log(username2);
+            const outText = document.getElementById('test');
+            outText.innerHTML = "Welcome, " + username2 + "!";
+        </script>
+
+    </body>
+ </html>
