@@ -34,6 +34,9 @@ const Header = () => {
             <a className={styles.nav__item} href={"/search"}>
               Search
             </a>
+            <a className={styles.nav__item} href={"/account"}>
+              Account
+            </a>
             <a className={styles.nav__item} href={"/rankings"}>
               Rankings 
               </a>

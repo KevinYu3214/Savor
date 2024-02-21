@@ -9,6 +9,7 @@ const Rankings = () => {
     const[hover, setHover] = useState(null);
     return (
       <>
+        <Header />
         <div className = "Rankings">
   
           {[...Array(5)].map((star, index) =>{
