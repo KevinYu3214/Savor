@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import styles from "./Header.module.scss";
 
 import icon from "../assets/icon.png";
+import person_icon from "../assets/person.png";
 
 import { HiMenu } from "react-icons/hi";
 import { AiOutlineCloseSquare } from "react-icons/ai";
@@ -34,12 +35,12 @@ const Header = () => {
             <a className={styles.nav__item} href={"/search"}>
               Search
             </a>
-            <a className={styles.nav__item} href={"/account"}>
-              Account
-            </a>
             <a className={styles.nav__item} href={"/rankings"}>
-              Rankings 
-              </a>
+              Rankings
+            </a>
+            <a className={styles.nav__item} href={"/account"}>
+              <img src={person_icon} alt="Account" />
+            </a>
           </nav>
         </div>
         <div>
