@@ -1,18 +1,20 @@
+import { useState } from "react";
 import Header from "../components/Header";
 import SearchBar from "../components/SearchBar";
+import SearchResultsList from "../components/SearchResultsList";
+import styles from "../components/Search.module.scss";
 
-const Search = () => {  
-
-    return (
+const Search = () => {
+  const [results, setResults] = useState([]);
+  return (
       <>
         <Header />
-          <mainCompareText>
-            <span>Search</span> here!
-            <SearchBar />
-          </mainCompareText>
+        <div className={styles.search}>
+            <SearchBar setResults={setResults} />
+            <SearchResultsList results={results} />
+        </div>
       </>
     );
   }
-
 
   export default Search;
