@@ -1,10 +1,8 @@
 import React, { useState } from 'react'
 import "./global_styles/index.scss";
 import Header from "./components/Header";
-import { useAuth } from "./contexts/AuthContext"
 
 function Home() {
-  const {currentUser} = useAuth();
   return (
     <>
       <Header />
