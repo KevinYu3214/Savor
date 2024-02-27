@@ -8,6 +8,7 @@ const Compare = () => {
           <mainCompareText>
             Before we get into it... You need to <span>login</span>
           </mainCompareText> 
+       
       </>
     );
   }
