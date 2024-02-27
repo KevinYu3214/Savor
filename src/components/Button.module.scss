@@ -1,0 +1,28 @@
+@import "./../global_styles/variables.scss";
+
+.button {
+  position: absolute;
+  font-weight: 500;
+  font-size: calc(0.75vw + 0.9rem);
+  color: $bg2;
+  background-color: $bg;
+  padding: calc(0.6vw + 14px) calc(0.6vw + 60px);
+  margin-top: 21em;
+  margin-left: calc(8.7vw + 2px);
+  border-radius: $spacing-md;
+  cursor: pointer;
+
+  box-shadow: 0 0 0.5em 0 $primary;
+
+  &:active {
+    transform: scale(0.98);
+    border-radius: 0;
+  }
+  &:hover {
+    box-shadow: 0 0 0.75em 0 $primary;
+  }
+
+  @include breakpoint(md) {
+    margin-top: 10.5em;
+  }
+}
