@@ -1,12 +1,12 @@
 import Header from "../components/Header";
-import LoginSignup from "../components/LoginSignup";
+import Signup from "../components/Signup";
 
 function App() {
   return (
     <>
       <Header />
       <div>
-        <LoginSignup />
+        <Signup />
       </div>
     </>
   );
