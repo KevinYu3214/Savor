@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import styles from "./Header.module.scss";
 
-import icon from "../assets/icon.png";
+import icon from "../assets/savor-logo-jacob.png";
 import person_icon from "../assets/person.png";
 
 import { HiMenu } from "react-icons/hi";
@@ -16,8 +16,7 @@ const Header = () => {
     <div className={styles.header}>
       <div className={styles.header__content}>
         <div className={styles.header__company}>
-          <img src={icon} className={styles.icon} alt="" />
-          <span className={styles.logo}>SAVOR</span>
+          <a href="/"><img src={icon} className={styles.icon} alt=""/></a>
         </div>
         <div>
           <nav

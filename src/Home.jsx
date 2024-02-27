@@ -10,7 +10,7 @@ function Home() {
         Savor <span>your</span> taste today!
       </maintext>
       <subtitle>Get tailored suggestions today based on your interests</subtitle>
-      <a href="/account">
+      <a href="/signup">
         <Button text={"Get Started"} />
       </a>
     </>
