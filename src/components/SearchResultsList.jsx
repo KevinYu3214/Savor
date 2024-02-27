@@ -3,7 +3,7 @@ import SearchResult from "./SearchResult";
 
 import styles from "./Search.module.scss";
 
-const SearchResultsList = ({results}) => {
+const SearchResultsList = ({ results }) => {
     return (
         <div className={styles.search__results_list}>
             {results.map((result, id) => {
