@@ -6,26 +6,21 @@ import password_icon from "../assets/password.png";
 import { useAuth } from "../contexts/AuthContext";
 
 
-const SignUp = () => {
+const LogIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [passwordCheck, setPasswordCheck] = useState("");
-  const { signup, currentUser } = useAuth();
+  const { login, currentUser } = useAuth();
   const [error, setError] = useState("");
 
   const signUp = (e) => {
     e.preventDefault();
 
-    setError("")
-    if(password !== passwordCheck) {
-      return setError("Passwords do not match")
-    }
-    signup(email, password)
+    login(email, password)
       .then((userCredential) => {
         console.log(userCredential);
       })
       .catch((err) => {
-        console.log(err);
+        setError(err.message);
       });
   };
 
@@ -40,7 +35,7 @@ const SignUp = () => {
           <div className="error__text">{error}</div>
         </div>
       }
-      {currentUser && <div className="forgot-password">{currentUser.email}</div>}
+      <div className="forgot-password">{currentUser.email}</div>
       <form onSubmit={signUp} className="inputs">
         <div className="input">
           <img src={email_icon} alt="" className="icons" />
@@ -61,23 +56,14 @@ const SignUp = () => {
             onChange={(e) => setPassword(e.target.value)}
           ></input>
         </div> 
-        <div className="input">
-          <img src={password_icon} alt="" className="icons" />
-          <input
-            className="input"
-            type="password"
-            placeholder="Enter the same password"
-            value={passwordCheck}
-            onChange={(e) => setPasswordCheck(e.target.value)}
-          ></input>
-        </div> 
+        <div className="forgot-password">Forgot your password? <span>Reset password</span></div>
         <button className="button" type="submit">Create Account</button>
       </form>
       <div className="forgot-password">
-        Already have an account? <span>Log In</span>
+        Don't have an account? <span>Sign Up</span>
       </div>
     </div>
   );
 };
 
-export default SignUp;
+export default LogIn;

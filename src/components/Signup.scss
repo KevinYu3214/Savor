@@ -26,6 +26,25 @@
     font-weight: 700;
 }
 
+.error{
+    display:flex;
+    align-items: center;
+    margin: auto;
+    margin-top: 30px;
+    width: 480px;
+    height: 80px;
+    background: palevioletred ;
+    border-radius: 6px;
+
+    &__text{
+        margin: auto;
+        align-items: center;
+        color: white;
+        font-size:24px;
+        font-weight: 400;
+    }
+}
+
 .underline{
     width: 61px;
     height: 6px;
@@ -66,8 +85,9 @@
 }
 
 .forgot-password{
-    padding-left: 62px;
+    align-items: center;
     margin-top: 27px;
+    margin: auto;
     color: #797979;
 }
 
@@ -84,15 +104,23 @@
 .button{
     display: flex;
     justify-content: center;
+<<<<<<< Updated upstream
     align-items:center;
     margin-bottom: 10px;
     margin-left: 190px;
     width: 220px;
     height: 59px;
+=======
+    align-items: center;
+    margin-bottom: 30px;
+    margin: auto;
+    width: 300px;
+    height: 80px;
+>>>>>>> Stashed changes
     color: #fff;
     background: rgb(252, 198, 204);;
     border-radius: 50px;
-    font-size: 15px;
+    font-size: 24px;
     font-weight: 700;
     box-shadow: 0 0 0.5em 0 $primary;
     cursor: pointer;
