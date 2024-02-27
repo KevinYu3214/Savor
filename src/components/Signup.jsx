@@ -7,30 +7,21 @@ import { useAuth } from "../contexts/AuthContext";
 import Button from "./Button";
 
 
-export default function Signup() {
-  const emailRef = useRef()
-  const passwordRef = useRef()
-  const passwordConfirmRef = useRef()
-  const { signup, currentUser } = useAuth()
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
+const SignUp = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { signup } = useAuth()
 
-  async function handleSubmit(e) {
-    e.preventDefault()
-
-    if (passwordRef.current.value !== passwordConfirmRef.current.value) {
-      return setError("Passwords do not match")
-    }
-
-    try {
-      setError('')
-      setLoading(true)
-      await signup(emailRef.current.value, passwordRef.current.value)
-    } catch {
-      setError("Failed to create an account")
-    }
-    setLoading(false)
-  }
+  const signUp = (e) => {
+    e.preventDefault();
+    signup(email, password)
+      .then((userCredential) => {
+        console.log(userCredential);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <div className="container">
@@ -38,29 +29,30 @@ export default function Signup() {
         <div className="text">Sign Up</div>
         <div className="underline"></div>
       </div>
-      {currentUser && currentUser.email}
-      {error && <div><h2>{error}</h2></div>}
-      <div onSubmit={handleSubmit()}   className="inputs">
+      <form onSubmit={signUp} className="inputs">
         <div className="input">
           <img src={email_icon} alt="" className="icons" />
-          <input type="email" placeholder="email@gmail.com"ref={emailRef}/>
-        </div>
-        <div className="input">
-          <img src={password_icon} alt="" className="icons"/>
-          <input type="password" placeholder="Password" ref={passwordRef}/>
+          <input
+            type="email"
+            placeholder="Enter your email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          ></input>
         </div>
         <div className="input">
           <img src={password_icon} alt="" className="icons" />
-          <input type="password" placeholder="Password Confirm" ref={passwordConfirmRef}/>
+          <input
+            className="input"
+            type="password"
+            placeholder="Enter your password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          ></input>
         </div> 
-      </div>
-      <div onClick={handleSubmit()} >
-        <Button disabled={loading} text={"Sign Up"}/>
-      </div>
-      <div className="forgot-password">
-        Lost Password? <span> Click Here!</span>
-      </div>
-
+        <button className="button" type="submit">Sign Up</button>
+      </form>
     </div>
   );
 };
+
+export default SignUp;
