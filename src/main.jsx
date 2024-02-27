@@ -7,6 +7,7 @@ import Playlists from "./pages/Playlists";
 import Search from "./pages/Search";
 import Account from "./pages/Account";
 import Rankings from "./pages/Rankings";
+import { AuthProvider } from "./contexts/AuthContext";
 
 
 import ReactDOM from "react-dom";
@@ -14,14 +15,16 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 ReactDOM.render(
   <Router>
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/compare" element={<Compare />} />
-      <Route path="/playlists" element={<Playlists />} />
-      <Route path="/search" element={<Search />} /> 
-      <Route path="/account" element={<Account />} />
-      <Route path = "/rankings" element={<Rankings />} />
-    </Routes>
+    <AuthProvider>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/compare" element={<Compare />} />
+        <Route path="/playlists" element={<Playlists />} />
+        <Route path="/search" element={<Search />} /> 
+        <Route path="/account" element={<Account />} />
+        <Route path = "/rankings" element={<Rankings />} />
+      </Routes>
+    </AuthProvider>
   </Router>,
   document.getElementById("root")
 );

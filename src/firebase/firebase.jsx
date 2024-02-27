@@ -29,4 +29,4 @@ const db = getFirestore(app);
 // collection reference
 const colRef = collection(db, "Song")
 
-export { app, analytics, auth, db };
+export { app, analytics, auth, db, colRef };
