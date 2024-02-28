@@ -84,15 +84,14 @@
     font-size: 15px;
 }
 
-.link{
-    align-items: center;
-    margin-top: 40px;
+.page{
+    display: flex;
+    justify-content: center;
+    gap: 9px;
+    width: 100%;
     margin: auto;
+    margin-top: 15px;
     color: #797979;
-}
-
-.link span{
-    cursor: pointer;
 }
 
 .submit-container{
@@ -120,7 +119,6 @@
 
 .button:hover{
     background: rgb(163, 119, 149);
-  
 }
 
 .icon{

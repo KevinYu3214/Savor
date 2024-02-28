@@ -44,6 +44,10 @@ main {
   }
 }
 
+a:any-link{
+  text-decoration-color: $primary;
+}
+
 button {
   // reset to default
   font-family: inherit;

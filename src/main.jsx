@@ -7,12 +7,12 @@ import Playlists from "./pages/Playlists";
 import Search from "./pages/Search";
 import Account from "./pages/Account";
 import Rankings from "./pages/Rankings";
-import { AuthProvider } from "./contexts/AuthContext";
-
+import SignUp from "./pages/Signup";
+import LogIn from "./pages/LogIn";
 
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import SignUp from "./pages/Signup";
+import { AuthProvider } from "./contexts/AuthContext";
 
 ReactDOM.render(
   <Router>
@@ -25,7 +25,7 @@ ReactDOM.render(
         <Route path="/account" element={<Account />} />
         <Route path = "/rankings" element={<Rankings />} />
         <Route path="/signup" element={<SignUp />} />
-        {/*<Route path="/login" element={<LogIn />} />*/}
+        <Route path="/login" element={<LogIn />} /> 
       </Routes>
     </AuthProvider>
   </Router>,

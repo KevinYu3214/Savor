@@ -11,7 +11,7 @@ const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordCheck, setPasswordCheck] = useState("");
-  const { signup, currentUser } = useAuth();
+  const { signup } = useAuth();
   const [error, setError] = useState("");
 
   const signUp = (e) => {
@@ -75,10 +75,8 @@ const SignUp = () => {
           </div> 
           <button className="button" type="submit">Create Account</button>
         </form>
-        <div className="link">
-          <div className="link__text">
+        <div className="page">
             Already have an account? <a href="/login"><span>Log In</span></a>
-          </div>
         </div>
       </div>
     </>
