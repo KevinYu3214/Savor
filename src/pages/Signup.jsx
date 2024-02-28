@@ -3,15 +3,16 @@ import React, { useState }from "react";
 import "../global_styles/Signup.scss";
 import email_icon from "../assets/email.png";
 import password_icon from "../assets/password.png";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../contexts/AuthContext"
 import icon from "../assets/savor-logo-jacob.png"
+import { Navigate } from "react-router-dom";
 
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordCheck, setPasswordCheck] = useState("");
-  const { signup } = useAuth();
+  const { signup, currentUser } = useAuth();
   const [error, setError] = useState("");
 
   const signUp = (e) => {
@@ -26,12 +27,15 @@ const SignUp = () => {
       .then((userCredential) => {
         console.log(userCredential);
       })
-      .catch((err) => {setError("Failed to create an account")
+      .catch((err) => {
+        console.log(err)
+        setError("Failed to create an account")
       });
   };
 
   return (
     <>
+      {currentUser && < Navigate to='/account'/>}
       <a href="/"><img src={icon} className="icon" alt=""/></a>
       <div className="container">
         <div className="header">

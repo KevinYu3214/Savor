@@ -4,12 +4,13 @@ import email_icon from "../assets/email.png";
 import password_icon from "../assets/password.png";
 import { useAuth } from "../contexts/AuthContext";
 import icon from "../assets/savor-logo-jacob.png"
+import { Navigate } from "react-router-dom";
 
 
 const LogIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login } = useAuth();
+  const { login, currentUser } = useAuth();
   const [error, setError] = useState("");
 
   const logIn = (e) => {
@@ -27,6 +28,7 @@ const LogIn = () => {
 
   return (
     <>
+      {currentUser && < Navigate to='/account'/>}
       <a href="/"><img src={icon} className="icon" alt=""/></a>
       <div className="container">
         <div className="header">
@@ -63,7 +65,7 @@ const LogIn = () => {
               Forgot your password? <a href="/account"><span>Reset password</span></a>
             </div>
           </div>
-          <button className="button" type="submit">Create Account</button>
+          <button className="button" type="submit">Log in</button>
         </form>
         <div className="page">
           <div className="page__text">
