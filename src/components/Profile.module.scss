@@ -1,12 +1,12 @@
 @import "./../global_styles/variables.scss";
 
 .container {
-    height: 400px;
+    height: 200px;
     width: 80%;
     background: $bg;
     display: flex;
     flex-direction: column;
-    margin: auto;
+    margin:auto;
     margin-top: 20px;
     border-radius: 5px;
 }
@@ -45,8 +45,8 @@
   color: $bg;
   background-color: $primary;
   padding: calc(0.6vw + 14px) calc(0.6vw + 60px);
-  margin-top: 21em;
-  margin-left: calc(8.7vw + 2px);
+  margin-top: 30px;
+  margin-left: 200px;
   border-radius: $spacing-md;
   cursor: pointer;
 
@@ -60,7 +60,4 @@
     box-shadow: 0 0 0.75em 0 $primary;
   }
 
-  @include breakpoint(md) {
-    margin-top: 10.5em;
-  }
 }

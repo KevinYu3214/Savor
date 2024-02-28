@@ -10,11 +10,13 @@ import Rankings from "./pages/Rankings";
 import SignUp from "./pages/Signup";
 import LogIn from "./pages/LogIn";
 
-import ReactDOM from "react-dom";
+import {createRoot} from "react-dom/client";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 
-ReactDOM.render(
+const root = createRoot(document.getElementById('root'))
+
+root.render(
   <Router>
     <AuthProvider>
       <Routes>
@@ -28,6 +30,5 @@ ReactDOM.render(
         <Route path="/login" element={<LogIn />} /> 
       </Routes>
     </AuthProvider>
-  </Router>,
-  document.getElementById("root")
+  </Router>
 );
