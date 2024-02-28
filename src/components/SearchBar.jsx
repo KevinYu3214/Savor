@@ -33,15 +33,13 @@ const SearchBar = ({ setResults }) => {
         'Authorization': 'Bearer ' + accessToken
       }
     }    
-    var artistID = await fetch('https://api.spotify.com/v1/search?q=' + input + '&type=artist', searchParameters)
-      .then(response => response.json())
-      .then(data => { return data.artists.items[0].id })
 
     // Get request with Artist ID grab all the albums from that artist
-    var returnedAlbums = await fetch('https://api.spotify.com/v1/artists/' + artistID + '/albums' + '?q=' + input + '&include_groups=album&market=US&limit=50', searchParameters)
+    var artistID = await fetch('https://api.spotify.com/v1/search?q=' + input + '&type=album,track', searchParameters)
       .then(response => response.json())
       .then(data => {
-        setResults(data.items);
+        console.log(data.tracks.items);
+        setResults(data.tracks.items);
       });
 
     // Display albums to the user
