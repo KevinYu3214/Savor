@@ -36,11 +36,27 @@
         margin-top: 1rem;
         max-height: 300px;
         overflow-y: scroll;
+        &__result {
+            padding: 10px 20px;
+            display: flex;
+            &__image {
+                width: 200px;
+                height: 200px;
+                border-radius: 7%;
+            }
+            &__title {
+                font-size: large;
+                margin-top: auto;
+                margin-bottom: auto;
+                margin-left: 2rem;
+            }
+        }
+        &__result:hover {
+        background-color: #efefef;
+        }
     }
-    &__result {
-        padding: 10px 20px;
-        
-    }
+    
+    
     &__result:hover {
         background-color: #efefef;
     }
