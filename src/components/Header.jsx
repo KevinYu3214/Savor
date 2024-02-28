@@ -7,6 +7,9 @@ import person_icon from "../assets/person.png";
 
 import { HiMenu } from "react-icons/hi";
 import { AiOutlineCloseSquare } from "react-icons/ai";
+import Button from "./Button";
+import { MdAccountCircle } from "react-icons/md";
+import { IconContext } from "react-icons";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -39,8 +42,13 @@ const Header = () => {
               Rankings
             </a>
             <a className={styles.nav__item} href={"/account"}>
-              <img src={person_icon} alt="Account" />
+            <IconContext.Provider value={{ size:50 }}>
+              <div>
+                <MdAccountCircle />
+              </div>
+              </IconContext.Provider>
             </a>
+           
           </nav>
         </div>
         <div>
