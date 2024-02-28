@@ -35,7 +35,7 @@ const SearchBar = ({ setResults }) => {
     }    
 
     // Get request with Artist ID grab all the albums from that artist
-    var artistID = await fetch('https://api.spotify.com/v1/search?q=' + input + '&type=album,track', searchParameters)
+    var artistID = await fetch('https://api.spotify.com/v1/search?q=' + input + '&type=track', searchParameters)
       .then(response => response.json())
       .then(data => {
         console.log(data.tracks.items);
