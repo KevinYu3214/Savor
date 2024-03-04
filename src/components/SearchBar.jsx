@@ -1,6 +1,10 @@
 // followed this tutorial https://www.youtube.com/watch?v=sWVgMcz8Q44&t=44s
 import React, { useState, useEffect } from "react";
 import styles from "./Search.module.scss";
+import { IoSearch } from "react-icons/io5";
+
+import { MdAccountCircle } from "react-icons/md";
+import { IconContext } from "react-icons";
 
 const CLIENT_ID = 'f7edf86569454d63bed822956ad01312';
 const CLIENT_SECRET = 'dcfd14461e9f4b63abacec673ce3dc55';
@@ -47,17 +51,21 @@ const SearchBar = ({ setResults }) => {
 
   return (
     <div className={styles.search__wrapper}>
-      <input 
-        className={styles.search__input}
-        placeholder="Search" 
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        onKeyDown={event => {
-          if (event.key === 'Enter') {
-            search();
-          }
-        }}
-      /> 
+          <IconContext.Provider value={{ color: "rgb(205, 205, 205)", size: 25 }}>
+              <IoSearch/>
+          </IconContext.Provider>
+          <input 
+              className={styles.search__input}
+              placeholder="Search" 
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={event => {
+                if (event.key === 'Enter') {
+                  search();
+                }
+              }}
+          ></input>
+
     </div>
   );
 };

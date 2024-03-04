@@ -1,20 +1,21 @@
 @import "./../global_styles/variables.scss";
 
 .search {
-    padding-top: 20vh;
-    width: 40%;
+    margin-top: 3vh;
+    width: 65%;
     margin: auto;
-    display:flex;
     flex-direction: column;
     align-items: center;
     min-width: 200px;
+    height: max-content;
+    
     &__wrapper {
-        background-color: white;
+        background-color: $bg;
         width: 100%;
         border-radius: 10px;
-        height: 2.5rem;
+        height: calc(5px + 4rem);
         padding: 0 15px;
-        box-shadow: 0px 0px 8px #ddd;
+        box-shadow: 0px 0px 8px $bg;
         display: flex;
         align-items: center;
     }
@@ -24,35 +25,41 @@
         height: 100%;
         font-size: 1.25rem;
         width: 100%;
-        margin-left: 5px;
+        margin-left: 10px;
+        color: $text3;
+    }
+    &__input::placeholder {
+        color: $text4;
     }
     &__results_list {
         width: 100%;
-        background-color: gray;
+        background-color: $bg;
         display: flex;
         flex-direction: column;
-        box-shadow: 0px 0px 8px #ddd;
+        box-shadow: 0px 0px 8px $bg;
         border-radius: 10px;
         margin-top: 1rem;
-        max-height: 300px;
-        overflow-y: scroll;
+        max-height: fit-content;
+        color: $text3;
         &__result {
             padding: 10px 20px;
             display: flex;
             &__image {
-                width: 200px;
-                height: 200px;
-                border-radius: 7%;
+                width: 75px;
+                height: 75px;
+                border-radius: 8%;
             }
             &__title {
                 font-size: large;
-                margin-top: auto;
+                font-weight: 500;
+                margin-top: 10px;
                 margin-bottom: auto;
-                margin-left: 2rem;
+                margin-left: 1rem;
             }
         }
         &__result:hover {
-        background-color: #efefef;
+            background-color: $primary;
+            color: $text2;
         }
     }
     

@@ -43,9 +43,7 @@ const Header = () => {
             </a>
             <a className={styles.nav__item} href={"/account"}>
             <IconContext.Provider value={{ size:50 }}>
-              <div>
                 <MdAccountCircle />
-              </div>
               </IconContext.Provider>
             </a>
            
