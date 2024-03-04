@@ -3,14 +3,18 @@ $syne-font: "Syne", sans-serif;
 
 $num-navigation: 6;
 
-$bg: rgb(255, 255, 255);
-$bg2: rgb(119, 125, 213);
-$bg3: rgb(5, 7, 31);
-$text: rgb(30, 24, 24);
-$text2: rgb(255, 255, 255);
+$dark: #FFFFFF;
+
+$bg: rgb(23, 5, 31);
+$bg2: rgb(255, 255, 255);
+$bg3: rgb(84,0,99);
+$text: rgb(84,0,99);
+$text2: rgb(90, 93, 120);
 $text3: rgb(150, 150, 168);
 $text4: rgb(205, 205, 205);
-$primary: rgb(252, 198, 204);
+$primary: rgb(5, 7, 31);
+
+$borderW: 2px;
 
 $spacing-sm: 8px;
 $spacing-md: 16px;

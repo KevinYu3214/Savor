@@ -9,6 +9,7 @@ const Search = () => {
   return (
       <>
         <Header />
+        <image src="" />
         <div className={styles.search}>
             <SearchBar setResults={setResults} />
             <SearchResultsList results={results} />
