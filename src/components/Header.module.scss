@@ -4,12 +4,17 @@
   height: $header-height;
   width: 100%;
   margin-top: 2vh;
-  margin-bottom: 18.5vh;
+  margin-bottom: 4.5vh;
+
+  @include breakpoint(md) {
+    margin-bottom: 18.5vh;
+  }
 
   &__company {
     display: none;
     display: flex;
     align-items: center;
+    
   }
 
   &__content {
@@ -44,31 +49,14 @@
       }
     }
   }
-  &__toggler {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    @include breakpoint(md) {
-      display: none;
-    }
-    & > svg {
-      display: block;
-      font-size: 60px;
-    }
-  }
-}
-
-.icon {
-  width: 80px;
-  height: 80px;
-  margin-right: 20px;
+  
 }
 
 .logo {
   font-size: 34px;
   font-weight: 600;
   display: none;
+  margin-left: calc(40px + 1.5vw);
   @include breakpoint(xl) {
     display: flex;
   }
@@ -117,9 +105,6 @@
 
 .light {
   color: $purple-gray;
-  .header__toggler {
-    color: $darkest-purple;
-  }
   .logo {
     color: $darkest-purple;
   }
@@ -135,9 +120,6 @@
 }
 .dark {
   color: $white;
-  .header__toggler {
-    color: $white;
-  }
   .logo {
     color: $white;
   } 
@@ -151,3 +133,4 @@
       background-color: $darkest-purple;
   }
 }
+

@@ -37,6 +37,18 @@ const App = () => {
         onClick={() => setTheme(theme === "light" ? "dark" : "light")}>      
         {theme === "light" ? "DARK" : "LIGHT"}
       </button>
+    <input class="menu-icon" type="checkbox" id="menu-icon" name="menu-icon"/>
+  	<label for="menu-icon"></label>
+  	<nav class="nav"> 		
+  		<ul class="pt-5">
+  			<li><a href={"/"}>Home</a></li>
+  			<li><a href={"/compare"}>Compare</a></li>
+        <li><a href={"/playlists"}>Playlists</a></li>
+  			<li><a href={"/search"}>Search</a></li>
+  			<li><a href={"/rankings"}>Rankings</a></li>
+  			<li><a href={"/account"}>Account</a></li>
+  		</ul>
+  	</nav>
     </div>
   );
 };

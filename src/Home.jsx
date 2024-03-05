@@ -1,5 +1,4 @@
 import React, { useContext, useState } from 'react'
-import "./global_styles/index.scss";
 import Header from "./components/Header";
 import Button from './components/CustomButtons/Button';
 import musicImage from "./assets/ipod.svg";
@@ -19,6 +18,7 @@ function Home() {
       <div class="ipodContainer">
         <img src={ipod} alt="Description of the image" />
       </div>
+ 
 
     </>
   )

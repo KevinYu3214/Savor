@@ -1,7 +1,6 @@
 import React, { useContext, useState } from "react";
 import styles from "./Header.module.scss";
 
-import icon from "../assets/icon.png";
 import person_icon from "../assets/person.png";
 
 import { HiMenu } from "react-icons/hi";
@@ -15,13 +14,13 @@ const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuToggler = () => setMenuOpen((p) => !p);
 
-  const { theme } = useContext(ThemeContext); // Get the theme from context
+  const { theme, setTheme } = useContext(ThemeContext); // Get the theme from context
+  console.log(theme);
 
   return (
     <div className={`${styles.header} ${styles[theme]}`}>
       <div className={styles.header__content}>
         <div className={styles.header__company}>
-          <img src={icon} className={styles.icon} alt="" />
           <span className={styles.logo}>SAVOR</span>
         </div>
         <div>
@@ -50,11 +49,6 @@ const Header = () => {
             </a>
            
           </nav>
-        </div>
-        <div>
-          <button className={styles.header__toggler} onClick={menuToggler}>
-            {!menuOpen ? <HiMenu /> : <AiOutlineCloseSquare />}
-          </button>
         </div>
         </div>
     </div>
