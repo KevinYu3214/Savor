@@ -1,20 +1,8 @@
-@import "./variables.scss";
+@import "./base/reset";
 
-*,
-*::before,
-*::after {
-  margin: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: $syne-font;
-  font-style: normal;
-  color: $bg;
-  background-color: $bg2;
-  // height: 200vh;
-}
-
+@import "../components/CustomButtons/Button.module.scss";
+@import "./abstract/variables.scss";
+@import "./abstract/colors.scss";
 main {
   height: calc(100vh - #{$header-height});
   display: flex;
@@ -27,7 +15,6 @@ main {
     font-weight: 700;
     color: $text2;
     padding: $spacing-md $spacing-lg;
-    background: $bg2;
     border-radius: $spacing-sm;
     box-shadow: 0 0 10px $primary;
     margin: 0 $spacing-md;
@@ -55,10 +42,6 @@ button {
   font-size: inherit;
   text-align: inherit;
   padding: 0;
-}
-
-span {
-  color: $primary;
 }
 
 .ipodContainer {
@@ -127,116 +110,40 @@ subtitle {
   cursor: pointer;
 }
 
-.blob-btn {
-  $numOfBlobs: 4;
-  z-index: 1;
-  position: absolute;
-  padding: calc(0.4vw + 25px) calc(0.4vw + 75px);
-  margin-top: 14em;
-  text-align: center;
-  text-transform: uppercase;
-  font-weight: 500;
-  font-size: calc(0.75vw + 0.9rem);
-  outline: none;
-  border: none;
-  transition: color 0.3s;
-  cursor: pointer;
-  border-radius: $spacing-md;
-  margin-left: calc(8.7vw + 2px);
-
-  @include breakpoint(md) {
-    margin-top: calc(11em + 10px);
+.light {
+  background-color: $white;
+  span {
+    color: $dark-purple;
   }
-  
-  &:active {
-    transform: scale(0.98);
-    border-radius: 0;
+  html {
+    background-color: $white;
   }
-  &:before {
-    content: "";
-    z-index: 1;
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    border: $borderW solid $bg3;
-    border-radius:30px;
+  .theme-container {
+    color: $darkest-purple;
   }
+}   
 
-  &:after {
-    content: "";
-    z-index: -2;
-    position: absolute;
-    left: $borderW*1.5;
-    top: $borderW*1.5;
-    width: 100%;
-    height: 100%;
-
-    transition: all 0.3s 0.2s;
-    border-radius:30px;
+.dark {
+  background-color: $darkest-purple;
+  color: $white;
+  span {
+    color: $pink;
   }
-
-  &:hover {
-    color: $bg3;
-    border-radius:30px;
-
-    &:after {
-      transition: all 0.3s;
-      left: 0;
-      top: 0;
-      border-radius:30px;
-    }
+  html {
+    background-color: $darkest-purple;
   }
-
-  &__inner {
-    z-index: -1;
-    overflow: hidden;
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    border-radius:30px;
-    background: $bg3;
+  .theme-container {
+    color: $white;
   }
-
-  // additional container created, because in FF blobs are breaking overflow:hidden of element with svg gooey filter
-  &__blobs {
-    position: relative;
-    display: block;
-    height: 100%;
-    filter: url('#goo');
-  }
-
-  &__blob {
-    position: absolute;
-    top: $borderW;
-    width: 100% / $numOfBlobs;
-    height: 100%;
-    background: $bg2;
-    border-radius: 100%;
-    transform: translate3d(0,150%,0) scale(1.7);
-    transition: transform 0.45s;
-
-    @supports(filter: url('#goo')) {
-      transform: translate3d(0,150%,0) scale(1.4);
-    }
-
-    @for $i from 1 through $numOfBlobs {
-      &:nth-child(#{$i}) {
-        left: ($i - 1) * (120% / $numOfBlobs);
-        transition-delay: ($i - 1) * 0.08s;
-      }
-    }
-
-    .blob-btn:hover & {
-      transform: translateZ(0) scale(1.7);
-
-      @supports(filter: url('#goo')) {
-        transform: translateZ(0) scale(1.4);
-      }
-    }
-  }
-
 }
+
+.theme-container {
+  position: absolute;
+  bottom: 3%;
+  left: 46%;
+  font-weight: 300;
+  font-size: 30px;
+  letter-spacing: 7px;
+  // Set the color of the button text based on the theme mode
+}
+

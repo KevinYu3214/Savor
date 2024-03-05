@@ -1,0 +1,32 @@
+@use "../abstract/colors.scss" as *;
+@import url("https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap");
+$syne-font: "Syne", sans-serif;
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: $syne-font;
+  font-style: normal;
+}
+
+.light {
+    .text {
+        color: $dark-purple;
+    }
+    .background {
+        background-color: $white;
+    }
+}
+.dark {
+    .text {
+        color: $white;
+    }
+    .background {
+        background-color: $darkest-purple;
+    }
+}
