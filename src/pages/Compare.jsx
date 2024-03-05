@@ -1,5 +1,5 @@
 import Header from "../components/Header";
-import CompareButton from "../components/CompareButton";
+import CompareButton from "../components/CustomButtons/CompareButton";
 
 const CLIENT_ID = "f7edf86569454d63bed822956ad01312"
 const SPOTIFY_AUTHORIZE_ENDPOINT = "https://accounts.spotify.com/authorize";
@@ -22,14 +22,12 @@ const Compare = () => {
 
     return (
       <>
-        <Header />
           <mainCompareText>
             Before we get into it... You need to <span>login</span>
           </mainCompareText> 
           <a href={SPOTIFY_AUTH_REQUEST} >
             <CompareButton text={"Spotify"} />
           </a>    
-
       </>
     );
   }

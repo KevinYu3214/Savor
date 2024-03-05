@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-
+import React, { useContext, useState } from "react";
 import styles from "./Header.module.scss";
 
 import icon from "../assets/icon.png";
@@ -7,16 +6,19 @@ import person_icon from "../assets/person.png";
 
 import { HiMenu } from "react-icons/hi";
 import { AiOutlineCloseSquare } from "react-icons/ai";
-import Button from "./Button";
+import Button from "./CustomButtons/Button";
 import { MdAccountCircle } from "react-icons/md";
 import { IconContext } from "react-icons";
+import ThemeContext from "../contexts/ThemeContext";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuToggler = () => setMenuOpen((p) => !p);
 
+  const { theme } = useContext(ThemeContext); // Get the theme from context
+
   return (
-    <div className={styles.header}>
+    <div className={`${styles.header} ${styles[theme]}`}>
       <div className={styles.header__content}>
         <div className={styles.header__company}>
           <img src={icon} className={styles.icon} alt="" />
@@ -54,7 +56,7 @@ const Header = () => {
             {!menuOpen ? <HiMenu /> : <AiOutlineCloseSquare />}
           </button>
         </div>
-      </div>
+        </div>
     </div>
   );
 };

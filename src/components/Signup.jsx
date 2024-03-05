@@ -4,8 +4,7 @@ import "./Signup.scss";
 import email_icon from "../assets/email.png";
 import password_icon from "../assets/password.png";
 import { useAuth } from "../contexts/AuthContext";
-import Button from "./Button";
-
+import Button from "../components/CustomButtons/Button";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");

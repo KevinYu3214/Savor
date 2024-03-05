@@ -1,10 +1,11 @@
 // followed this tutorial https://www.youtube.com/watch?v=sWVgMcz8Q44&t=44s
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styles from "./Search.module.scss";
 import { IoSearch } from "react-icons/io5";
 
 import { MdAccountCircle } from "react-icons/md";
 import { IconContext } from "react-icons";
+import ThemeContext from "../contexts/ThemeContext";
 
 const CLIENT_ID = 'f7edf86569454d63bed822956ad01312';
 const CLIENT_SECRET = 'dcfd14461e9f4b63abacec673ce3dc55';
@@ -48,9 +49,11 @@ const SearchBar = ({ setResults }) => {
 
     // Display albums to the user
   }
+  const { theme } = useContext(ThemeContext); // Get the theme from context
+
 
   return (
-    <div className={styles.search__wrapper}>
+    <div className={`${styles.search__wrapper} ${styles[theme]}`}>
           <IconContext.Provider value={{ color: "rgb(205, 205, 205)", size: 25 }}>
               <IoSearch/>
           </IconContext.Provider>

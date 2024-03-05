@@ -1,9 +1,7 @@
-@import "./../global_styles/variables.scss";
-
+@use "../global_styles/abstract/colors" as *;
+@import "../global_styles/abstract/variables.scss";
 .header {
   height: $header-height;
-  background: $bg2;
-  color: $text2;
   width: 100%;
   margin-top: 2vh;
   margin-bottom: 18.5vh;
@@ -70,7 +68,6 @@
 .logo {
   font-size: 34px;
   font-weight: 600;
-  color: $text2;
   display: none;
   @include breakpoint(xl) {
     display: flex;
@@ -82,7 +79,7 @@
   position: fixed;
   top: $header-margin;
   right: -100%;
-  background: $bg3;
+  background: $white;
   text-align: right;
   padding: $spacing-md 0;
 
@@ -97,14 +94,8 @@
     padding: $spacing-md;
     font-size: 20px;
     text-decoration: none;
-    color: inherit;
-
     height: 100%;
-
     transition: 0.3s ease color;
-    &:hover {
-      color: $primary;
-    }
   }
 
   @include breakpoint(md) {
@@ -121,5 +112,42 @@
       align-items: center;
       justify-content: center;
     }
+  }
+}
+
+.light {
+  color: $purple-gray;
+  .header__toggler {
+    color: $darkest-purple;
+  }
+  .logo {
+    color: $darkest-purple;
+  }
+  .nav__item {
+    color: $purple-gray;
+  }
+  .nav__item:hover {
+    color: $darkest-purple;
+  }
+  .background {
+      background-color: $white;
+  }
+}
+.dark {
+  color: $white;
+  .header__toggler {
+    color: $white;
+  }
+  .logo {
+    color: $white;
+  } 
+  .nav__item {
+    color: $white;
+  }
+  .nav__item:hover {
+    color: $purple-gray;
+  }
+  .background {
+      background-color: $darkest-purple;
   }
 }

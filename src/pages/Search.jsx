@@ -8,7 +8,6 @@ const Search = () => {
   const [results, setResults] = useState([]);
   return (
       <>
-        <Header />
         <image src="" />
         <div className={styles.search}>
             <SearchBar setResults={setResults} />
