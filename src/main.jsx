@@ -10,7 +10,6 @@ import SignUp from "./pages/Signup";
 import LogIn from "./pages/LogIn";
 
 import {createRoot} from "react-dom/client";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ThemeProvider, ThemeContext } from "./contexts/ThemeContext";
 import ReactDOM from "react-dom";
