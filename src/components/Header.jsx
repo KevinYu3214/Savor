@@ -1,11 +1,8 @@
 import React, { useContext, useState } from "react";
 import styles from "./Header.module.scss";
-
 import person_icon from "../assets/person.png";
-
 import { HiMenu } from "react-icons/hi";
 import { AiOutlineCloseSquare } from "react-icons/ai";
-import Button from "./CustomButtons/Button";
 import { MdAccountCircle } from "react-icons/md";
 import { IconContext } from "react-icons";
 import ThemeContext from "../contexts/ThemeContext";

@@ -1,12 +1,12 @@
 //followed tutortial : https://www.youtube.com/watch?v=8QgQKRcAUvM&t=52s
-@use "../global_styles/abstract/colors" as *;
-@import "../global_styles/abstract/variables.scss";
+@import "./../global_styles/variables.scss";
 
 .container{
     display: flex;
     flex-direction: column;
     margin: auto;
     margin-top: 20px;
+    margin-bottom:50px;
     width: 600px;
     background: #fff;
     padding-bottom:30px;
@@ -22,15 +22,34 @@
     margin-top: 30px;
 }
 .text{
-    color: #3c009d;
+    color: $primary;
     font-size: 48px;
     font-weight: 700;
+}
+
+.error{
+    display:flex;
+    align-items: center;
+    margin: auto;
+    margin-top: 30px;
+    width: 480px;
+    height: 80px;
+    background: palevioletred ;
+    border-radius: 6px;
+
+    &__text{
+        margin: auto;
+        align-items: center;
+        color: white;
+        font-size:24px;
+        font-weight: 400;
+    }
 }
 
 .underline{
     width: 61px;
     height: 6px;
-    background: #3c009d;
+    background: $primary;
     border-radius: 9px;
 }
 .inputs{
@@ -48,6 +67,7 @@
     height: 80px;
     background: #eaeaea ;
     border-radius: 6px;
+
 }
 
 .input img{
@@ -62,17 +82,16 @@
     outline: none;
     color: #797979;
     font-size: 15px;
-  
 }
 
-.forgot-password{
-    padding-left: 62px;
-    margin-top: 27px;
+.page{
+    display: flex;
+    justify-content: center;
+    gap: 9px;
+    width: 100%;
+    margin: auto;
+    margin-top: 15px;
     color: #797979;
-}
-
-.forgot-password span{
-    cursor: pointer;
 }
 
 .submit-container{
@@ -84,15 +103,15 @@
 .button{
     display: flex;
     justify-content: center;
-    align-items:center;
-    margin-bottom: 10px;
-    margin-left: 190px;
-    width: 220px;
-    height: 59px;
+    align-items: center;
+    margin-bottom: 30px;
+    margin: auto;
+    width: 300px;
+    height: 80px;
     color: #fff;
     background: rgb(252, 198, 204);;
     border-radius: 50px;
-    font-size: 15px;
+    font-size: 24px;
     font-weight: 700;
     box-shadow: 0 0 0.5em 0 $primary;
     cursor: pointer;
@@ -102,8 +121,13 @@
     background: rgb(163, 119, 149);
 }
 
-.dark {
-    .text {
-        color: $darkest-purple;
-    }
+.icon{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    width: 800px;
+    height: 200px;
+    margin-top: 50px;
+    margin-bottom:30px;
 }

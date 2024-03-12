@@ -6,6 +6,11 @@ import Playlists from "./pages/Playlists";
 import Search from "./pages/Search";
 import Account from "./pages/Account";
 import Rankings from "./pages/Rankings";
+import SignUp from "./pages/Signup";
+import LogIn from "./pages/LogIn";
+
+import {createRoot} from "react-dom/client";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ThemeProvider, ThemeContext } from "./contexts/ThemeContext";
 import ReactDOM from "react-dom";
@@ -31,6 +36,8 @@ const App = () => {
         <Route path="/search" element={<Search />} />
         <Route path="/account" element={<Account />} />
         <Route path="/rankings" element={<Rankings />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/login" element={<LogIn />} /> 
       </Routes>
       <button
         className="theme-container"
