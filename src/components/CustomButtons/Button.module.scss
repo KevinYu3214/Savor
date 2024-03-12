@@ -116,13 +116,13 @@
     color: $white;
   
     .blob-btn__inner {
-      background-color: $pink; 
+      background-color: $darkest-purple; 
     }
     .blob-btn__blob {
-      background-color: $white;
+      background-color: $dark-purple;
     }    
     &:hover {
-       color: $pink;
+       color: $white;
       &:blob-btn__blob {
         background-color: $white; 
       }
