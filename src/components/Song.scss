@@ -1,0 +1,60 @@
+@use "../global_styles/abstract/colors" as *;
+@import "../global_styles/abstract/variables.scss";
+
+.songContainer{
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom:50px;
+    width: 600px;
+    height: 500px;
+    background: #fff;
+    padding-top: 10px;
+    padding-bottom:30px;
+    border-radius: 10px;
+}
+
+.songInfo{
+   display: flex;
+    flex-direction: row;
+    color: black;
+}
+.songImage{
+    width: 150px;
+    height: 150px;
+    padding-left: 10px;
+}
+.playButton{
+    width: 100px;
+    height: 100px;
+    padding-left: 10px;
+    //transition: .5s ease;
+    opacity: 1;
+    position: absolute;
+    //top: 50%;
+    //left: 5%;
+    //transform: translate(-50%, -50%);
+    //-ms-transform: translate(-50%, -50%)
+}
+.songText{
+    padding-left: 10px;
+    font-size: calc(.8vw + 0.9rem);
+    background: -webkit-linear-gradient($dark-purple, pink);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.songTitle{
+    text-transform: uppercase;
+    font-weight: 900;
+    font-size: calc(2vw + 1.2rem);
+}
+
+.songAlbum{
+    font-style: italic;
+}
+
+.songImage:hover{
+ opacity: 0.3;
+}
