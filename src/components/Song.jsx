@@ -2,7 +2,7 @@ import React from "react";
 import "../components/Song.scss";
 import playButton from "../assets/play-button-6.svg";
 
-const Song = () => {
+const Song = ({ result }) => {
   return (
     <div className="songContainer">
       <div className="songInfo">
@@ -10,7 +10,7 @@ const Song = () => {
 
         <img src={playButton} className="playButton" />
         <div className="songText">
-          <div className="songTitle">Song Title</div>
+          <div className="songTitle">{result.name}</div>
           <div className="songAlbum">Song Album</div>
         </div>
       </div>
