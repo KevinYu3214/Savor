@@ -9,6 +9,7 @@ import Rankings from "./pages/Rankings";
 import SignUp from "./pages/Signup";
 import LogIn from "./pages/LogIn";
 import ResetPassword from "./pages/ResetPassword"
+import Test from "./pages/Test";
 
 //import {createRoot} from "react-doms/client";
 import { AuthProvider } from "./contexts/AuthContext";
@@ -39,6 +40,7 @@ const App = () => {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<LogIn />} /> 
         <Route path="resetpassword" element={<ResetPassword />} />
+        <Route path="/test" element={<Test/>}/>
       </Routes>
       <button
         className="theme-container"
