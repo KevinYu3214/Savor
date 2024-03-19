@@ -62,7 +62,7 @@ const LogIn = () => {
           </div> 
           <div className="page">
             <div className="page__text">
-              Forgot your password? <a href="/account"><span>Reset password</span></a>
+              Forgot your password? <a href="/resetpassword"><span>Reset password</span></a>
             </div>
           </div>
           <button className="button" type="submit">Log in</button>

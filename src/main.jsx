@@ -8,8 +8,9 @@ import Account from "./pages/Account";
 import Rankings from "./pages/Rankings";
 import SignUp from "./pages/Signup";
 import LogIn from "./pages/LogIn";
+import ResetPassword from "./pages/ResetPassword"
 
-import {createRoot} from "react-dom/client";
+//import {createRoot} from "react-doms/client";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ThemeProvider, ThemeContext } from "./contexts/ThemeContext";
 import ReactDOM from "react-dom";
@@ -37,6 +38,7 @@ const App = () => {
         <Route path="/rankings" element={<Rankings />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<LogIn />} /> 
+        <Route path="resetpassword" element={<ResetPassword />} />
       </Routes>
       <button
         className="theme-container"
