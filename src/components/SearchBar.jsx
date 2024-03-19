@@ -7,8 +7,8 @@ import { MdAccountCircle } from "react-icons/md";
 import { IconContext } from "react-icons";
 import ThemeContext from "../contexts/ThemeContext";
 
-const CLIENT_ID = 'f7edf86569454d63bed822956ad01312';
-const CLIENT_SECRET = 'dcfd14461e9f4b63abacec673ce3dc55';
+const CLIENT_ID = '35031be6070048458899436547c2b842';
+const CLIENT_SECRET = 'f6db2bf108264ec88a61a0a3aefd49e3';
 
 const SearchBar = ({ setResults }) => {
   const [input, setInput] = useState("");
