@@ -6,7 +6,7 @@ const Song = ({ result }) => {
   return (
     <div className="songContainer">
       <div className="songInfo">
-        <img src="http://placehold.it/" className="songImage" />
+        <img src={result.album.images[1].url} className="songImage" />
 
         <img src={playButton} className="playButton" />
         <div className="songText">
@@ -16,7 +16,7 @@ const Song = ({ result }) => {
       </div>
 
       <div className="artistInfo">
-        <img src="http://placehold.it/" className="artistImage" />
+        <img src={result.album.images[1].url} className="artistImage" />
         <div className="artistName"> Artist Name</div>
       </div>
     </div>

@@ -4,15 +4,15 @@ import Song from "../components/Song";
 import styles from "./Search.module.scss";
 import ThemeContext from "../contexts/ThemeContext";
 
-const handleClick = (result) => (event) => {
-  console.log("hello?!@@");
-  setIsShown((isShown) => !isShown);
-};
-
 const SearchResultsList = ({ results }) => {
   const [currResult, setCurrResult] = useState("");
   const [isShown, setIsShown] = useState(false);
   const { theme } = useContext(ThemeContext); // Get the theme from context
+
+  const handleClick = (result) => {
+    setCurrResult(result);
+    setIsShown((isShown) => !isShown);
+  };
   return (
     <div>
       <div className={`${styles.search__results_list} ${styles[theme]}`}>
@@ -26,7 +26,7 @@ const SearchResultsList = ({ results }) => {
           );
         })}
       </div>
-      {isShown && <button />}
+      {isShown && <Song result={currResult} />}
     </div>
   );
 };
