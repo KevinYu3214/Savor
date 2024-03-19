@@ -26,15 +26,14 @@
     padding-left: 10px;
 }
 .playButton{
+    transition: .5s ease;
     width: 100px;
     height: 100px;
     padding-left: 10px;
-    //transition: .5s ease;
-    opacity: 1;
+    opacity: 0;
     position: absolute;
-    //top: 50%;
-    //left: 5%;
-    //transform: translate(-50%, -50%);
+    backface-visibility: hidden;
+    transform: translate(33%, 25%);
     //-ms-transform: translate(-50%, -50%)
 }
 .songText{
@@ -55,6 +54,32 @@
     font-style: italic;
 }
 
+.artistImage{
+    width: 150px;
+    height: 150px;
+    padding-left: 10px;
+    padding-top: 20px;
+    border-radius: 100px;
+    
+}
+
+.artistInfo{
+    display: flex;
+    flex-direction: row;
+    color: black;
+}
+.artistName{   
+    color: black;
+    padding-left: 10px;
+    font-size: calc(.8vw + 0.9rem);
+    background: -webkit-linear-gradient($dark-purple, pink);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
 .songImage:hover{
  opacity: 0.3;
+}
+
+.playButton:hover{
+ opacity: 1;
 }

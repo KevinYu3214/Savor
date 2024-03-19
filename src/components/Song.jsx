@@ -7,6 +7,7 @@ const Song = () => {
     <div className="songContainer">
       <div className="songInfo">
         <img src="http://placehold.it/" className="songImage" />
+
         <img src={playButton} className="playButton" />
         <div className="songText">
           <div className="songTitle">Song Title</div>
@@ -14,7 +15,10 @@ const Song = () => {
         </div>
       </div>
 
-      <img src="http://placehold.it/" className="artistImage" />
+      <div className="artistInfo">
+        <img src="http://placehold.it/" className="artistImage" />
+        <div className="artistName"> Artist Name</div>
+      </div>
     </div>
   );
 };
