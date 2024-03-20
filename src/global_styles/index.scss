@@ -394,16 +394,22 @@ h1{
     transform 250ms ease;
 }
 .menu-icon:checked ~ .nav ul li:nth-child(1){
-  transition-delay: 1400ms;
+  transition-delay: 1200ms;
 }
 .menu-icon:checked ~ .nav ul li:nth-child(2){
-  transition-delay: 1480ms;
+  transition-delay: 1280ms;
 }
 .menu-icon:checked ~ .nav ul li:nth-child(3){
-  transition-delay: 1560ms;
+  transition-delay: 1360ms;
 }
 .menu-icon:checked ~ .nav ul li:nth-child(4){
-  transition-delay: 1640ms;
+  transition-delay: 1440ms;
+}
+.menu-icon:checked ~ .nav ul li:nth-child(5){
+  transition-delay: 1520ms;
+}
+.menu-icon:checked ~ .nav ul li:nth-child(6){
+  transition-delay: 1600ms;
 }
 
 

@@ -6,6 +6,7 @@ import styles from "../components/Search.module.scss";
 
 const Search = () => {
   const [results, setResults] = useState([]);
+  
   return (
       <>
         <image src="" />
