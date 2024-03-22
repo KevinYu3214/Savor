@@ -24,7 +24,6 @@ const Song = ({ result }) => {
           <div className="songAlbum">{result.album.name}</div>
         </div>
       </div>
-
       <div className="artistInfo">
         <img src={result.album.images[1].url} className="artistImage" />
         <div className="artistName"> {result.artists[0].name}</div>

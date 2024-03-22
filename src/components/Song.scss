@@ -70,9 +70,8 @@
 .artistImage{
     width: 150px;
     height: 150px;
-    padding-left: 10px;
-    padding-top: 20px;
-    border-radius: 500px;
+    transform: translate(7px, 10px);
+    border-radius: 100px;
     
 }
 
@@ -85,11 +84,14 @@
     color: black;
     padding-left: 10px;
     padding-top: 10px;
-    font-size: calc(.8vw + 0.9rem);
+    font-size: calc(.9vw + 0.9rem);
+    transform: translate(10px, 50px);
     background: -webkit-linear-gradient($dark-purple, pink);
+    font-weight: 500;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
+
 
 .songImageContainer:hover .songImage{
     opacity: .3;
