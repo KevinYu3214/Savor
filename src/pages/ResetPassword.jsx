@@ -32,12 +32,9 @@ const ResetPassword = () => {
   return (
     <>
         {currentUser && <Navigate to="/account" />}
-        <a href="/">
-            <img src={icon} className="icon" alt="" />
-        </a>
         <div className="container">
             <div className="header">
-                {!sent && <div className="text">Reset Password</div>}
+                {!sent && <div className="stext">Reset Password</div>}
                 {sent && <div className="text">Email sent to your inbox!</div>}
                 <div className="underline"></div>
             </div>
@@ -69,7 +66,7 @@ const ResetPassword = () => {
                 <div className="page">
                     Remembered your passsword?{" "}
                     <a href="/login">
-                        <span>Log In</span>
+                        <div className="link">Log In</div>
                     </a>
                 </div>
             )}

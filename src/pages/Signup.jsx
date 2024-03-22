@@ -35,12 +35,9 @@ const SignUp = () => {
   return (
     <>
       {currentUser && <Navigate to="/account" />}
-      <a href="/">
-        <img src={icon} className="icon" alt="" />
-      </a>
       <div className="container">
         <div className="header">
-          <div className="text">Sign Up</div>
+          <div className="stext">Sign Up</div>
           <div className="underline"></div>
         </div>
         {error && (
@@ -85,7 +82,7 @@ const SignUp = () => {
         <div className="page">
           Already have an account?{" "}
           <a href="/login">
-            <span>Log In</span>
+            <div className="link">Log In</div>
           </a>
         </div>
       </div>

@@ -29,10 +29,9 @@ const LogIn = () => {
   return (
     <>
       {currentUser && < Navigate to='/account'/>}
-      <a href="/"><img src={icon} className="icon" alt=""/></a>
       <div className="container">
         <div className="header">
-          <div className="text">Log In</div>
+          <div className="stext">Log In</div>
           <div className="underline"></div>
         </div>
         {error && 
@@ -62,14 +61,16 @@ const LogIn = () => {
           </div> 
           <div className="page">
             <div className="page__text">
-              Forgot your password? <a href="/resetpassword"><span>Reset password</span></a>
+              Forgot your password? <a href="/resetpassword">
+                <div className="link">Reset password</div>
+              </a>
             </div>
           </div>
           <button className="button" type="submit">Log in</button>
         </form>
         <div className="page">
           <div className="page__text">
-            Don't have an account? <a href="/signup"><span>Sign Up</span></a>
+            Don't have an account? <a href="/signup"><div className="link">Sign Up</div></a>
           </div>
         </div>
       </div>

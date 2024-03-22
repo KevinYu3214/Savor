@@ -38,12 +38,11 @@ const App = () => {
         <Route path="/search" element={<Search />} />
         <Route path="/account" element={<Account />} />
         <Route path="/rankings" element={<Rankings />} />
+        <Route path="/test" element={<Test/>}/>
+        <Route path="/stats" element={<Stats />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<LogIn />} /> 
         <Route path="resetpassword" element={<ResetPassword />} />
-        <Route path="/test" element={<Test/>}/>
-        <Route path="/login" element={<LogIn />} />
-        <Route path="/stats" element={<Stats />} />
       </Routes>
       <button
         className="theme-container"

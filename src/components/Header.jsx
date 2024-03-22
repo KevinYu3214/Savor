@@ -18,7 +18,7 @@ const Header = () => {
     <div className={`${styles.header} ${styles[theme]}`}>
       <div className={styles.header__content}>
         <div className={styles.header__company}>
-          <span className={styles.logo}>SAVOR</span>
+          <a href="/"><span className={styles.logo}>SAVOR</span></a>
         </div>
         <div>
           <nav
