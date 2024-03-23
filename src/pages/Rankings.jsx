@@ -1,10 +1,10 @@
 import Header from "../components/Header";
 import { FaStar } from "react-icons/fa";
 import { useState } from "react";
-import Song from "../components/Song";
+import Star from "../components/Star.jsx";
 
 const Rankings = () => {
-  return <Song />;
+  return <Star></Star>;
 };
 
 export default Rankings;

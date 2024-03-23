@@ -11,15 +11,17 @@ import {
   updateDoc,
   doc,
 } from "firebase/firestore";
+import Star from "../components/Star.jsx";
 
 const Song = ({ result }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [audio, setAudio] = useState(null);
   const [songList, setSongList] = useState([]);
-  const [selectedDropdownText, setSelectedDropdownText] = useState('Dropdown Menu');
-  const [rating, setRating] = useState('');
-  const [finishDate, setFinishDate] = useState('');
-  const [notes, setNotes] = useState('');
+  const [selectedDropdownText, setSelectedDropdownText] =
+    useState("Dropdown Menu");
+  const [rating, setRating] = useState("");
+  const [finishDate, setFinishDate] = useState("");
+  const [notes, setNotes] = useState("");
   const [loading, setLoading] = useState(false);
 
   const songCollectionList = collection(db, "Song");
@@ -41,24 +43,26 @@ const Song = ({ result }) => {
 
   const getSongList = async () => {
     const data = await getDocs(songCollectionList);
-    setSongList(data.docs.map(doc => ({ ...doc.data(), id: doc.id })));
+    setSongList(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
   };
   useEffect(() => {
     // This useEffect reacts to changes in either the songList or the result (selected song).
-    const currentSongDetails = songList.find(song => song.songId === result.id);
-  
+    const currentSongDetails = songList.find(
+      (song) => song.songId === result.id
+    );
+
     if (currentSongDetails) {
       // Update local states with the details from the found song entry.
-      setRating(currentSongDetails.rating || '');
-      setFinishDate(currentSongDetails.finishDate || '');
-      setNotes(currentSongDetails.notes || '');
-      setSelectedDropdownText(currentSongDetails.status || 'Dropdown Menu');
+      setRating(currentSongDetails.rating || "");
+      setFinishDate(currentSongDetails.finishDate || "");
+      setNotes(currentSongDetails.notes || "");
+      setSelectedDropdownText(currentSongDetails.status || "Dropdown Menu");
     } else {
       // Reset to default values if the song is not found (useful for when a new song is selected).
-      setRating('');
-      setFinishDate('');
-      setNotes('');
-      setSelectedDropdownText('Dropdown Menu');
+      setRating("");
+      setFinishDate("");
+      setNotes("");
+      setSelectedDropdownText("Dropdown Menu");
     }
   }, [songList, result]);
   const onSubmitMusic = async () => {
@@ -69,7 +73,7 @@ const Song = ({ result }) => {
       where("userId", "==", auth.currentUser.uid),
       where("songId", "==", result.id)
     );
-    
+
     const querySnapshot = await getDocs(songsQuery);
 
     if (!querySnapshot.empty) {
@@ -107,10 +111,14 @@ const Song = ({ result }) => {
   };
   const deleteSong = async (songId) => {
     if (!songId) return;
-  
-    const songsQuery = query(songCollectionList, where("songId", "==", songId), where("userId", "==", auth.currentUser.uid));
+
+    const songsQuery = query(
+      songCollectionList,
+      where("songId", "==", songId),
+      where("userId", "==", auth.currentUser.uid)
+    );
     const querySnapshot = await getDocs(songsQuery);
-  
+
     if (!querySnapshot.empty) {
       const songDoc = querySnapshot.docs[0];
       await deleteDoc(doc(db, "Song", songDoc.id));
@@ -120,7 +128,7 @@ const Song = ({ result }) => {
       console.error("Song not found");
     }
   };
-  
+
   const handleDropdownChange = (text) => {
     // Update UI without updating Firebase
     setSelectedDropdownText(text);
@@ -128,36 +136,77 @@ const Song = ({ result }) => {
 
   return (
     <div className="songContainer">
-           <div className="songInfo">
-          <div className="songImageContainer">
-            <img src={result.album.images[1].url} alt="Song" className="songImage" />
-      
-          </div>
-          <div className="songText">
-            <div className="songTitle">{result.name}</div>
-            <div className="songAlbum">{result.album.name}</div>
-          </div>
+      <div className="songInfo">
+        <div className="songImageContainer">
+          <img
+            src={result.album.images[1].url}
+            alt="Song"
+            className="songImage"
+          />
         </div>
-      <input type="number" placeholder="Rating (1-5)" value={rating} onChange={(e) => setRating(e.target.value)} />
-      <input type="date" placeholder="Finish Date" value={finishDate} onChange={(e) => setFinishDate(e.target.value)} />
-      <textarea placeholder="Notes" value={notes} onChange={(e) => setNotes(e.target.value)} />
-      <button onClick={onSubmitMusic} className="addFirebaseButton">Add to Firebase</button> 
-      <button onClick={() => deleteSong(result.id)} className="actionButton deleteButton">Delete</button>
-      <div className="sec-center">
-        {/* Dropdown for song status */}
-        <input className="dropdown" type="checkbox" id="dropdown" name="dropdown"/>
-        <label className="for-dropdown" htmlFor="dropdown">{selectedDropdownText} <i className="uil uil-arrow-down"></i></label>
-        <div className="section-dropdown">
-          {['Plan to Listen', 'Listened', 'Favorites', 'Recommendations'].map((text, index) => (
-            <a key={index} href="#" className={`dropdown-link ${selectedDropdownText === text ? 'active' : ''}`} onClick={(e) => {
-              e.preventDefault();
-              handleDropdownChange(text);
-            }}>
-              {text} <i className="uil uil-plus toggle-icon"></i>
-            </a>
-          ))}
+        <div className="songText">
+          <div className="songTitle">{result.name}</div>
+          <div className="songAlbum">{result.album.name}</div>
         </div>
       </div>
+      <input
+        type="number"
+        placeholder="Rating (1-5)"
+        value={rating}
+        onChange={(e) => setRating(e.target.value)}
+      />
+      <input
+        type="date"
+        placeholder="Finish Date"
+        value={finishDate}
+        onChange={(e) => setFinishDate(e.target.value)}
+      />
+      <textarea
+        placeholder="Notes"
+        value={notes}
+        onChange={(e) => setNotes(e.target.value)}
+      />
+      <button onClick={onSubmitMusic} className="addFirebaseButton">
+        Add to Firebase
+      </button>
+      <button
+        onClick={() => deleteSong(result.id)}
+        className="actionButton deleteButton"
+      >
+        Delete
+      </button>
+      <div className="sec-center">
+        {/* Dropdown for song status */}
+        <input
+          className="dropdown"
+          type="checkbox"
+          id="dropdown"
+          name="dropdown"
+        />
+        <label className="for-dropdown" htmlFor="dropdown">
+          {selectedDropdownText} <i className="uil uil-arrow-down"></i>
+        </label>
+        <div className="section-dropdown">
+          {["Plan to Listen", "Listened", "Favorites", "Recommendations"].map(
+            (text, index) => (
+              <a
+                key={index}
+                href="#"
+                className={`dropdown-link ${
+                  selectedDropdownText === text ? "active" : ""
+                }`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleDropdownChange(text);
+                }}
+              >
+                {text} <i className="uil uil-plus toggle-icon"></i>
+              </a>
+            )
+          )}
+        </div>
+      </div>
+      <Star> </Star>
     </div>
   );
 };
