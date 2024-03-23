@@ -59,6 +59,7 @@ const Song = ({ result }) => {
       const filteredData = data.docs.map((doc) => ({
         ...doc.data(),
         id: doc.id,
+        
       }));
       setSongList(filteredData);
 
@@ -71,9 +72,17 @@ const Song = ({ result }) => {
     getSongList();
   }, []);
 
-  const deleteMovie = async (id) => {
-    const songDoc = doc(db, "Song", id);
-    await deleteDoc(songDoc);
+  const deleteSong = async () => {
+    if (!result.docId) return;
+
+    try {
+      const songDocRef = doc(db, "Song", result.docId);
+      await deleteDoc(songDocRef);
+      console.log("Document successfully deleted!");
+      getSongList(); // Refresh your song list to reflect the deletion
+    } catch (error) {
+      console.error("Error removing document: ", error);
+    }
   };
 
   const updateMovieRanking = async (id) => {
@@ -126,6 +135,8 @@ const Song = ({ result }) => {
       <button onClick={onSubmitMusic} className="artistInfo">
         Add to Firebase
       </button>
+      
+
     </div>
   );
 };

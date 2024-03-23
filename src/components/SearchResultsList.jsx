@@ -26,7 +26,16 @@ const SearchResultsList = ({ results }) => {
           );
         })}
       </div>
-      {isShown && <Song result={currResult} />}
+      {isShown && (
+        <div className={`${styles.songContainer} ${isShown ? styles.overlay : ''}`}>
+          <Song result={currResult} />
+          <button onClick={() => setIsShown(false)} className={styles.closeButton}>
+          Close
+        </button>
+        </div>
+        
+      )}
+
     </div>
   );
 };
