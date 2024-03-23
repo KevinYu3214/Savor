@@ -137,6 +137,9 @@ subtitle {
   .theme-container {
     color: $darkest-purple;
   }
+  .theme-toggle {
+    background-color: $darkest-purple;
+  }
 }   
 
 .dark {
@@ -150,6 +153,10 @@ subtitle {
   }
   .theme-container {
     color: $white;
+  }
+  .theme-toggle {
+    background-color: $white;
+    color: $darkest-purple;
   }
 }
 
@@ -412,24 +419,6 @@ h1{
   transition-delay: 1600ms;
 }
 
-
-
-.logo {
-  position: absolute;
-  top: 60px;
-  left: 50px;
-  display: block;
-  z-index: 11;
-  transition: all 250ms linear;
-}
-.logo img {
-  height: 26px;
-  width: auto;
-  display: block;
-}
-
-
-
 @media screen and (max-width: 991px) {
   .menu-icon:checked + label,
   .menu-icon:not(:checked) + label{
@@ -448,6 +437,52 @@ h1{
     
   }
 }
+svg {
+  fill: var(--fill);
+  transition: 200ms ease-in-out;
+}
 
+/* Apply the theme toggle button styles */
+.theme-toggle {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgb(0, 0, 0);
+  color: white;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 0 20px 20px 0;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
 
+/* Sun and Moon Icons Inside the Button */
+.theme-toggle svg {
+  fill: currentColor;
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+/* Set the default state for both icons */
+.theme-toggle .sun,
+.theme-toggle .moon {
+  opacity: 0; /* Start with the icons hidden */
+  transform: scale(1); /* Keep them at natural size but allow for scaling */
+}
+
+/* When the 'dark' class is applied to the root, manage the icons' visibility and scale */
+.dark .sun {
+  opacity: 1; /* Show sun */
+}
+
+.light .moon {
+  opacity: 1; /* Show moon */
+}
+
+/* Example of handling hover states with scale, if desired */
+.theme-toggle:hover .sun,
+.theme-toggle:hover .moon {
+  transform: scale(1.3); /* Slightly larger on hover, for both icons */
+}
 
