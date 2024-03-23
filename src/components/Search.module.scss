@@ -27,7 +27,7 @@
         font-size: 1.25rem;
         width: 100%;
         margin-left: 10px;
-        color: $text3;
+        color: $text4;
     }
     &__input::placeholder {
         color: $text4;
@@ -43,8 +43,27 @@
         max-height: fit-content;
         color: $text3;
         &__result {
+            &:hover {
+                background-color: $primary;
+          
+                .search__results_list__result__title,
+                .search__results_list__result__info {
+                  color: white; // This will change the color of both the title and the info text on hover
+                }
+              }
             padding: 10px 20px;
             display: flex;
+            align-items: center;
+            &__info {
+                margin-top: .1em;
+                font-size: medium; // Adjust size as needed
+                color: $text4; // Adjust color as needed
+                display: flex;
+                flex-direction: row;
+                &__item {
+                    margin-right: .75em;
+                }
+            }
             &__image {
                 width: 75px;
                 height: 75px;
@@ -52,30 +71,48 @@
             }
             &__title {
                 font-size: large;
-                font-weight: 500;
-                margin-top: 10px;
-                margin-bottom: auto;
-                margin-left: 1rem;
+                font-weight: bold;
+                color: $bg2; // Adjust color as needed
+
             }
-        }
-        &__result:hover {
-            background-color: $primary;
-            color: $text2;
         }
     }
     
+    .infoColumn {
+        display: flex;
+        flex-direction: column;
+        margin-left: 1rem;
+    }
     
     &__result:hover {
         background-color: #efefef;
     }
-    input:focus{
+    input:focus {
         outline: none;
     }
 }
 
 .dark {
-    background-color: $white;
+    background-color: $bg2;
+    
     .search__results_list {
-        background-color: $white;
+      background-color: $bg2;
+      color: $bg2; 
+  
+      &__result {
+        &:hover {
+          background-color: darken($bg3, 10%); // Slightly darken the hover bg for contrast
+          
+          .search__results_list__result__title,
+          .search__results_list__result__info {
+            color: $bg2; // Lighter color for text in dark mode on hover
+          }
+        }
+      }
+  
+      &__result__info,
+      &__result__title {
+        color: $bg; // Ensure text colors are adjusted for dark mode readability
+      }
     }
-}
+  }
