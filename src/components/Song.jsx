@@ -1,10 +1,85 @@
 import React, { useState, useEffect } from "react";
 import "../components/Song.scss";
 import playButton from "../assets/play-button-6.svg";
+import { db, auth } from "../firebase/firebase";
+import {
+  getDocs,
+  collection,
+  addDoc,
+  query,
+  where,
+  deleteDoc,
+  updateDoc,
+  doc,
+} from "firebase/firestore";
 
 const Song = ({ result }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [audio, setAudio] = useState(null);
+  const [songList, setSongList] = useState([]);
+
+  const songCollectionList = collection(db, "Song");
+
+  const [newAlbumTitle, setNewAlbumTitle] = useState("");
+  const [newArtist, setNewArtist] = useState("");
+  const [newMusicTitle, setNewMusicTitle] = useState("");
+  const [newRating, setNewRating] = useState(0);
+
+  const onSubmitMusic = async () => {
+    if (!result || !auth?.currentUser?.uid) return;
+
+    // Define a query to check if the song already exists for the user
+    const songsQuery = query(
+      songCollectionList,
+      where("userId", "==", auth.currentUser.uid),
+      where("title", "==", result.name),
+      where("artist", "==", result.artists[0].name)
+    );
+    try {
+      const querySnapshot = await getDocs(songsQuery);
+      if (querySnapshot.empty) {
+
+        await addDoc(songCollectionList, {
+          album: result.album.name,
+          artist: result.artists[0].name,
+          title: result.name,
+          rating: newRating,
+          userId: auth.currentUser.uid,
+        });
+        getSongList();
+      }
+    } catch (err) {
+      console.error("Error adding document: ", err);
+    }
+  };  
+
+  const getSongList = async () => {
+    try {
+      const data = await getDocs(songCollectionList);
+      const filteredData = data.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      setSongList(filteredData);
+
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    getSongList();
+  }, []);
+
+  const deleteMovie = async (id) => {
+    const songDoc = doc(db, "Song", id);
+    await deleteDoc(songDoc);
+  };
+
+  const updateMovieRanking = async (id) => {
+    const songDoc = doc(db, "Song", id);
+    await updateDoc(songDoc, { rating: newRating });
+  };
 
   useEffect(() => {
     const newAudio = new Audio(result.preview_url);
@@ -48,6 +123,9 @@ const Song = ({ result }) => {
         <img src={result.album.images[1].url} alt="Artist" className="artistImage" />
         <div className="artistName">{result.artists[0].name}</div>
       </div>
+      <button onClick={onSubmitMusic} className="artistInfo">
+        Add to Firebase
+      </button>
     </div>
   );
 };

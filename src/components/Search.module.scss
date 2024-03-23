@@ -101,18 +101,18 @@
   
       &__result {
         &:hover {
-          background-color: darken($bg3, 10%); // Slightly darken the hover bg for contrast
+          background-color: darken($bg3, 10%); 
           
           .search__results_list__result__title,
           .search__results_list__result__info {
-            color: $bg2; // Lighter color for text in dark mode on hover
+            color: $bg2; 
           }
         }
       }
   
       &__result__info,
       &__result__title {
-        color: $bg; // Ensure text colors are adjusted for dark mode readability
+        color: $bg; 
       }
     }
   }
