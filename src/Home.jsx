@@ -5,6 +5,7 @@ import musicImage from "./assets/ipod.svg";
 import italy from "./assets/italy.svg";
 import ipod from "./assets/ipod.svg";
 import ThemeContext from './contexts/ThemeContext';
+
 function Home() {
   const { theme } = useContext(ThemeContext); // Get the theme from context
 
