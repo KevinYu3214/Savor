@@ -44,6 +44,9 @@ const SignUp = () => {
             <div className="error__text">{error}</div>
           </div>
         )}
+        <div className="container">
+          <Button text="Sign up" type="submit"/>
+        </div>
         <form onSubmit={signUp} className="inputs">
           <div className="input">
             <img src={email_icon} alt="" className="icons" />
@@ -74,7 +77,6 @@ const SignUp = () => {
               onChange={(e) => setPasswordCheck(e.target.value)}
             ></input>
           </div>
-          <Button text="Sign up" type="submit"/>
         </form>
         <div className="page">
           Already have an account?{" "}
