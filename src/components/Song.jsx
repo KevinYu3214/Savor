@@ -135,7 +135,7 @@ const Song = ({ result }) => {
     } else {
       // Update UI with the new selected value
       setSelectedDropdownText(text);
-    }   
+    }
   };
 
   return (
@@ -150,7 +150,8 @@ const Song = ({ result }) => {
         </div>
         <div className="songText">
           <div className="songTitle">{result.name}</div>
-          <div className="songAlbum">{result.album.name}</div>
+          <div className="songAlbum">Album: {result.album.name}</div>
+          <div className="songArtist"> Artist: {result.artists[0].name}</div>
         </div>
       </div>
       <Star> </Star>
