@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../components/Song.scss";
 import { db, auth } from "../firebase/firebase";
+import playButton from "../assets/play-button-6.svg";
 import {
   getDocs,
   collection,
@@ -147,6 +148,12 @@ const Song = ({ result }) => {
             alt="Song"
             className="songImage"
           />
+          <button
+            className="playButton"
+            onClick={togglePlayPause}
+          >
+            <img src={playButton} alt="Play/Pause" />
+          </button>
         </div>
         <div className="songText">
           <div className="songTitle">{result.name}</div>
