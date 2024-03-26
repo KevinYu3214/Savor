@@ -56,13 +56,13 @@ const Song = ({ result }) => {
       setRating(currentSongDetails.rating || "");
       setFinishDate(currentSongDetails.finishDate || "");
       setNotes(currentSongDetails.notes || "");
-      setSelectedDropdownText(currentSongDetails.status || "Dropdown Menu");
+      setSelectedDropdownText(currentSongDetails.status || "Add to List");
     } else {
       // Reset to default values if the song is not found (useful for when a new song is selected).
       setRating("");
       setFinishDate("");
       setNotes("");
-      setSelectedDropdownText("Dropdown Menu");
+      setSelectedDropdownText("Add to List");
     }
   }, [songList, result]);
   const onSubmitMusic = async () => {
@@ -130,8 +130,12 @@ const Song = ({ result }) => {
   };
 
   const handleDropdownChange = (text) => {
-    // Update UI without updating Firebase
-    setSelectedDropdownText(text);
+    if (text === selectedDropdownText) {
+      setSelectedDropdownText("Add to List"); // Reset to default value
+    } else {
+      // Update UI with the new selected value
+      setSelectedDropdownText(text);
+    }   
   };
 
   return (

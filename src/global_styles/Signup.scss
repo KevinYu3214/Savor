@@ -1,16 +1,12 @@
 //followed tutortial : https://www.youtube.com/watch?v=8QgQKRcAUvM&t=52s
+@use "../global_styles/abstract/colors" as *;
 @import "./abstract/variables.scss";
 
 .container{
     display: flex;
     flex-direction: column;
-    margin-top: 0px;
     margin: auto;
-    margin-bottom:50px;
     width: 600px;
-    background: #fff;
-    padding-bottom:30px;
-    border-radius: 2px;
 }
 
 .header{
@@ -52,6 +48,7 @@
     background: $primary;
     border-radius: 9px;
 }
+
 .inputs{
     margin-top: 30px;
     display: flex;
@@ -121,18 +118,38 @@
     background: rgb(163, 119, 149);
 }
 
-.icon{
-    display:flex;
-    justify-content: center;
-    align-items: center;
-    margin: auto;
-    width: 800px;
-    height: 200px;
-    margin-top: 50px;
-    margin-bottom:30px;
-}
-
 .link{
     color: $primary;
     display: inline-block;
 }
+
+.light {
+    color: $purple-gray;
+    .header {
+      color: $darkest-purple;
+    }
+    .nav__item {
+      color: $purple-gray;
+    }
+    .nav__item:hover {
+      color: $darkest-purple;
+    }
+    .background {
+        background-color: $white;
+    }
+  }
+  .dark {
+    color: $white;
+    .header {
+      color: $white;
+    } 
+    .nav__item {
+      color: $white;
+    }
+    .nav__item:hover {
+      color: $purple-gray;
+    }
+    .background {
+        background-color: $darkest-purple;
+    }
+  }

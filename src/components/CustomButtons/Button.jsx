@@ -10,14 +10,14 @@ const Button = (props) => {
     // Wait for the transition animation to complete before redirecting
     setTimeout(() => {
       // Replace '/compare' with your actual redirect URL
-      window.location.href = "http://localhost:5173/account";
+      props.onClick();
     }, 400); // Adjust the duration according to your transition animation
   };
 
     return (
       <div>      
       <div className={`buttons ${isClicked ? 'clicked' : ''}`}>
-        <button className={`blob-btn ${theme === 'light' ? 'light' : 'dark'}`} onClick={handleClick}>
+        <button className={`blob-btn ${theme === 'light' ? 'light' : 'dark'}`} onClick={handleClick} type={props.type}>
           {props.text}
           <span className={`blob-btn__inner ${theme === 'light' ? 'light' : 'dark'}`}>
             <span className="blob-btn__blobs">
