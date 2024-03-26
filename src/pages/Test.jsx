@@ -10,7 +10,6 @@ const Test = () => {
   return (
     
     <>
-    
       <button onClick={updateSongRating(db, "testID", "2")} className={styles.button}>test update</button>
       <p><br></br><br></br><br></br><br></br><br></br><br></br></p>
       <button onClick={addSongToFS("testAlbum", "testArtist", "testTitle", "testID", 0)} className={styles.button}>test add</button>

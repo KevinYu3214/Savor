@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import ThemeContext from "../../contexts/ThemeContext";
-const Button = (props) => {
+const Button = ({text, onClick}) => {
   const [isClicked, setIsClicked] = useState(false);
   const { theme } = useContext(ThemeContext);
 
@@ -10,7 +10,7 @@ const Button = (props) => {
     // Wait for the transition animation to complete before redirecting
     setTimeout(() => {
       // Replace '/compare' with your actual redirect URL
-      window.location.href = "http://localhost:5173/account";
+      onClick();
     }, 400); // Adjust the duration according to your transition animation
   };
 
@@ -18,7 +18,7 @@ const Button = (props) => {
       <div>      
       <div className={`buttons ${isClicked ? 'clicked' : ''}`}>
         <button className={`blob-btn ${theme === 'light' ? 'light' : 'dark'}`} onClick={handleClick}>
-          {props.text}
+          {text}
           <span className={`blob-btn__inner ${theme === 'light' ? 'light' : 'dark'}`}>
             <span className="blob-btn__blobs">
               <span className={`blob-btn__blob ${theme === 'light' ? 'light' : 'dark'}`}></span>

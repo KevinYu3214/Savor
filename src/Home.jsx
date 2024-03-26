@@ -9,13 +9,18 @@ import ThemeContext from './contexts/ThemeContext';
 function Home() {
   const { theme } = useContext(ThemeContext); // Get the theme from context
 
+  const handleClick = () => {
+    window.location.href = "http://localhost:5173/account";
+    console.log("Clicked the button");
+  };
+
   return (
     <>
       <maintext>
         Savor <span>your</span> taste today!
       </maintext>
       <subtitle>Get tailored suggestions today based on your interests</subtitle>
-      <Button text={"Get Started"} />
+      <Button text={"Get Started"} onClick={handleClick}/>
       <div class="ipodContainer">
         <img src={ipod} alt="Description of the image" />
       </div>

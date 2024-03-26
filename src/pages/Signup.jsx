@@ -4,7 +4,7 @@ import "../global_styles/Signup.scss";
 import email_icon from "../assets/email.png";
 import password_icon from "../assets/password.png";
 import { useAuth } from "../contexts/AuthContext";
-import icon from "../assets/savor-logo-jacob.png";
+import Button from '../components/CustomButtons/Button';
 import { Navigate } from "react-router-dom";
 
 const SignUp = () => {
@@ -35,7 +35,6 @@ const SignUp = () => {
   return (
     <>
       {currentUser && <Navigate to="/account" />}
-      <div className="container">
         <div className="header">
           <div className="stext">Sign Up</div>
           <div className="underline"></div>
@@ -75,9 +74,7 @@ const SignUp = () => {
               onChange={(e) => setPasswordCheck(e.target.value)}
             ></input>
           </div>
-          <button className="button" type="submit">
-            Create Account
-          </button>
+          <Button text="Sign up" type="submit"/>
         </form>
         <div className="page">
           Already have an account?{" "}
@@ -85,7 +82,6 @@ const SignUp = () => {
             <div className="link">Log In</div>
           </a>
         </div>
-      </div>
     </>
   );
 };
