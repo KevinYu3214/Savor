@@ -149,12 +149,13 @@ const Song = ({ result }) => {
           <div className="songAlbum">{result.album.name}</div>
         </div>
       </div>
-      <input
+      <Star> </Star>
+      {/*<input
         type="number"
         placeholder="Rating (1-5)"
         value={rating}
         onChange={(e) => setRating(e.target.value)}
-      />
+  />*/}
       <input
         type="date"
         placeholder="Finish Date"
@@ -206,7 +207,6 @@ const Song = ({ result }) => {
           )}
         </div>
       </div>
-      <Star> </Star>
     </div>
   );
 };
