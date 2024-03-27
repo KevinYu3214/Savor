@@ -1,67 +1,152 @@
-const CLIENT_ID = "35031be6070048458899436547c2b842"
-const SPOTIFY_AUTHORIZE_ENDPOINT = "https://accounts.spotify.com/authorize";
-const REDIRECT_URL_AFTER_LOGIN = "http://localhost:5173/stats";
-const SCOPES = [
-    "user-read-private",
-    "streaming",
-    "user-top-read",
-    'user-read-email',
-    "playlist-read-private",
-    "playlist-read-collaborative",
-];
+// Assuming these are defined in your environment
+const localStorage = window.localStorage;
+const fetch = window.fetch;
 
-const SPACE_DELIMITER = "%20";
-const SCOPES_URL_PARAM = SCOPES.join(SPACE_DELIMITER);
-const SPOTIFY_AUTH_REQUEST = `${SPOTIFY_AUTHORIZE_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URL_AFTER_LOGIN}&scope=${SCOPES_URL_PARAM}&response_type=code&show_dialog=true`;
+const clientId = '35031be6070048458899436547c2b842'; // Your clientId
+const redirectUrl = 'http://localhost:5173/stats'; // Your redirect URL - must be localhost URL and/or HTTPS
+const authorizationEndpoint = "https://accounts.spotify.com/authorize";
+const tokenEndpoint = "https://accounts.spotify.com/api/token"; // Token endpoint for exchanging codes and refreshing tokens
+const scope = 'user-read-private user-read-email user-top-read';
 
-const generateRandomString = (length) => {
-    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    const values = crypto.getRandomValues(new Uint8Array(length));
-    return values.reduce((acc, x) => acc + possible[x % possible.length], "");
-}
-
-const codeVerifier = generateRandomString(64);
-window.localStorage.setItem('code_verifier', codeVerifier);
-
-const sha256 = async (plain) => {
-  const encoder = new TextEncoder()
-  const data = encoder.encode(plain)
-  return window.crypto.subtle.digest('SHA-256', data)
-}
-
-const base64encode = (input) => {
-  return btoa(String.fromCharCode(...new Uint8Array(input)))
+// Generates a code verifier and challenge for PKCE
+async function generateCodeChallenge() {
+  const encoder = new TextEncoder();
+  const crypto = window.crypto;
+  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const randomValues = crypto.getRandomValues(new Uint8Array(64));
+  const codeVerifier = Array.from(randomValues, (x) => possible[x % possible.length]).join('');
+  
+  const data = encoder.encode(codeVerifier);
+  const hashed = await crypto.subtle.digest('SHA-256', data);
+  const codeChallenge = btoa(String.fromCharCode(...new Uint8Array(hashed)))
     .replace(/=/g, '')
     .replace(/\+/g, '-')
     .replace(/\//g, '_');
+  
+  localStorage.setItem('code_verifier', codeVerifier);
+  return codeChallenge;
 }
 
-const hashed = await sha256(codeVerifier)
-const codeChallenge = base64encode(hashed);
-
-const getToken = async code => {
-
-    // stored in the previous step
-    let codeVerifier = localStorage.getItem('code_verifier');
+// Generates the Spotify authorization request URL
+async function generateSpotifyAuthRequest() {
+  const codeChallenge = await generateCodeChallenge();
+  const params = new URLSearchParams({
+    client_id: clientId,
+    redirect_uri: redirectUrl,
+    scope: scope,
+    response_type: 'code',
+    code_challenge_method: 'S256',
+    code_challenge: codeChallenge,
+    show_dialog: 'true'
+  });
   
-    const payload = {
-      method: 'POST',
+  return `${authorizationEndpoint}?${params}`;
+}
+
+// Exchanges the authorization code for an access token
+async function getToken(code) {
+  const codeVerifier = localStorage.getItem('code_verifier');
+  console.log('Code Verifier:', codeVerifier); // Debugging log
+  console.log('Authorization Code:', code); // Debugging log
+
+  const params = new URLSearchParams({
+    client_id: clientId,
+    grant_type: 'authorization_code',
+    code: code,
+    redirect_uri: redirectUrl,
+    code_verifier: codeVerifier,
+  });
+
+  console.log('Token Request Params:', params.toString()); // Debugging log
+
+  const response = await fetch(tokenEndpoint, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: params,
+  });
+
+  if (!response.ok) {
+    console.error(`HTTP error! status: ${response.status}`);
+    const errorResponse = await response.json();
+    console.error('Error response:', errorResponse);
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  const tokenData = await response.json();
+  console.log('Token Data:', tokenData); // Debugging log
+  saveTokenData(tokenData);
+  return tokenData;
+}
+
+
+// Saves token data and calculates the expiry time
+function saveTokenData(tokenData) {
+  const now = new Date();
+  const expiresIn = tokenData.expires_in * 1000; // Convert to milliseconds
+  const expiryTime = new Date(now.getTime() + expiresIn);
+
+  localStorage.setItem('access_token', tokenData.access_token);
+  localStorage.setItem('expires_at', expiryTime.toISOString());
+  if (tokenData.refresh_token) {
+    localStorage.setItem('refresh_token', tokenData.refresh_token);
+  }
+}
+
+// Refreshes the access token using the refresh token
+async function refreshToken() {
+  const refreshToken = localStorage.getItem('refresh_token');
+  if (!refreshToken) {
+    console.error('No refresh token available');
+    throw new Error('No refresh token available');
+  }
+
+  const response = await fetch(tokenEndpoint, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: new URLSearchParams({
+      client_id: clientId,
+      grant_type: 'refresh_token',
+      refresh_token: refreshToken,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  const tokenData = await response.json();
+  saveTokenData(tokenData);
+  return tokenData.access_token;
+}
+
+// Checks if the access token is expired and refreshes it if necessary
+async function ensureValidToken() {
+  const expiresAt = localStorage.getItem('expires_at');
+  if (!expiresAt || new Date() > new Date(expiresAt)) {
+    await refreshToken();
+  }
+  return localStorage.getItem('access_token');
+}
+
+// Function to fetch user's top tracks
+async function fetchTopTracks(accessToken) {
+  const response = await fetch('https://api.spotify.com/v1/me/top/tracks', {
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': `Bearer ${accessToken}`,
       },
-      body: new URLSearchParams({
-        client_id: CLIENT_ID,
-        grant_type: 'authorization_code',
-        code,
-        redirect_uri: REDIRECT_URL_AFTER_LOGIN,
-        code_verifier: codeVerifier,
-      }),
-    }
-  
-    const body = await fetch('https://accounts.spotify.com/api/token', payload);
-    const response = await body.json();
-  
-    localStorage.setItem('access_token', response.access_token);
-};
+  });
 
-export { SPOTIFY_AUTH_REQUEST, getToken };
+  if (!response.ok) {
+      throw new Error(`Failed to fetch top tracks: ${response.status} - ${response.statusText}`);
+  }
+
+  return await response.json();
+}
+
+
+
+export { generateSpotifyAuthRequest, getToken, refreshToken, ensureValidToken, fetchTopTracks };
