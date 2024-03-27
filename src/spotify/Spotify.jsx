@@ -147,6 +147,21 @@ async function fetchTopTracks(accessToken) {
   return await response.json();
 }
 
+// Function to fetch the current user's Spotify profile
+async function fetchUserProfile(accessToken) {
+  const response = await fetch('https://api.spotify.com/v1/me', {
+    headers: {
+      'Authorization': `Bearer ${accessToken}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch user profile: ${response.status} - ${response.statusText}`);
+  }
+
+  const userData = await response.json();
+  return userData;
+}
 
 
-export { generateSpotifyAuthRequest, getToken, refreshToken, ensureValidToken, fetchTopTracks };
+export { generateSpotifyAuthRequest, getToken, refreshToken, ensureValidToken, fetchTopTracks, fetchUserProfile };
