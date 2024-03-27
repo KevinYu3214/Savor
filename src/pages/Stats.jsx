@@ -7,25 +7,33 @@ const Stats = () => {
     const [error, setError] = useState('');
 
     useEffect(() => {
-        const handleAuthorizationFlow = async () => {
-            try {
-                const accessToken = await ensureValidToken();
-
-                // Fetch user profile with the access token
-                const userProfile = await fetchUserProfile(accessToken);
-                setProfileName(userProfile.display_name);
-
-                // Fetch top tracks with the access token
-                const tracksData = await fetchTopTracks(accessToken);
-                setTopTracks(tracksData.items);
-            } catch (err) {
-                setError(`An error occurred: ${err.message}`);
-                console.error('Error:', err);
-            }
-        };
-
-        handleAuthorizationFlow();
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code'); // Extract the code from URL
+    
+        if (code) {
+            // Now we have the authorization code, let's get the token
+            console.log('Authorization code:', code);
+            getToken(code)
+                .then(tokenData => {
+                    // Now you have tokenData, proceed with fetching user profile and top tracks
+                    const accessToken = tokenData.access_token;
+                    localStorage.setItem('access_token', accessToken); // Make sure to save the access token
+    
+                    fetchUserProfile(accessToken).then(userProfile => {
+                        setProfileName(userProfile.display_name);
+                    });
+    
+                    fetchTopTracks(accessToken).then(tracksData => {
+                        setTopTracks(tracksData.items);
+                    });
+                })
+                .catch(err => {
+                    setError(`Failed to exchange code for token: ${err.message}`);
+                    console.error('Token exchange error:', err);
+                });
+        }
     }, []);
+    
 
     return (
         <div>

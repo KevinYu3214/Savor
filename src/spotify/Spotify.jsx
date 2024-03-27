@@ -44,10 +44,18 @@ async function generateSpotifyAuthRequest() {
 }
 
 // Exchanges the authorization code for an access token
+// No changes required in generateCodeChallenge and generateSpotifyAuthRequest functions
+
+// Exchanges the authorization code for an access token
 async function getToken(code) {
+  console.log('getToken called with code:', code);
+  if (!code) {
+    throw new Error('Authorization code is required.');
+  }
   const codeVerifier = localStorage.getItem('code_verifier');
-  console.log('Code Verifier:', codeVerifier); // Debugging log
-  console.log('Authorization Code:', code); // Debugging log
+  if (!codeVerifier) {
+    throw new Error('Code verifier is missing. PKCE verification cannot proceed.');
+  }
 
   const params = new URLSearchParams({
     client_id: clientId,
@@ -57,29 +65,23 @@ async function getToken(code) {
     code_verifier: codeVerifier,
   });
 
-  console.log('Token Request Params:', params.toString()); // Debugging log
-
   const response = await fetch(tokenEndpoint, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: params,
   });
 
   if (!response.ok) {
-    console.error(`HTTP error! status: ${response.status}`);
     const errorResponse = await response.json();
-    console.error('Error response:', errorResponse);
-    throw new Error(`HTTP error! status: ${response.status}`);
+    console.error('Token exchange error:', errorResponse);
+    throw new Error(`HTTP error during token exchange: ${response.status}`);
   }
 
   const tokenData = await response.json();
-  console.log('Token Data:', tokenData); // Debugging log
+  console.log('Token Data:', tokenData); // Debugging to verify token data includes a refresh token
   saveTokenData(tokenData);
   return tokenData;
 }
-
 
 // Saves token data and calculates the expiry time
 function saveTokenData(tokenData) {
