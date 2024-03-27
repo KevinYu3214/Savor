@@ -148,10 +148,7 @@ const Song = ({ result }) => {
             alt="Song"
             className="songImage"
           />
-          <button
-            className="playButton"
-            onClick={togglePlayPause}
-          >
+          <button className="playButton" onClick={togglePlayPause}>
             <img src={playButton} alt="Play/Pause" />
           </button>
         </div>

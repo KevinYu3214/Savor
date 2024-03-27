@@ -11,12 +11,11 @@
 
 .songItem {
   height:90px;
-  width: 80%;
+ 
   color: $bg2;
   background-color: $bg;
-  border-radius: 25px;
-  margin-left: 5vh;
-  margin-top: .5vh;
+ 
+  
 }
 
 .album {
@@ -27,15 +26,15 @@
     float: left;
 }
 
+.songDurationML{
+  transform: translate(500px, 0);
+}
 .vl {
-  border-left: 6px solid $bg2;
-  height: 80px;
-  left: 50%;
-  float: left;
+  
 }
 
 .songInfo{ 
-  float: left;
+  
 
 }
 
