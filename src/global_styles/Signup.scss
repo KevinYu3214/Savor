@@ -6,8 +6,11 @@
     display: flex;
     flex-direction: column;
     margin: auto;
-    width: 600px;
-    background-color: aqua;
+    width: 75%;
+
+    @include breakpoint(md) {
+        width: $sm;
+    }
 }
 
 .header{
@@ -20,7 +23,7 @@
 }
 .stext{
     color: $primary;
-    font-size: 48px;
+    font-size: 60px;
     font-weight: 700;
 }
 
@@ -29,9 +32,9 @@
     align-items: center;
     margin: auto;
     margin-top: 30px;
-    width: 480px;
-    height: 80px;
-    background: palevioletred ;
+    width: 95%;
+    height: 75px;
+    background: $dark-purple;
     border-radius: 6px;
 
     &__text{
@@ -44,9 +47,8 @@
 }
 
 .underline{
-    width: 61px;
+    width: 95%;
     height: 6px;
-    background: $primary;
     border-radius: 9px;
 }
 
@@ -61,11 +63,10 @@
     display:flex;
     align-items: center;
     margin: auto;
-    width: 480px;
-    height: 80px;
+    width: 95%;
+    height: 50px;
     background: #eaeaea ;
     border-radius: 6px;
-
 }
 
 .input img{
@@ -89,7 +90,6 @@
     width: 100%;
     margin: auto;
     margin-top: 15px;
-    color: #797979;
 }
 
 .submit-container{
@@ -107,7 +107,6 @@
     width: 300px;
     height: 80px;
     color: #fff;
-    background: rgb(252, 198, 204);;
     border-radius: 50px;
     font-size: 24px;
     font-weight: 700;
@@ -116,41 +115,69 @@
 }
 
 .button:hover{
-    background: rgb(163, 119, 149);
+    background: $dark-purple;
 }
 
 .link{
-    color: $primary;
     display: inline-block;
+    text-decoration: underline;
+}
+
+.space{
+    margin-bottom: 100px;
+}
+
+.reroute{
+    text-decoration: none;
 }
 
 .light {
-    color: $purple-gray;
-    .header {
-      color: $darkest-purple;
+    .stext {
+        color: $darkest-purple;
     }
-    .nav__item {
-      color: $purple-gray;
+    .underline{
+        background: $darkest-purple;
     }
-    .nav__item:hover {
-      color: $darkest-purple;
+    .button {
+        background: $darkest-purple;
+        color: $white;
+        box-shadow: 0 0 0.5em 0 $purple-gray;
     }
-    .background {
-        background-color: $white;
+    .page {
+        color: $purple-gray;
+    }
+    .link{
+        color: $dark-purple;
+    }
+    .error {
+        background: $dark-purple;
+        &__text{
+            color: $white;
+        }
     }
   }
   .dark {
-    color: $white;
-    .header {
-      color: $white;
+    .stext {
+        color: $white;
     } 
-    .nav__item {
-      color: $white;
+    .underline {
+        background: $pink;
     }
-    .nav__item:hover {
-      color: $purple-gray;
+    .button {
+        background: $white;
+        color: $darkest-purple;
+        box-shadow: 0 0 0.5em 0 $white;
     }
-    .background {
-        background-color: $darkest-purple;
+    .page {
+        color: $white;
+    }
+    .link{
+        color: $pink;
+    }
+    .error {
+        background: $pink;
+        &__text{
+            color: $darkest-purple;
+        }
     }
   }

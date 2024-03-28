@@ -35,6 +35,7 @@ const SignUp = () => {
   return (
     <>
       {currentUser && <Navigate to="/account" />}
+      <div className="container">
         <div className="header">
           <div className="stext">Sign Up</div>
           <div className="underline"></div>
@@ -44,9 +45,6 @@ const SignUp = () => {
             <div className="error__text">{error}</div>
           </div>
         )}
-        <div className="container">
-          <Button text="Sign up" type="submit"/>
-        </div>
         <form onSubmit={signUp} className="inputs">
           <div className="input">
             <img src={email_icon} alt="" className="icons" />
@@ -60,7 +58,6 @@ const SignUp = () => {
           <div className="input">
             <img src={password_icon} alt="" className="icons" />
             <input
-              className="input"
               type="password"
               placeholder="Enter your password"
               value={password}
@@ -70,13 +67,13 @@ const SignUp = () => {
           <div className="input">
             <img src={password_icon} alt="" className="icons" />
             <input
-              className="input"
               type="password"
               placeholder="Enter the same password"
               value={passwordCheck}
               onChange={(e) => setPasswordCheck(e.target.value)}
             ></input>
           </div>
+          <button className="button" type="submit">Sign up</button>
         </form>
         <div className="page">
           Already have an account?{" "}
@@ -84,6 +81,8 @@ const SignUp = () => {
             <div className="link">Log In</div>
           </a>
         </div>
+        <div className="space"></div>
+      </div>
     </>
   );
 };

@@ -35,7 +35,7 @@ const ResetPassword = () => {
         <div className="container">
             <div className="header">
                 {!sent && <div className="stext">Reset Password</div>}
-                {sent && <div className="text">Email sent to your inbox!</div>}
+                {sent && <div className="stext">Email sent to your inbox!</div>}
                 <div className="underline"></div>
             </div>
             {error && (
@@ -58,7 +58,7 @@ const ResetPassword = () => {
                 {!sent && <button className="button" type="submit">Reset</button>}  
             </form>
             {sent && (
-                <a href="/login">
+                <a className="reroute" href="/login">
                     <button className="button">Log in</button>
                 </a>
             )}

@@ -31,7 +31,7 @@ const LogIn = () => {
       {currentUser && < Navigate to='/account'/>}
       <div className="container">
         <div className="header">
-          <div className="stext">Log In</div>
+          <div className="stext">Log In!</div>
           <div className="underline"></div>
         </div>
         {error && 
@@ -52,7 +52,6 @@ const LogIn = () => {
           <div className="input">
             <img src={password_icon} alt="" className="icons" />
             <input
-              className="input"
               type="password"
               placeholder="Enter your password"
               value={password}
@@ -73,6 +72,7 @@ const LogIn = () => {
             Don't have an account? <a href="/signup"><div className="link">Sign Up</div></a>
           </div>
         </div>
+        <div className="space"></div>
       </div>
     </>
   );
