@@ -1,3 +1,7 @@
+import { db } from "../firebase/firebase";
+import { doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+
 // Assuming these are defined in your environment
 const localStorage = window.localStorage;
 const fetch = window.fetch;
@@ -83,6 +87,13 @@ async function getToken(code) {
   return tokenData;
 }
 
+async function getSpotifyTokens(userId) {
+  const userDoc = await getDoc(doc(db, "Users", userId));
+  if (userDoc.exists()) {
+      return userDoc.data().spotify || null;
+  }
+  return null;
+}
 // Saves token data and calculates the expiry time
 function saveTokenData(tokenData) {
   const now = new Date();
@@ -96,11 +107,19 @@ function saveTokenData(tokenData) {
   }
 }
 
-// Refreshes the access token using the refresh token
-async function refreshToken() {
-  const refreshToken = localStorage.getItem('refresh_token');
+
+async function refreshToken(userId) {
+  // Retrieve the refresh token from Firestore instead of localStorage
+  const userRef = doc(db, "Users", userId);
+  const userDoc = await getDoc(userRef);
+  if (!userDoc.exists()) {
+    console.error('User document does not exist in Firestore');
+    throw new Error('User not found');
+  }
+  const refreshToken = userDoc.data().spotifyTokens.refreshToken;
+
   if (!refreshToken) {
-    console.error('No refresh token available');
+    console.error('No refresh token available in Firestore for user:', userId);
     throw new Error('No refresh token available');
   }
 
@@ -117,11 +136,21 @@ async function refreshToken() {
   });
 
   if (!response.ok) {
+    console.error('Failed to refresh token', response.statusText);
     throw new Error(`HTTP error! status: ${response.status}`);
   }
 
   const tokenData = await response.json();
-  saveTokenData(tokenData);
+  // Assume tokenData contains access_token and possibly a new refresh_token
+
+  // Save the refreshed token data back to Firestore
+  await updateDoc(userRef, {
+    "spotifyTokens.accessToken": tokenData.access_token,
+    "spotifyTokens.expiresAt": new Date().getTime() + (tokenData.expires_in * 1000), // Save expiration time
+    // Update the refresh token if a new one was provided
+    ...(tokenData.refresh_token && {"spotifyTokens.refreshToken": tokenData.refresh_token}),
+  });
+
   return tokenData.access_token;
 }
 
@@ -165,5 +194,65 @@ async function fetchUserProfile(accessToken) {
   return userData;
 }
 
+async function refreshSpotifyToken(userId) {
+  // Retrieve the stored refresh token from Firestore
+  const userDocRef = doc(db, "Users", userId);
+  const userDocSnap = await getDoc(userDocRef);
 
-export { generateSpotifyAuthRequest, getToken, refreshToken, ensureValidToken, fetchTopTracks, fetchUserProfile };
+  if (!userDocSnap.exists()) {
+      console.log("No user document found!");
+      return;
+  }
+
+  const spotifyTokens = userDocSnap.data().spotifyTokens;
+  if (!spotifyTokens || !spotifyTokens.refreshToken) {
+      console.log("No refresh token available");
+      return;
+  }
+
+  // Prepare the request for refreshing the token
+  const params = new URLSearchParams({
+      grant_type: 'refresh_token',
+      refresh_token: spotifyTokens.refreshToken
+  });
+
+  const response = await fetch(tokenEndpoint, {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': `Basic ${encodeClientCredentials(clientId, clientSecret)}`
+      },
+      body: params
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+      console.error("Failed to refresh token:", data);
+      throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  // Update the Firestore document with the new tokens and expiration
+  await storeSpotifyTokens(userId, data.access_token, spotifyTokens.refreshToken, data.expires_in);
+
+  return {
+      accessToken: data.access_token,
+      expiresIn: data.expires_in
+  };
+}
+async function storeSpotifyTokens(accessToken, refreshToken, expiresIn) {
+  const auth = getAuth();
+  const user = auth.currentUser;
+  if (user) {
+      const spotifyTokensRef = doc(db, "spotifyTokens", user.uid);
+      const tokenData = {
+          accessToken,
+          refreshToken,
+          expiresAt: new Date().getTime() + expiresIn * 1000, // Calculate the expiry timestamp
+      };
+      await setDoc(spotifyTokensRef, tokenData);
+  } else {
+      console.log("User not logged in");
+  }
+}
+export { storeSpotifyTokens, refreshSpotifyToken, getSpotifyTokens, generateSpotifyAuthRequest, getToken, refreshToken, ensureValidToken, fetchTopTracks, fetchUserProfile };

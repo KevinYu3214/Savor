@@ -1,39 +1,60 @@
 import React, { useEffect, useState } from 'react';
-import { getToken, fetchTopTracks, ensureValidToken, fetchUserProfile } from '../spotify/Spotify';
+import { getToken, fetchTopTracks, fetchUserProfile, ensureValidToken, storeSpotifyTokens, getSpotifyTokens, refreshSpotifyToken } from '../spotify/Spotify';
+import { getAuth } from "firebase/auth";
+import { auth } from '../firebase/firebase';
 
 const Stats = () => {
     const [profileName, setProfileName] = useState('');
     const [topTracks, setTopTracks] = useState([]);
     const [error, setError] = useState('');
+    const [userProfile, setUserProfile] = useState(null);
 
     useEffect(() => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const code = urlParams.get('code'); // Extract the code from URL
-    
-        if (code) {
-            // Now we have the authorization code, let's get the token
-            console.log('Authorization code:', code);
-            getToken(code)
-                .then(tokenData => {
-                    // Now you have tokenData, proceed with fetching user profile and top tracks
-                    const accessToken = tokenData.access_token;
-                    localStorage.setItem('access_token', accessToken); // Make sure to save the access token
-    
-                    fetchUserProfile(accessToken).then(userProfile => {
-                        setProfileName(userProfile.display_name);
-                    });
-    
-                    fetchTopTracks(accessToken).then(tracksData => {
-                        setTopTracks(tracksData.items);
-                    });
-                })
-                .catch(err => {
-                    setError(`Failed to exchange code for token: ${err.message}`);
-                    console.error('Token exchange error:', err);
-                });
-        }
+        const fetchSpotifyProfile = async () => {
+            const userId = auth.currentUser.uid; // Assuming you're using Firebase Auth
+            const accessToken = await ensureValidToken(userId);
+            const profile = await fetchUserProfile(accessToken);
+            setUserProfile(profile);
+        };
+        fetchSpotifyProfile();
     }, []);
-    
+
+    useEffect(() => {
+        const auth = getAuth();
+        const user = auth.currentUser;
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+
+        const handleSpotifyAuthFlow = async () => {
+    const user = auth.currentUser;
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+
+    if (user && code) {
+        try {
+            const tokenData = await getToken(code);
+            await storeSpotifyTokens(user.uid, tokenData.access_token, tokenData.refresh_token, tokenData.expires_in);
+            setProfileAndTracks(tokenData.access_token);
+            // Clear URL parameters to prevent reuse of the code
+            window.history.pushState({}, null, window.location.pathname);
+        } catch (err) {
+            setError(`Failed to exchange code for token: ${err.message}`);
+        }
+    }
+};
+
+
+        const setProfileAndTracks = (accessToken) => {
+            fetchUserProfile(accessToken).then(userProfile => {
+                setProfileName(userProfile.display_name);
+            });
+            fetchTopTracks(accessToken).then(tracksData => {
+                setTopTracks(tracksData.items);
+            });
+        };
+
+        handleSpotifyAuthFlow();
+    }, []);
 
     return (
         <div>
@@ -42,13 +63,9 @@ const Stats = () => {
             {profileName && <p>Welcome, {profileName}</p>}
             <h2>Top Tracks</h2>
             <ul>
-                {topTracks.length > 0 ? (
-                    topTracks.map((track) => (
-                        <li key={track.id}>{track.name} by {track.artists.map((artist) => artist.name).join(', ')}</li>
-                    ))
-                ) : (
-                    <p>No top tracks found.</p>
-                )}
+                {topTracks.map(track => (
+                    <li key={track.id}>{track.name} by {track.artists.map(artist => artist.name).join(', ')}</li>
+                ))}
             </ul>
         </div>
     );

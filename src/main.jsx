@@ -9,7 +9,6 @@ import Rankings from "./pages/Rankings";
 import SignUp from "./pages/Signup";
 import LogIn from "./pages/LogIn";
 import ResetPassword from "./pages/ResetPassword"
-import Test from "./pages/Test";
 import Stats from "./pages/Stats";
 
 //import {createRoot} from "react-doms/client";
@@ -38,7 +37,6 @@ const App = () => {
         <Route path="/search" element={<Search />} />
         <Route path="/account" element={<Account />} />
         <Route path="/rankings" element={<Rankings />} />
-        <Route path="/test" element={<Test/>}/>
         <Route path="/stats" element={<Stats />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<LogIn />} /> 
