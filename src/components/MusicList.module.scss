@@ -1,21 +1,44 @@
 @import "../global_styles/abstract/variables.scss";
 
 .musicBox {
-  height: 400px;
-  background-color: $bg2;
-  width: 80%;
+ 
+  margin: auto;
+  margin-top: 10px;
+  width: 65vw;
+  height: 75vh;
   margin-top: 2vh;
-  margin-left: 10vh;
+  border-radius: 1vh;
+  border-radius: 1vh;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
   overflow-y: scroll;
+
+  overflow-x:hidden;
+  display: inline-block;
+}
+
+.musicBox::-webkit-scrollbar{
+  display: none;
 }
 
 .songItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   height:90px;
- 
   color: $bg2;
-  background-color: $bg;
- 
+  background-color: pink; 
   
+  .songTitleML{
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+  }
+  .songTitleML:hover{
+    text-decoration:underline;
+    color: $bg2;
+    background-color: pink; 
+  }                
 }
 
 .album {
@@ -26,16 +49,8 @@
     float: left;
 }
 
-.songDurationML{
-  transform: translate(500px, 0);
-}
-.vl {
-  
-}
-
-.songInfo{ 
-  
-
+.duration{
+  display: flex;
 }
 
 

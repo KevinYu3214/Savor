@@ -1,6 +1,7 @@
 import React from "react";
 
 import styles from "./MusicList.module.scss";
+import Star from "../components/Star.jsx";
 
 import icon from "../assets/icon.png";
 
@@ -12,6 +13,7 @@ function MusicList() {
       artist: "Artist 1",
       album: "Album 1",
       year: "2023",
+      duration: "1:00",
     },
     {
       key: "2",
@@ -19,6 +21,7 @@ function MusicList() {
       artist: "Artist 2",
       album: "Album 2",
       year: "2023",
+      duration: "1:00",
     },
     {
       key: "3",
@@ -26,6 +29,7 @@ function MusicList() {
       artist: "Artist 3",
       album: "Album 3",
       year: "2023",
+      duration: "1:00",
     },
     {
       key: "3",
@@ -33,6 +37,7 @@ function MusicList() {
       artist: "Artist 4",
       album: "Album 4",
       year: "2023",
+      duration: "1:00",
     },
     {
       key: "3",
@@ -40,6 +45,7 @@ function MusicList() {
       artist: "Artist 5",
       album: "Album 5",
       year: "2023",
+      duration: "1:00",
     },
   ];
   return (
@@ -47,10 +53,10 @@ function MusicList() {
       {songs.map((song) => (
         <div className={styles.songItem}>
           <img src={icon} className={styles.album} alt="" />
-          <div className="vl"></div>
-          <p>{song.title}</p>
-          <div className="artistNameML">{song.artist}</div>
-          <div className="songDurationML"> 0:00 </div>
+          <span className={styles.songTitleML}>{song.title}</span>
+          <div className={styles.artistNameML}>{song.artist}</div>
+          <Star className={styles.rank} />
+          <div className={styles.duration}> {song.duration} </div>
         </div>
       ))}
     </div>
