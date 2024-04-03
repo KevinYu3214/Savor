@@ -5,50 +5,12 @@ import { IoSearch } from "react-icons/io5";
 
 import { MdAccountCircle } from "react-icons/md";
 import { IconContext } from "react-icons";
+import { search } from '../spotify/Spotify';
 import ThemeContext from "../contexts/ThemeContext";
-
-const CLIENT_ID = '35031be6070048458899436547c2b842';
-const CLIENT_SECRET = 'f6db2bf108264ec88a61a0a3aefd49e3';
 
 const SearchBar = ({ setResults }) => {
   const [input, setInput] = useState("");
-  const [accessToken, setAccessToken] = useState("");
-
-  useEffect(() => {
-    // API Access Token
-    var authParameters = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: 'grant_type=client_credentials&client_id=' + CLIENT_ID + '&client_secret=' + CLIENT_SECRET
-    }
-    fetch('https://accounts.spotify.com/api/token', authParameters)
-    .then(response => response.json())
-    .then(data => setAccessToken(data.access_token))
-  }, [])
-
-  // Search
-  async function search() {
-    // Get request using search to get the Artist ID
-    var searchParameters = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + accessToken
-      }
-    }    
-
-    // Get request with Artist ID grab all the albums from that artist
-    var artistID = await fetch('https://api.spotify.com/v1/search?q=' + input + '&type=track', searchParameters)
-      .then(response => response.json())
-      .then(data => {
-        console.log(data.tracks.items);
-        setResults(data.tracks.items);
-      });
-
-    // Display albums to the user
-  }
+  
   const { theme } = useContext(ThemeContext); // Get the theme from context
 
 
@@ -64,7 +26,7 @@ const SearchBar = ({ setResults }) => {
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={event => {
                 if (event.key === 'Enter') {
-                  search();
+                  search(input, setResults);
                 }
               }}
           ></input>

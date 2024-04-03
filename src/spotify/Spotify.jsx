@@ -7,6 +7,7 @@ const localStorage = window.localStorage;
 const fetch = window.fetch;
 
 const clientId = '35031be6070048458899436547c2b842'; // Your clientId
+const clientSecret = 'f6db2bf108264ec88a61a0a3aefd49e3'
 const redirectUrl = 'http://localhost:5173/stats'; // Your redirect URL - must be localhost URL and/or HTTPS
 const authorizationEndpoint = "https://accounts.spotify.com/authorize";
 const tokenEndpoint = "https://accounts.spotify.com/api/token"; // Token endpoint for exchanging codes and refreshing tokens
@@ -163,6 +164,27 @@ async function ensureValidToken() {
   return localStorage.getItem('access_token');
 }
 
+async function search(input, setResults) {
+    // Get request using search to get the Artist ID
+    var searchParameters = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+      }
+    }    
+
+    // Get request with Artist ID grab all the albums from that artist
+    var artistID = await fetch('https://api.spotify.com/v1/search?q=' + input + '&type=track', searchParameters)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data.tracks.items);
+        setResults(data.tracks.items);
+      });
+
+    // Display albums to the user
+  }
+
 // Function to fetch user's top tracks
 async function fetchTopTracks(accessToken) {
   const response = await fetch('https://api.spotify.com/v1/me/top/tracks', {
@@ -255,4 +277,4 @@ async function storeSpotifyTokens(accessToken, refreshToken, expiresIn) {
       console.log("User not logged in");
   }
 }
-export { storeSpotifyTokens, refreshSpotifyToken, getSpotifyTokens, generateSpotifyAuthRequest, getToken, refreshToken, ensureValidToken, fetchTopTracks, fetchUserProfile };
+export { storeSpotifyTokens, refreshSpotifyToken, getSpotifyTokens, generateSpotifyAuthRequest, getToken, refreshToken, ensureValidToken, fetchTopTracks, fetchUserProfile, search };
