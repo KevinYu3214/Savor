@@ -13,8 +13,11 @@ $rating-emoji: '⭐️' !default;
   clip: rect(1px,1px,1px,1px);
 }
 
-%star-active { filter: grayscale(0); }
-%star-inactive { filter: grayscale(1); }
+%star-active { 
+  filter: grayscale(0); }
+%star-inactive { 
+  filter: grayscale(1);
+}
 
 .star {
   $p: &;
@@ -33,10 +36,10 @@ $rating-emoji: '⭐️' !default;
   
 
   &__container {
-    
+    width: 10%;
     border-radius: .25em;
-    background-color: #00a39b;
-    box-shadow: 0 .25em 1em rgba(0,0,0,.25);
+    //background-color: #00a39b;
+    //box-shadow: 0 .25em 1em rgba(0,0,0,.25);
     transition: box-shadow .3s ease;
     
     &:focus-within {

@@ -29,7 +29,8 @@ const Song = ({ result }) => {
 
   useEffect(() => {
     const newAudio = new Audio(result.preview_url);
-    setAudio(newAudio);
+      setAudio(newAudio);
+ 
     return () => {
       if (newAudio) {
         newAudio.pause();
@@ -105,11 +106,32 @@ const Song = ({ result }) => {
   };
 
   const togglePlayPause = () => {
-    if (audio) {
+    console.log("test");
+    console.log("duration: " + audio.duration);
+    console.log(audio);
+    if (!isNaN(audio.duration)) {
+      console.log("test2");
       isPlaying ? audio.pause() : audio.play();
       setIsPlaying(!isPlaying);
     }
+    else {
+      console.log("AUDIO IS NULL ;-;");
+    }
   };
+
+  const hasSample = () => {
+    console.log("test");
+    console.log("duration: " + audio.duration);
+    if (!isNaN(audio.duration)) {
+      console.log("test2");
+      return true;
+    }
+    else {
+      console.log("AUDIO IS NULL ;-;");
+      return false;
+    }
+  };
+
   const deleteSong = async (songId) => {
     if (!songId) return;
 
@@ -137,6 +159,7 @@ const Song = ({ result }) => {
       // Update UI with the new selected value
       setSelectedDropdownText(text);
     }
+
   };
 
   return (
@@ -148,9 +171,12 @@ const Song = ({ result }) => {
             alt="Song"
             className="songImage"
           />
-          <button className="playButton" onClick={togglePlayPause}>
-            <img src={playButton} alt="Play/Pause" />
-          </button>
+          { result.preview_url ? 
+                    <button className="playButton" onClick={togglePlayPause}>
+                    <img src={playButton} alt="Play/Pause" />
+                    </button>
+                    : <div className="noSampleBox">No Sample</div>
+          }
         </div>
         <div className="songText">
           <div className="songTitle">{result.name}</div>
