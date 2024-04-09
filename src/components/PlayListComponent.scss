@@ -4,7 +4,6 @@
     flex-direction: column;
     margin: auto;
     margin-top: 10px;
-    
     width: 65vw;
     height: 75vh;
     background: #fff;
@@ -30,7 +29,8 @@
     .playlistDetails{
         display: flex;
         flex-direction: row;
-        
+        align-items: center;
+        justify-content: space-between;
 
         .playlistImage{
             position: relative;
@@ -47,7 +47,7 @@
         .playlistName{
             font-weight: 900;
             font-size: calc(2vw + 1.2rem);
-            transform: translate(50%, 0%);
+            margin-left: auto;
             color: black;
         }
     } 
