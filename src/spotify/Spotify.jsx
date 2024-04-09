@@ -165,16 +165,17 @@ async function ensureValidToken() {
 }
 
 async function search(input, setResults) {
+    const accessToken = localStorage.getItem('access_token');
     // Get request using search to get the Artist ID
     var searchParameters = {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+        'Authorization': 'Bearer ' + accessToken
       }
     }    
 
-    // Get request with Artist ID grab all the albums from that artist
+    // Get request with Artist ID grab all the tracks from that artist
     var artistID = await fetch('https://api.spotify.com/v1/search?q=' + input + '&type=track', searchParameters)
       .then(response => response.json())
       .then(data => {

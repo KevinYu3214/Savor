@@ -5,7 +5,7 @@ import { IoSearch } from "react-icons/io5";
 
 import { MdAccountCircle } from "react-icons/md";
 import { IconContext } from "react-icons";
-import { search } from '../spotify/Spotify';
+import { ensureValidToken, search } from '../spotify/Spotify';
 import ThemeContext from "../contexts/ThemeContext";
 
 const SearchBar = ({ setResults }) => {
@@ -13,6 +13,9 @@ const SearchBar = ({ setResults }) => {
   
   const { theme } = useContext(ThemeContext); // Get the theme from context
 
+  useEffect(() => {
+    ensureValidToken();
+  }, [])
 
   return (
     <div className={`${styles.search__wrapper} ${styles[theme]}`}>
