@@ -1,8 +1,7 @@
 import { useState } from "react";
-import Profile from "../components/Profile";
 import { useAuth } from "../contexts/AuthContext";
 import { Navigate } from "react-router-dom";
-import styles from "../components/Profile.module.scss"
+import "../global_styles/Account.scss";
 
 const Account = () => {
   const { logout, currentUser } = useAuth();
@@ -20,8 +19,16 @@ const Account = () => {
   return (
     <>
       {missingUser && <Navigate to="/login" />}
-      <Profile />
-      <button onClick={logOut} className={styles.button}>Log out</button>
+      <div className="a_container">
+        <div className="header">
+          <div className="profile.img"></div>
+          <div className="header_text">Your Account</div>
+        </div>
+        <hr className="line"></hr>
+        <div className="info">
+          <button onClick={logOut} className="button">Log out</button>
+        </div>
+      </div>
     </>
   );
 }

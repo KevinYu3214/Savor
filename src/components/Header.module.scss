@@ -57,6 +57,7 @@
   font-weight: 600;
   display: none;
   margin-left: calc(40px + 1.5vw);
+  cursor: pointer;
   @include breakpoint(xl) {
     display: flex;
   }

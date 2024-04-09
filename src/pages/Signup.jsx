@@ -4,7 +4,6 @@ import "../global_styles/Signup.scss";
 import email_icon from "../assets/email.png";
 import password_icon from "../assets/password.png";
 import { useAuth } from "../contexts/AuthContext";
-import Button from '../components/CustomButtons/Button';
 import { Navigate } from "react-router-dom";
 
 const SignUp = () => {
@@ -81,7 +80,6 @@ const SignUp = () => {
             <div className="link">Log In</div>
           </a>
         </div>
-        <div className="space"></div>
       </div>
     </>
   );

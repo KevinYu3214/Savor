@@ -72,7 +72,6 @@ const LogIn = () => {
             Don't have an account? <a href="/signup"><div className="link">Sign Up</div></a>
           </div>
         </div>
-        <div className="space"></div>
       </div>
     </>
   );

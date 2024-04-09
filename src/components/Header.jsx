@@ -14,11 +14,15 @@ const Header = () => {
   const { theme, setTheme } = useContext(ThemeContext); // Get the theme from context
   console.log(theme);
 
+  const returnHome = () => {
+    window.location.href = "http://localhost:5173/";
+  };
+
   return (
     <div className={`${styles.header} ${styles[theme]}`}>
       <div className={styles.header__content}>
         <div className={styles.header__company}>
-          <a href="/"><span className={styles.logo}>SAVOR</span></a>
+          <span className={styles.logo} onClick={returnHome}>SAVOR</span>
         </div>
         <div>
           <nav
