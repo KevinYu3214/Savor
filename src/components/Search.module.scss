@@ -27,7 +27,7 @@
         font-size: 1.25rem;
         width: 100%;
         margin-left: 10px;
-        color: $text5;
+        color: white;
     }
     &__input::placeholder {
         color: $text4;
@@ -48,7 +48,7 @@
           
                 .search__results_list__result__title,
                 .search__results_list__result__info {
-                  color: white; // This will change the color of both the title and the info text on hover
+                  color: $text5; // This will change the color of both the title and the info text on hover
                 }
               }
             padding: 10px 20px;
@@ -105,7 +105,11 @@
 }
 .dark {
     background-color: $bg2;
-    
+    .search {
+      &__input {
+        color: $bg;
+      }
+    }
     .search__results_list {
       background-color: $bg2;
       color: $bg2; 
