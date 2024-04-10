@@ -186,21 +186,6 @@ async function search(input, setResults) {
     // Display albums to the user
   }
 
-// Function to fetch user's top tracks
-async function fetchTopTracks(accessToken) {
-  const response = await fetch('https://api.spotify.com/v1/me/top/tracks', {
-      headers: {
-          'Authorization': `Bearer ${accessToken}`,
-      },
-  });
-
-  if (!response.ok) {
-      throw new Error(`Failed to fetch top tracks: ${response.status} - ${response.statusText}`);
-  }
-
-  return await response.json();
-}
-
 // Function to fetch the current user's Spotify profile
 async function fetchUserProfile(accessToken) {
   const response = await fetch('https://api.spotify.com/v1/me', {
@@ -278,4 +263,4 @@ async function storeSpotifyTokens(accessToken, refreshToken, expiresIn) {
       console.log("User not logged in");
   }
 }
-export { storeSpotifyTokens, refreshSpotifyToken, getSpotifyTokens, generateSpotifyAuthRequest, getToken, refreshToken, ensureValidToken, fetchTopTracks, fetchUserProfile, search };
+export { storeSpotifyTokens, refreshSpotifyToken, getSpotifyTokens, generateSpotifyAuthRequest, getToken, refreshToken, ensureValidToken, fetchUserProfile, search };
