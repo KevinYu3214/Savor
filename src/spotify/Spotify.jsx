@@ -6,8 +6,8 @@ import { getAuth } from "firebase/auth";
 const localStorage = window.localStorage;
 const fetch = window.fetch;
 
-const clientId = '35031be6070048458899436547c2b842'; // Your clientId
-const clientSecret = 'f6db2bf108264ec88a61a0a3aefd49e3'
+export const clientId = '35031be6070048458899436547c2b842'; // Your clientId
+export const clientSecret = 'f6db2bf108264ec88a61a0a3aefd49e3'
 const redirectUrl = 'http://localhost:5173/stats'; // Your redirect URL - must be localhost URL and/or HTTPS
 const authorizationEndpoint = "https://accounts.spotify.com/authorize";
 const tokenEndpoint = "https://accounts.spotify.com/api/token"; // Token endpoint for exchanging codes and refreshing tokens

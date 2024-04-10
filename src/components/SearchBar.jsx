@@ -5,16 +5,27 @@ import { IoSearch } from "react-icons/io5";
 
 import { MdAccountCircle } from "react-icons/md";
 import { IconContext } from "react-icons";
-import { ensureValidToken, search } from '../spotify/Spotify';
+import { ensureValidToken, search, clientId, clientSecret } from '../spotify/Spotify';
 import ThemeContext from "../contexts/ThemeContext";
 
 const SearchBar = ({ setResults }) => {
   const [input, setInput] = useState("");
   
   const { theme } = useContext(ThemeContext); // Get the theme from context
+  const [accessToken, setAccessToken] = useState("");
 
   useEffect(() => {
-    ensureValidToken();
+    // API Access Token
+    var authParameters = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: 'grant_type=client_credentials&client_id=' + clientId + '&client_secret=' + clientSecret
+    }
+    fetch('https://accounts.spotify.com/api/token', authParameters)
+    .then(response => response.json())
+    .then(data => setAccessToken(data.access_token))
   }, [])
 
   return (
