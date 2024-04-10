@@ -2,68 +2,113 @@
 @import "./abstract/variables.scss";
 $syne-font: "Syne", sans-serif;
 
+.lift {
+    margin-bottom: -80px;
+}
+
 .a_container {
     display: flex;
-    flex-direction: column;
-    width: 95%;
-    margin: auto;
-    margin-bottom: 100px;
-
-}
-
-.header{
-    display: flex;
     flex-direction: row;
-    width: 95%;
-    margin-bottom: 30px;
-}
-
-// .profile_img{
-
-// }
-
-.header_text{
-    font: 60px $syne-font;
-    margin: none;
-}
-
-.line {
     width: 90%;
     margin: auto;
+    margin-bottom: 100px;
 }
 
-.info{
-    margin-top: 30px;
+.a_header {
     display: flex;
-    flex-direction: row;
+    display: row;
 }
 
-// .button {
+.a_header_text {
+    font-size: 60px;
+    margin-left: 7vw;
+    margin-right: 50vw;
+    margin-bottom: 10px;
+}
 
-// }
+.a_header_button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    width: 150px;
+    height: 50px;
+    color: #fff;
+    border-radius: 50px;
+    font-size: 18px;
+    font-weight: 500;
+    box-shadow: 0 0 0.5em 0 $primary;
+    cursor: pointer;
+}
 
-// .preferences{
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    width: 25%;
+    height: 160px
+}
 
-// }
+.page_selector {
+    display:flex;
+    align-items: center;
+    margin: auto;
+    width: 95%;
+    height: 50px;
+    cursor: pointer;
+    &__text {
+        font-size: 28px; 
+        margin-left:5px;
+    }
+}
 
-// .preference{
-
-// }
+.info {
+    width: 75%;
+    margin-left: 50px;
+}
 
 .light {
-    .header_text{
+    .a_header{
         color: $darkest-purple;
     }
-    .line {
-        border: 3px solid $darkest-purple;
+    .page_selector {
+        background-color: $darkest-purple;
+        &__text {
+            color: $white;
+        } 
+    }
+    .page_selector:hover {
+        background: $dark-purple;   
+    }
+    .page_selector__text:hover {  
+            color: $white;
+    }
+    .a_header_button {
+        background: $darkest-purple;
+        color: $white;
+        box-shadow: 0 0 0.5em 0 $purple-gray;
     }
 }
 
 .dark {
-    .header_text{
+    .a_header{
         color: $white;
     }
-    .line {
-        border: 3px solid $pink;
+    .page_selector {
+        background-color: $white;
+        &__text {
+            color: $darkest-purple;
+        }
+    }
+    .page_selector:hover {
+        background: $dark-purple; 
+    }
+    .page_selector__text:hover {  
+        color: $white;
+}
+    .a_header_button {
+        background: $white;
+        color: $darkest-purple;
+        box-shadow: 0 0 0.5em 0 $white;
     }
 }

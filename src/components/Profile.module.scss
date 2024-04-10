@@ -1,25 +1,17 @@
 @import "./../global_styles/abstract/variables.scss";
+@import "../global_styles/abstract/_colors";
 
 .container {
     height: 200px;
-    width: 80%;
-    background: $bg;
     display: flex;
     flex-direction: column;
-    margin:auto;
-    margin-top: 20px;
-    border-radius: 5px;
 }
 
 .user{
     height: 25%;
-    width: 80%;
     display: flex;
     flex-direction: column;
-    margin-left: 20px;
-    margin-top: 5%;
     &__text{
-        color: #797979; 
         font-size:36px;
         font-weight: 400;
     }
@@ -32,32 +24,25 @@
     flex-direction: column;
     margin-left: 20px;
     &__text{
-        color: #797979; 
         font-size:24px;
         font-weight: 400;
     }
 }
 
-.button {
-  position: absolute;
-  font-weight: 500;
-  font-size: calc(0.75vw + 0.9rem);
-  color: $bg;
-  background-color: $primary;
-  padding: calc(0.6vw + 14px) calc(0.6vw + 60px);
-  margin-top: 30px;
-  margin-left: 200px;
-  border-radius: $spacing-md;
-  cursor: pointer;
-
-  box-shadow: 0 0 0.5em 0 $primary;
-
-  &:active {
-    transform: scale(0.98);
-    border-radius: 0;
+.light {
+  .user__text {
+    color: $darkest-purple;
   }
-  &:hover {
-    box-shadow: 0 0 0.75em 0 $primary;
+  .spotify__text {
+    color: $darkest-purple;
   }
+}
 
+.dark {
+  .user__text {
+    color: $white
+  }
+  .spotify__text {
+    color: $white;
+  }
 }
