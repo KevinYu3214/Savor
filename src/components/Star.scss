@@ -36,6 +36,7 @@ $rating-emoji: '⭐️' !default;
   
 
   &__container {
+    display: flex;
     width: 10%;
     border-radius: .25em;
     //background-color: #00a39b;
