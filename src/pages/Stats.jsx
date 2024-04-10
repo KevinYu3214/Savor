@@ -110,7 +110,7 @@ const Stats = () => {
         try {
             // Fetch and calculate average features of seed tracks
             const averageFeatures = await fetchAndCalculateAverageFeatures(accessToken, seedTracks);
-    
+            
             // Fetch recommendations using seed tracks and average features
             const response = await fetch(`https://api.spotify.com/v1/recommendations?limit=5&seed_tracks=${seedTracks.join(',')}&target_danceability=${averageFeatures.danceability}&target_energy=${averageFeatures.energy}&target_loudness=${averageFeatures.loudness}&target_speechiness=${averageFeatures.speechiness}&target_acousticness=${averageFeatures.acousticness}&target_instrumentalness=${averageFeatures.instrumentalness}&target_liveness=${averageFeatures.liveness}&target_valence=${averageFeatures.valence}`, {
                 headers: {
