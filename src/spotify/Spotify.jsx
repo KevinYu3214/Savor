@@ -263,4 +263,14 @@ async function storeSpotifyTokens(accessToken, refreshToken, expiresIn) {
       console.log("User not logged in");
   }
 }
-export { storeSpotifyTokens, refreshSpotifyToken, getSpotifyTokens, generateSpotifyAuthRequest, getToken, refreshToken, ensureValidToken, fetchUserProfile, search };
+
+function isConnectedToSpotify() {
+  const auth = getAuth();
+  const user = auth.currentUser;
+  if (doc(db, "spotifyTokens", user.uid)) {
+      return true;
+  } else {
+      return false;
+  }
+}
+export { storeSpotifyTokens, refreshSpotifyToken, getSpotifyTokens, generateSpotifyAuthRequest, getToken, refreshToken, ensureValidToken, fetchUserProfile, search, isConnectedToSpotify };
