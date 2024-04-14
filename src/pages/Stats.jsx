@@ -13,17 +13,33 @@ const Stats = () => {
     useEffect(() => {
         const fetchSpotifyProfile = async () => {
             try {
-                const userId = auth.currentUser.uid;
-                const token = await ensureValidToken(userId);
+                let token = localStorage.getItem('spotify_access_token'); // Check local storage for access token
+                if (!token) {
+                    const userId = auth.currentUser.uid;
+                    token = await ensureValidToken(userId);
+                    localStorage.setItem('spotify_access_token', token); // Store access token in local storage
+                }
                 setAccessToken(token); // Store the access token
+    
                 const profile = await fetchUserProfile(token);
                 setProfileName(profile.display_name);
+    
+                // Check local storage for top tracks
+                const storedTopTracks = localStorage.getItem('spotify_top_tracks');
+                if (storedTopTracks) {
+                    setTopTracks(JSON.parse(storedTopTracks));
+                } else {
+                    const topTracksData = await fetchTopTracks(token);
+                    setTopTracks(topTracksData.items);
+                    localStorage.setItem('spotify_top_tracks', JSON.stringify(topTracksData.items)); // Store top tracks in local storage
+                }
             } catch (error) {
-                setError(`Failed to fetch profile: ${error.message}`);
+                setError(`Failed to fetch profile or top tracks: ${error.message}`);
             }
         };
         fetchSpotifyProfile();
     }, []);
+    
 
     useEffect(() => {
         const handleSpotifyAuthFlow = async () => {
@@ -79,7 +95,19 @@ const Stats = () => {
         }
       
         return await response.json();
-    }
+    }    
+    useEffect(() => {
+        if (suggestedPlaylist.length > 0) {
+            localStorage.setItem('spotify_suggested_playlist', JSON.stringify(suggestedPlaylist)); // Store suggested playlist in local storage
+        }
+    }, [suggestedPlaylist]);
+
+    useEffect(() => {
+        const storedSuggestedPlaylist = localStorage.getItem('spotify_suggested_playlist');
+        if (storedSuggestedPlaylist) {
+            setSuggestedPlaylist(JSON.parse(storedSuggestedPlaylist));
+        }
+    }, []);
 
     useEffect(() => {
         if (topTracks.length > 0) {
