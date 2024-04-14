@@ -15,6 +15,7 @@ import { ThemeProvider, ThemeContext } from "./contexts/ThemeContext";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
+import FloatingHeader from "./components/FloatingHeader";
 
 const App = () => {
   const { theme, setTheme } = useContext(ThemeContext); // Get the theme and setTheme function from context
@@ -91,19 +92,7 @@ const App = () => {
       )}
 </button>
 </div>
-
-    <input class="menu-icon" type="checkbox" id="menu-icon" name="menu-icon"/>
-  	<label for="menu-icon"></label>
-  	<nav class="nav"> 		
-  		<ul class="pt-5">
-  			<li><a href={"/"}>Home</a></li>
-  			<li><a href={"/compare"}>Compare</a></li>
-        <li><a href={"/playlists"}>Playlists</a></li>
-  			<li><a href={"/search"}>Search</a></li>
-  			<li><a href={"/rankings"}>Rankings</a></li>
-  			<li><a href={"/account"}>Account</a></li>
-  		</ul>
-  	</nav>
+    <FloatingHeader /> 
     </div>
   );
 };
