@@ -1,11 +1,12 @@
-import React, { useState }from "react";
+// Login.jsx
+import React, { useState } from "react";
+import { Navigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import { auth, googleProvider } from "../firebase/firebase"; // Update import path
 import "../global_styles/Signup.scss";
 import email_icon from "../assets/email.png";
 import password_icon from "../assets/password.png";
-import { useAuth } from "../contexts/AuthContext";
-import icon from "../assets/savor-logo-jacob.png"
-import { Navigate } from "react-router-dom";
-
+import {signInWithPopup} from "firebase/auth";
 
 const LogIn = () => {
   const [email, setEmail] = useState("");
@@ -13,32 +14,37 @@ const LogIn = () => {
   const { login, currentUser } = useAuth();
   const [error, setError] = useState("");
 
+  const handleGoogleSignIn =()=>{
+    signInWithPopup(auth, googleProvider);
+  }
+
   const logIn = (e) => {
     e.preventDefault();
 
-    setError("")
+    setError("");
 
     login(email, password)
       .then((userCredential) => {
         console.log(userCredential);
       })
-      .catch((err) => {setError("Failed to login")
+      .catch((err) => {
+        setError("Failed to login");
       });
   };
 
   return (
     <>
-      {currentUser && < Navigate to='/account'/>}
+      {currentUser && <Navigate to="/account" />}
       <div className="container">
         <div className="header">
           <div className="stext">Log In!</div>
           <div className="underline"></div>
         </div>
-        {error && 
+        {error && (
           <div className="error">
             <div className="error__text">{error}</div>
           </div>
-        }
+        )}
         <form onSubmit={logIn} className="inputs">
           <div className="input">
             <img src={email_icon} alt="" className="icons" />
@@ -57,19 +63,32 @@ const LogIn = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             ></input>
-          </div> 
+          </div>
           <div className="page">
             <div className="page__text">
-              Forgot your password? <a href="/resetpassword">
+              Forgot your password?{" "}
+              <a href="/resetpassword">
                 <div className="link">Reset password</div>
               </a>
             </div>
           </div>
-          <button className="button" type="submit">Log in</button>
+          <button className="button" type="submit">
+            Log in
+          </button>
+          <button
+            className="button"
+            type="button"
+            onClick={handleGoogleSignIn}
+          >
+            Sign in with Google
+          </button>
         </form>
         <div className="page">
           <div className="page__text">
-            Don't have an account? <a href="/signup"><div className="link">Sign Up</div></a>
+            Don't have an account?{" "}
+            <a href="/signup">
+              <div className="link">Sign Up</div>
+            </a>
           </div>
         </div>
       </div>
