@@ -93,18 +93,6 @@ button {
   }
 }
 
-mainCompareText {
-  position: absolute;
-  max-width: 400px;
-  margin-left: 8.7vw;
-  font-weight: 600;
-  font-size: calc(1.5vw + 3rem);
-  line-height: calc(1.5vw + 3.5rem);
-
-  @include breakpoint(md) {
-    max-width: 720px;
-  }
-}
 .l_container {
   width: 100%;
   display: flex;
@@ -182,12 +170,12 @@ mainCompareText {
 }
 
 .light {
-  background-color: $white;
+  background-color: $bg2;
   span {
     color: $darkest-purple; // normal
   }
   html {
-    background-color: $white;
+    background-color: $bg2;
   }
   .theme-container {
     color: $darkest-purple;

@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { Navigate } from "react-router-dom";
 import "../global_styles/Account.scss";
 import Listening from "../components/Listening";
 import Profile from "../components/Profile";
 import SavedPreference from "../components/SavedPreference";
-
+import { generateSpotifyAuthRequest } from "../spotify/Spotify";
 const Account = () => {
   const { logout, currentUser } = useAuth();
   const [missingUser, setMissingUser] = useState(currentUser?false:true)
@@ -13,6 +13,7 @@ const Account = () => {
   const [listening, setListening] = useState(true);
   const [profile, setProfile] = useState(false);
   const [preference, setPreference] = useState(false);
+  const [spotifyAuthRequest, setSpotifyAuthRequest] = useState('');
 
   const listenClick = () => {
     setListening(true);
@@ -38,7 +39,13 @@ const Account = () => {
       .then(() => setMissingUser(true))
       .catch((err) => console.log(err))
   };
-
+  useEffect(() => {
+    const fetchAuthUrl = async () => {
+      const url = await generateSpotifyAuthRequest();
+      setSpotifyAuthRequest(url);
+    };
+    fetchAuthUrl();
+  }, []);
   return (
     <>
       {missingUser && <Navigate to="/login" />}
@@ -64,6 +71,13 @@ const Account = () => {
                   Preferences
                 </div>
               </div>
+              {spotifyAuthRequest && (
+            <a href={spotifyAuthRequest}>
+              <div className="page_selector">
+                <div className="page_selector__text">Connect Spotify</div>
+              </div>
+            </a>
+          )}
             </div>
             <div className="info">
               {listening && <Listening />}

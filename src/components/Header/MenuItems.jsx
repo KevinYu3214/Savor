@@ -14,8 +14,8 @@ export const MenuItems = [
     },
     {
         id: 3,
-        title: 'Compare',
-        url: './compare',
+        title: 'Stats',
+        url: './stats',
         cName: 'nav-links'
     },
 ]

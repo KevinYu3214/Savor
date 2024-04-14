@@ -1,7 +1,6 @@
 import "./global_styles/index.scss";
 import React, { useContext, useEffect } from "react";
 import Home from "./pages/Home";
-import Compare from "./pages/Compare";
 import Playlists from "./pages/Playlists";
 import Search from "./pages/Search";
 import Account from "./pages/Account";
@@ -30,7 +29,6 @@ const App = () => {
       <Header /> 
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/compare" element={<Compare />} />
         <Route path="/playlists" element={<Playlists />} />
         <Route path="/search" element={<Search />} />
         <Route path="/account" element={<Account />} />
