@@ -10,8 +10,6 @@ import SignUp from "./pages/Signup";
 import LogIn from "./pages/LogIn";
 import ResetPassword from "./pages/ResetPassword"
 import Stats from "./pages/Stats";
-
-//import {createRoot} from "react-doms/client";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ThemeProvider, ThemeContext } from "./contexts/ThemeContext";
 import ReactDOM from "react-dom";
@@ -29,7 +27,7 @@ const App = () => {
 
   return (
     <div>
-      <Header />
+      <Header /> 
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/compare" element={<Compare />} />
