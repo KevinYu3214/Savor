@@ -1,8 +1,7 @@
 import { useContext } from "react";
-import Header from "../components/Header";
 import MusicList from "../components/MusicList";
 import { ThemeContext } from "../contexts/ThemeContext";
-import PlayListComponent from "../components/PlaylistComponent";
+import PlaylistComponent from "../components/PlaylistComponent";
 
 const Playlists = () => {
   const { theme } = useContext(ThemeContext);
@@ -15,7 +14,7 @@ const Playlists = () => {
       <h1>
         Top Music<span>Today</span>
       </h1>
-      <PlayListComponent />
+      <PlaylistComponent />
     </body>
   );
 };

@@ -1,8 +1,8 @@
 import React, { useContext, useState, useRef } from "react";
 import SearchResult from "./SearchResult";
-import Song from "../components/Song";
+import Song from "../../components/Song";
 import styles from "./Search.module.scss";
-import ThemeContext from "../contexts/ThemeContext";
+import ThemeContext from "../../contexts/ThemeContext";
 import useOnClickOutside from "./useOnClickOutside"; // Adjust the path as needed
 
 const SearchResultsList = ({ results }) => {

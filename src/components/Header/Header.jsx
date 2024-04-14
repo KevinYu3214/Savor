@@ -1,13 +1,12 @@
 import React, { useContext, useState } from "react";
 import styles from "./Header.module.scss";
-import person_icon from "../assets/person.png";
 import { HiMenu } from "react-icons/hi";
 import { AiOutlineCloseSquare } from "react-icons/ai";
 import { MdAccountCircle } from "react-icons/md";
 import { IconContext } from "react-icons";
-import ThemeContext from "../contexts/ThemeContext";
-import { MenuItems, MenuItemsNotLoggedIn } from "./MenuItems.jsx"; // Import MenuItems arrays
-import { useAuth } from "../contexts/AuthContext";
+import ThemeContext from "../../contexts/ThemeContext";
+import { MenuItems, MenuItemsNotLoggedIn } from "./MenuItems";
+import { useAuth } from "../../contexts/AuthContext";
 
 const Header = () => {
   const { currentUser } = useAuth();

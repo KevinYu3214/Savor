@@ -1,10 +1,8 @@
 import React, { useContext, useState } from 'react'
-import Header from "./components/Header";
-import Button from './components/CustomButtons/Button';
-import musicImage from "./assets/ipod.svg";
-import italy from "./assets/italy.svg";
-import ipod from "./assets/ipod.svg";
-import ThemeContext from './contexts/ThemeContext';
+import Header from "../components/Header/Header";
+import Button from '../components/CustomButtons/Button';
+import ipod from "../assets/ipod.svg"
+import ThemeContext from '../contexts/ThemeContext';
 
 const MainText = () => {
   const { theme } = useContext(ThemeContext); 

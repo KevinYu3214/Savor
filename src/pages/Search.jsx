@@ -1,10 +1,9 @@
 import { useState } from "react";
-import Header from "../components/Header";
 import { useAuth } from "../contexts/AuthContext";
 import { Navigate } from "react-router-dom";
-import SearchBar from "../components/SearchBar";
-import SearchResultsList from "../components/SearchResultsList";
-import styles from "../components/Search.module.scss";
+import SearchBar from "../components/Search/SearchBar";
+import SearchResultsList from "../components/Search/SearchResultsList";
+import styles from "../components/Search/Search.module.scss";
 
 const Search = () => {
   const [results, setResults] = useState([]);

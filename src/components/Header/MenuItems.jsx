@@ -1,6 +1,5 @@
 // keep all menu names here to easily change 
 export const MenuItems = [
-
     {
         id: 1,
         title: 'Playlists',
@@ -15,21 +14,21 @@ export const MenuItems = [
     },
     {
         id: 3,
-        title: 'Rankings',
-        url: './rankings',
+        title: 'Compare',
+        url: './compare',
         cName: 'nav-links'
     },
 ]
 // keep all menu names here to easily change 
 export const MenuItemsNotLoggedIn = [
     {
-        id: 1,
+        id: 11,
         title: 'Home',
         url: './',
         cName: 'nav-links'
     },
     {
-        id: 2,
+        id: 22,
         title: 'Search',
         url: './search',
         cName: 'nav-links'

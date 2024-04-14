@@ -1,9 +1,9 @@
 import React from "react";
 import MusicList from "./MusicList";
-import "../components/PlaylistComponent.scss";
 import Star from "../components/Star.jsx";
+// import "./PlaylistComponent.scss"
 
-const PlayListComponent = () => {
+const PlaylistComponent = () => {
   return (
     <div className="containerPL">
       <div className="playlistDetails">
@@ -23,4 +23,4 @@ const PlayListComponent = () => {
   );
 };
 
-export default PlayListComponent;
+export default PlaylistComponent;

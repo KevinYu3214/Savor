@@ -5,8 +5,8 @@ import { IoSearch } from "react-icons/io5";
 
 import { MdAccountCircle } from "react-icons/md";
 import { IconContext } from "react-icons";
-import { ensureValidToken, search, clientId, clientSecret } from '../spotify/Spotify';
-import ThemeContext from "../contexts/ThemeContext";
+import { ensureValidToken, search, clientId, clientSecret } from '../../spotify/Spotify';
+import ThemeContext from "../../contexts/ThemeContext";
 
 const SearchBar = ({ setResults }) => {
   const [input, setInput] = useState("");

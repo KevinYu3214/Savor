@@ -1,11 +1,10 @@
 import "./global_styles/index.scss";
 import React, { useContext, useEffect } from "react";
-import Home from "./Home";
+import Home from "./pages/Home";
 import Compare from "./pages/Compare";
 import Playlists from "./pages/Playlists";
 import Search from "./pages/Search";
 import Account from "./pages/Account";
-import Rankings from "./pages/Rankings";
 import SignUp from "./pages/Signup";
 import LogIn from "./pages/LogIn";
 import ResetPassword from "./pages/ResetPassword"
@@ -13,8 +12,8 @@ import Stats from "./pages/Stats";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ThemeProvider, ThemeContext } from "./contexts/ThemeContext";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Header from "./components/Header";
-import FloatingHeader from "./components/FloatingHeader";
+import Header from "./components/Header/Header";
+import FloatingHeader from "./components/Header/FloatingHeader";
 import { createRoot } from "react-dom/client"; 
 
 const App = () => {
@@ -35,7 +34,6 @@ const App = () => {
         <Route path="/playlists" element={<Playlists />} />
         <Route path="/search" element={<Search />} />
         <Route path="/account" element={<Account />} />
-        <Route path="/rankings" element={<Rankings />} />
         <Route path="/stats" element={<Stats />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<LogIn />} /> 
