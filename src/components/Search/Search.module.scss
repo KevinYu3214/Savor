@@ -11,12 +11,11 @@
     height: max-content;
     
     &__wrapper {
-        background-color: $bg;
+        background-color: $bg4;
         width: 100%;
         border-radius: 10px;
         height: calc(5px + 4rem);
         padding: 0 15px;
-        box-shadow: 0px 0px 8px $bg;
         display: flex;
         align-items: center;
     }
@@ -27,10 +26,12 @@
         font-size: 1.25rem;
         width: 100%;
         margin-left: 10px;
-        color: white;
+        color: $bg;
+        font-weight: bolder;
     }
     &__input::placeholder {
         color: $text4;
+        font-weight:100;
     }
     &__results_list {
         width: 100%;

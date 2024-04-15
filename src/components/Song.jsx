@@ -24,6 +24,7 @@ const Song = ({ result }) => {
   const [finishDate, setFinishDate] = useState("");
   const [notes, setNotes] = useState("");
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const songCollectionList = collection(db, "Song");
 
@@ -58,51 +59,62 @@ const Song = ({ result }) => {
       setRating(currentSongDetails.rating || "");
       setFinishDate(currentSongDetails.finishDate || "");
       setNotes(currentSongDetails.notes || "");
-      setSelectedDropdownText(currentSongDetails.status || "Add to List");
+      setSelectedDropdownText(currentSongDetails.status || "Status");
     } else {
       // Reset to default values if the song is not found (useful for when a new song is selected).
       setRating("");
       setFinishDate("");
       setNotes("");
-      setSelectedDropdownText("Add to List");
+      setSelectedDropdownText("Status");
     }
   }, [songList, result]);
   const onSubmitMusic = async () => {
-    if (!result || !auth.currentUser?.uid) return;
-
-    const songsQuery = query(
-      songCollectionList,
-      where("userId", "==", auth.currentUser.uid),
-      where("songId", "==", result.id)
-    );
-
-    const querySnapshot = await getDocs(songsQuery);
-
-    if (!querySnapshot.empty) {
-      // Song exists, update it
-      const songDoc = querySnapshot.docs[0];
-      await updateDoc(doc(db, "Song", songDoc.id), {
-        status: selectedDropdownText,
-        rating,
-        finishDate,
-        notes,
-      });
-    } else {
-      // Song doesn't exist, add it
-      await addDoc(songCollectionList, {
-        album: result.album.name,
-        artist: result.artists[0].name,
-        title: result.name,
-        status: selectedDropdownText,
-        rating,
-        finishDate,
-        notes,
-        userId: auth.currentUser.uid,
-        songId: result.id,
-      });
+    if (!auth.currentUser?.uid) {
+      setErrorMessage("You need to sign in to add a song.");
+      window.alert(errorMessage);
+      return;
     }
 
-    getSongList(); // Refresh list
+    try {
+      const songsQuery = query(
+        songCollectionList,
+        where("userId", "==", auth.currentUser.uid),
+        where("songId", "==", result.id)
+      );
+
+      const querySnapshot = await getDocs(songsQuery);
+
+      if (!querySnapshot.empty) {
+        // Song exists, update it
+        const songDoc = querySnapshot.docs[0];
+        await updateDoc(doc(db, "Song", songDoc.id), {
+          status: selectedDropdownText,
+          rating,
+          finishDate,
+          notes,
+        });
+      } else {
+        // Song doesn't exist, add it
+        await addDoc(songCollectionList, {
+          album: result.album.name,
+          artist: result.artists[0].name,
+          title: result.name,
+          status: selectedDropdownText,
+          rating,
+          finishDate,
+          notes,
+          userId: auth.currentUser.uid,
+          songId: result.id,
+        });
+      }
+
+      getSongList(); // Refresh list
+      setErrorMessage(""); // Clear error message
+    } catch (error) {
+      console.error("Error adding/updating song:", error.message);
+      setErrorMessage("Failed to add/update song. Please try again.");
+      window.alert(errorMessage); // Show error message as an alert
+    }
   };
 
   const togglePlayPause = () => {
@@ -152,7 +164,7 @@ const Song = ({ result }) => {
 
   const handleDropdownChange = (text) => {
     if (text === selectedDropdownText) {
-      setSelectedDropdownText("Add to List"); // Reset to default value
+      setSelectedDropdownText("Status"); // Reset to default value
     } else {
       // Update UI with the new selected value
       setSelectedDropdownText(text);
@@ -199,7 +211,7 @@ const Song = ({ result }) => {
           onChange={(e) => setNotes(e.target.value)}
         />
         <button onClick={onSubmitMusic} className="addFirebaseButton">
-          Add to Firebase
+          Save
         </button>
         <button
           onClick={() => deleteSong(result.id)}

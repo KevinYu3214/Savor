@@ -13,7 +13,6 @@ const Search = () => {
   
   return (
       <>
-        {missingUser && <Navigate to="/login" />}
         <image src="" />
         <div className={styles.search}>
             <SearchBar setResults={setResults} />

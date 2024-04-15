@@ -9,6 +9,7 @@ const Stats = () => {
     const [error, setError] = useState('');
     const [suggestedPlaylist, setSuggestedPlaylist] = useState([]);
     const [accessToken, setAccessToken] = useState(null);
+    const [playlistAnalyzed, setPlaylistAnalyzed] = useState(false); // New state variable
 
     useEffect(() => {
         const fetchData = async () => {
@@ -62,10 +63,11 @@ const Stats = () => {
     }, []);
 
     useEffect(() => {
-        if (topTracks.length > 0) {
+        if (!playlistAnalyzed && topTracks.length > 0) {
             suggestPlaylist(topTracks.map(track => track.id));
+            setPlaylistAnalyzed(true);
         }
-    }, [topTracks]);
+    }, [topTracks, playlistAnalyzed]); // Added playlistAnalyzed to the dependencies
 
     useEffect(() => {
         if (suggestedPlaylist.length > 0) {
@@ -88,11 +90,10 @@ const Stats = () => {
 
     async function setProfileAndTracks(token) {
         try {
-                const { display_name } = await fetchUserProfile(token);
-                setProfileName(display_name);
-                const topTracksData = await fetchTopTracks(token);
-                setTopTracks(topTracksData.items);
-           
+            const { display_name } = await fetchUserProfile(token);
+            setProfileName(display_name);
+            const topTracksData = await fetchTopTracks(token);
+            setTopTracks(topTracksData.items);
         } catch (error) {
             setError(`Failed to fetch profile or top tracks: ${error.message}`);
         }
