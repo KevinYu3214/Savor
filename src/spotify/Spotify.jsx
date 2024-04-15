@@ -48,8 +48,6 @@ async function generateSpotifyAuthRequest() {
   return `${authorizationEndpoint}?${params}`;
 }
 
-// Exchanges the authorization code for an access token
-// No changes required in generateCodeChallenge and generateSpotifyAuthRequest functions
 
 // Exchanges the authorization code for an access token
 async function getToken(code) {

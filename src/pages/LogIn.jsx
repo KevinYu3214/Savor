@@ -2,21 +2,19 @@
 import React, { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import { auth, googleProvider } from "../firebase/firebase"; // Update import path
 import "../global_styles/Signup.scss";
 import email_icon from "../assets/email.png";
 import password_icon from "../assets/password.png";
-import {signInWithPopup} from "firebase/auth";
 
 const LogIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login, currentUser } = useAuth();
+  const { login, loginWithGoogle, currentUser } = useAuth(); // Updated to use loginWithGoogle
   const [error, setError] = useState("");
 
-  const handleGoogleSignIn =()=>{
-    signInWithPopup(auth, googleProvider);
-  }
+  const handleGoogleSignIn = () => {
+    loginWithGoogle(); // Use loginWithGoogle function
+  };
 
   const logIn = (e) => {
     e.preventDefault();
