@@ -9,7 +9,7 @@ function MusicList() {
   const songs = [
     {
       key: "1",
-      title: "Song 1",
+      title: "Song 1 is way too long how should I style this",
       artist: "Artist 1",
       album: "Album 1",
       year: "2023",

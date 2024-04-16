@@ -23,7 +23,11 @@ const SearchResultsList = ({ results }) => {
     <div>
       <div className={`${styles.search__results_list} ${styles[theme]}`}>
         {results.map((result, id) => (
-          <SearchResult key={id} onClick={() => handleClick(result)} result={result} />
+          <SearchResult
+            key={id}
+            onClick={() => handleClick(result)}
+            result={result}
+          />
         ))}
       </div>
       {isShown && (
