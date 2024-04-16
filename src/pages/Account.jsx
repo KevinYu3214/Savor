@@ -5,7 +5,7 @@ import "../global_styles/Account.scss";
 import Listening from "../components/Listening";
 import Profile from "../components/Profile";
 import SavedPreference from "../components/SavedPreference";
-import { generateSpotifyAuthRequest, getTokenForFirstTime } from "../spotify/Spotify";
+import { generateSpotifyAuthRequest, getTokenForFirstTime,isConnectedToSpotify } from "../spotify/Spotify";
 import { storeSpotifyTokens } from "../spotify/Spotify";
 
 const Account = () => {
@@ -15,6 +15,7 @@ const Account = () => {
   const [profile, setProfile] = useState(false);
   const [preference, setPreference] = useState(false);
   const [spotifyAuthRequest, setSpotifyAuthRequest] = useState('');
+  const [spotifyConnected, setSpotifyConnected] = useState(false);
 
   const listenClick = () => {
     setListening(true);
@@ -67,7 +68,9 @@ const Account = () => {
     if (params.has('code')) {
       handleConnectSpotify();
     }
+    setSpotifyConnected(isConnectedToSpotify()); 
   }, []);
+
 
   return (
     <>
@@ -94,13 +97,9 @@ const Account = () => {
               Preferences
             </div>
           </div>
-          {spotifyAuthRequest && (
-            <a href={spotifyAuthRequest}>
-              <div className="page_selector">
-                <div className="page_selector__text">Connect Spotify</div>
-              </div>
-            </a>
-          )}
+            <div className={`page_selector ${spotifyConnected ? 'spotify_connected' : ''}`}>
+                <div className="page_selector__text">Spotify Connected</div>
+            </div>
         </div>
         <div className="info">
           {listening && <Listening />}

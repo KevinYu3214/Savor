@@ -48,8 +48,8 @@ async function generateSpotifyAuthRequest() {
   return `${authorizationEndpoint}?${params}`;
 }
 
-
 // Exchanges the authorization code for an access token
+// occurs only first time 
 async function getTokenForFirstTime(code) {
   console.log('getToken called with code:', code);
   if (!code) {
@@ -83,6 +83,8 @@ async function getTokenForFirstTime(code) {
   const tokenData = await response.json();
   return tokenData;
 }
+
+// get access token from Firestore  
 async function getAccessToken(userId) {
   try {
       const userDoc = await getDoc(doc(db, "User", userId));
@@ -98,6 +100,8 @@ async function getAccessToken(userId) {
       return null;
   }
 }
+
+// get spotify tokens from firebase
 async function getSpotifyTokens(userId) {
   try {
     const userDoc = await getDoc(doc(db, "User", userId));
@@ -159,9 +163,7 @@ async function refreshToken(userId) {
   return tokenData.access_token;
 }
 
-// Checks if the access token is expired and refreshes it if necessary
-// Checks if the access token is expired and refreshes it if necessary
-// Checks if the access token is expired and refreshes it if necessary
+// ensure token not expired
 async function ensureValidToken() {
   console.log("Checking if the access token is valid");
   try {
@@ -293,8 +295,7 @@ async function refreshSpotifyToken(userId) {
   };
 }
 
-
-
+// store tokens in Firestore
 async function storeSpotifyTokens(userId, accessToken, refreshToken, expiresIn) {
   try {
     // Check if any required token data is missing
@@ -383,6 +384,7 @@ async function fetchTopTracks(token) {
     throw new Error(`Failed to fetch top tracks: ${error.message}`);
   }
 }
+
 const getCurrentUserId = () => {
   const auth = getAuth();
   const user = auth.currentUser;

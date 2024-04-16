@@ -76,6 +76,13 @@ $syne-font: "Syne", sans-serif;
         &__text {
             color: $white;
         } 
+        &.spotify_connected {
+            cursor: default; // Make it non-clickable
+            background-color: $green; // Change background color to green
+            &__text {
+                color: $white; // Change text color to white
+            }
+        }
     }
     .page_selector:hover {
         background: $dark-purple;   
