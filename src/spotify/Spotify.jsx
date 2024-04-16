@@ -206,14 +206,13 @@ async function ensureValidToken() {
 
 
 async function search(input, setResults) {
-  console.log("Checking if the access token is stored in Firestore");
-  const userId = await getCurrentUserId(); // Assuming you have a function to get the current user's ID
-  const accessToken = await getAccessToken(userId);
+  const accessToken = await ensureValidToken();
   
   if (!accessToken) {
       console.error("Access token not found in Firestore");
       return;
   }
+  console.log(accessToken);
 
   const searchParameters = {
       method: 'GET',

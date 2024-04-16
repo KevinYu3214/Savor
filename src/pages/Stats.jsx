@@ -84,7 +84,7 @@ const Stats = () => {
             {isLoading && <p>Loading...</p>} {/* Display loading message if data is being fetched */}
             {!isLoading && error && <p>Error: {error}</p>} {/* Display error message if there's an error */}
             {!isLoading && profileName && <p>Welcome, {profileName}</p>}   
-            {!isLoading && topTracks && (
+            {!isLoading && topTracks.length > 0 && (
                 <div>
                     <h2>Top Tracks</h2>
                     <ul>
@@ -95,8 +95,8 @@ const Stats = () => {
                 </div>
             )}
             {!isLoading && !profileName && <p>Loading profile...</p>} {/* Display loading message for profile */}
-            {!isLoading && !topTracks.length && <p>Loading top tracks...</p>} {/* Display loading message for top tracks */}
-            {!isLoading && (
+            {!isLoading && !(suggestedPlaylist.length > 0) && <p>Loading top tracks...</p>} {/* Display loading message for top tracks */}
+            {!isLoading && suggestedPlaylist.length > 0 && (
                 <div>
                     <h2>Suggested Playlist</h2>
                     <ul>
