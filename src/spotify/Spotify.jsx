@@ -207,7 +207,7 @@ async function ensureValidToken() {
 
 async function search(input, setResults) {
   const accessToken = await ensureValidToken();
-  
+
   if (!accessToken) {
       console.error("Access token not found in Firestore");
       return;
@@ -330,7 +330,7 @@ async function storeSpotifyTokens(userId, accessToken, refreshToken, expiresIn) 
 async function suggestPlaylist(token, seedTracks) {
   try {
       const { danceability, energy, loudness, speechiness, acousticness, instrumentalness, liveness, valence } = await fetchAndCalculateAverageFeatures(seedTracks, token);
-      const response = await fetch(`https://api.spotify.com/v1/recommendations?limit=5&seed_tracks=${seedTracks.join(',')}&target_danceability=${danceability}&target_energy=${energy}&target_loudness=${loudness}&target_speechiness=${speechiness}&target_acousticness=${acousticness}&target_instrumentalness=${instrumentalness}&target_liveness=${liveness}&target_valence=${valence}`, {
+      const response = await fetch(`https://api.spotify.com/v1/recommendations?limit=20&seed_tracks=${seedTracks.join(',')}&target_danceability=${danceability}&target_energy=${energy}&target_loudness=${loudness}&target_speechiness=${speechiness}&target_acousticness=${acousticness}&target_instrumentalness=${instrumentalness}&target_liveness=${liveness}&target_valence=${valence}`, {
           headers: {
               'Authorization': `Bearer ${token}`,
           },
