@@ -385,7 +385,7 @@ async function fetchTopTracks(token) {
   }
 }
 
-const getCurrentUserId = () => {
+async function getCurrentUserId() {
   const auth = getAuth();
   const user = auth.currentUser;
   if (user) {
@@ -395,13 +395,25 @@ const getCurrentUserId = () => {
   }
 }
 
-function isConnectedToSpotify() {
-  const auth = getAuth();
-  const user = auth.currentUser;
-  if (doc(db, "spotifyTokens", user.uid)) {
-      return true;
-  } else {
-      return false;
+async function isConnectedToSpotify() {
+  try {
+    const userId = await getCurrentUserId();
+    if (!userId) {
+          return false;
+        }
+    const userDoc = await getDoc(doc(db, "User", userId));
+    if (userDoc.exists()) {
+      const spotifyTokens = userDoc.data().spotifyTokens;
+      // Check if spotifyTokens exist and accessToken is present
+      if (spotifyTokens && spotifyTokens.accessToken) {
+        return true; // User is connected to Spotify
+      }
+    }
+    return false; // User is not connected to Spotify
+  } catch (error) {
+    console.error('Error fetching access token:', error);
+    return false; // Assume user is not connected to Spotify in case of error
   }
 }
+
 export { getCurrentUserId, suggestPlaylist, fetchTopTracks, storeSpotifyTokens, refreshSpotifyToken, getSpotifyTokens, generateSpotifyAuthRequest, getTokenForFirstTime, refreshToken, ensureValidToken, fetchUserProfile, search, isConnectedToSpotify };

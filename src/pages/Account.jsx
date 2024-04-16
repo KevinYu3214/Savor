@@ -17,6 +17,11 @@ const Account = () => {
   const [spotifyAuthRequest, setSpotifyAuthRequest] = useState('');
   const [spotifyConnected, setSpotifyConnected] = useState(false);
 
+  const fetchSpotifyConnectionStatus = async () => {
+    const connected = await isConnectedToSpotify();
+    setSpotifyConnected(connected);
+  };
+
   const listenClick = () => {
     setListening(true);
     setProfile(false);
@@ -58,18 +63,21 @@ const Account = () => {
   };
 
   useEffect(() => {
+    console.log("Fetching auth URL...");
     const fetchAuthUrl = async () => {
       const url = await generateSpotifyAuthRequest();
       setSpotifyAuthRequest(url);
     };
     fetchAuthUrl();
-
+  
     const params = new URLSearchParams(window.location.search);
     if (params.has('code')) {
       handleConnectSpotify();
     }
-    setSpotifyConnected(isConnectedToSpotify()); 
+    // should updated to true when signed in this Spotify call
+    fetchSpotifyConnectionStatus();
   }, []);
+  
 
 
   return (
@@ -97,9 +105,18 @@ const Account = () => {
               Preferences
             </div>
           </div>
+
+          {!spotifyConnected ? (
+            <a href={spotifyAuthRequest}>
+              <div className="page_selector">
+                <div className="page_selector__text">Connect Spotify</div>
+              </div>
+            </a>
+          ) : (
             <div className={`page_selector ${spotifyConnected ? 'spotify_connected' : ''}`}>
                 <div className="page_selector__text">Spotify Connected</div>
             </div>
+          )}
         </div>
         <div className="info">
           {listening && <Listening />}

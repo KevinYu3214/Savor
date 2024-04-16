@@ -25,7 +25,7 @@ export function AuthProvider({ children }) {
     return createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
       // Add user to Firestore collection after sign up
       const { user } = userCredential;
-      return setDoc(doc(db, "users", user.uid), {
+      return setDoc(doc(db, "User", user.uid), {
         email: user.email,
         // Add any additional user data you want to store here
       });
