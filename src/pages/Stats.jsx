@@ -16,8 +16,6 @@ const Stats = () => {
                 const token = await ensureValidToken();
                 if (token) {
                     console.log("Token retrieved:", token);
-                    let topTracksData = {};
-                    // Fetch user profile if not fetched yet or stored in localStorage
                     if (!localStorage.getItem('profileName')) {
                         console.log("Fetching user profile...");
                         const { display_name } = await fetchUserProfile(token);
@@ -33,10 +31,9 @@ const Stats = () => {
                     // Fetch top tracks if not fetched yet or stored in localStorage
                     if (!localStorage.getItem('topTracks')) {
                         console.log("Fetching top tracks...");
-                        topTracksData = await fetchTopTracks(token);
-                        console.log("Top tracks fetched:", topTracksData);
-                        setTopTracks(topTracksData);
-                        localStorage.setItem('topTracks', JSON.stringify(topTracksData.items)); // Store topTracks in local storage
+                        setTopTracks(await fetchTopTracks(token));
+                        console.log("Top tracks fetched:", topTracks);
+                        localStorage.setItem('topTracks', JSON.stringify(topTracks.items)); // Store topTracks in local storage
                         await delay(1000); // Wait for 1 second before making the next request
                     } else {
                         const storedTopTracks = JSON.parse(localStorage.getItem('topTracks'));
@@ -46,9 +43,12 @@ const Stats = () => {
                     // Fetch suggested playlist if not fetched yet or stored in localStorage
                     if (!localStorage.getItem('suggested_playlist')) {
                         let suggestedTracks = [];
-                        if (topTracksData && topTracksData.items) { // Ensure topTracksData.items is defined
+                        let tracks = await fetchTopTracks(token);
+                        console.log(tracks)
+                        console.log(tracks.items)
+                        if (tracks && tracks.items) { // Ensure topTracksData.items is defined
                             console.log("Fetching suggested playlist...");
-                            suggestedTracks = await suggestPlaylist(token, topTracksData.items.map(track => track.id));
+                            suggestedTracks = await suggestPlaylist(token, tracks.items.map(track => track.id));
                             console.log("Suggested playlist fetched:", suggestedTracks);
                             localStorage.setItem('suggested_playlist', JSON.stringify(suggestedTracks));
                             setSuggestedPlaylist(suggestedTracks);
@@ -94,8 +94,8 @@ const Stats = () => {
                     </ul>
                 </div>
             )}
-            {!isLoading && !profileName && <p>Loading profile...</p>} {/* Display loading message for profile */}
-            {!isLoading && !(suggestedPlaylist.length > 0) && <p>Loading top tracks...</p>} {/* Display loading message for top tracks */}
+            {!isLoading && !profileName && <p>Loading profile...</p>} 
+            {!isLoading && !(suggestedPlaylist.length > 0) && <p>Loading playlists ...</p>} 
             {!isLoading && suggestedPlaylist.length > 0 && (
                 <div>
                     <h2>Suggested Playlist</h2>
