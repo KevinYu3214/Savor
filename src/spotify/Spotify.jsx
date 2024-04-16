@@ -427,4 +427,24 @@ async function isConnectedToSpotify() {
   }
 }
 
-export { getCurrentUserId, suggestPlaylist, fetchTopTracks, storeSpotifyTokens, refreshSpotifyToken, getSpotifyTokens, generateSpotifyAuthRequest, getTokenForFirstTime, refreshToken, ensureValidToken, fetchUserProfile, search, isConnectedToSpotify };
+async function getFeatures(song_id, feature){
+  const accessToken = localStorage.getItem('access_token');
+  // Get request using search to get the Artist ID
+  var searchParameters = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + accessToken
+    }
+  }    
+  var audio_features = await fetch('https://api.spotify.com/v1/audio-features/' + song_id, searchParameters)
+    .then(response => response.json())
+
+
+  if(feature == "valence"){ return audio_features.valence; }
+  if(feature == "danceability"){ return audio_features.danceability; }
+  if(feature == "energy"){ return audio_features.energy; }
+  else return;
+}
+
+export {getFeatures, getCurrentUserId, suggestPlaylist, fetchTopTracks, storeSpotifyTokens, refreshSpotifyToken, getSpotifyTokens, generateSpotifyAuthRequest, getTokenForFirstTime, refreshToken, ensureValidToken, fetchUserProfile, search, isConnectedToSpotify };
