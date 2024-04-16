@@ -12,6 +12,7 @@ import {
 import { doc, setDoc, getDoc } from "firebase/firestore";
 
 const AuthContext = React.createContext();
+const localStorage = window.localStorage;
 
 export function useAuth() {
   return useContext(AuthContext);
@@ -63,6 +64,7 @@ export function AuthProvider({ children }) {
   }
 
   function logout() {
+    localStorage.clear();
     return signOut(auth);
   }
 

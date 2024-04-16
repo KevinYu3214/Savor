@@ -28,15 +28,18 @@ const Stats = () => {
                         console.log("User profile fetched from local storage:", display_name);
                         setProfileName(display_name);
                     }
-                    console.log("before if");
                     if (!localStorage.getItem('topTracks')) {
                         console.log("Fetching top tracks...");
-                        const newTopTracks = await fetchTopTracks(token);
-                        console.log("Top tracks fetched:", newTopTracks);
-                        setTopTracks(newTopTracks);
-                        console.log("Top tracks fetched:", topTracks);
-                        localStorage.setItem('topTracks', JSON.stringify(newTopTracks.items)); // Store topTracks in local storage
-                        await delay(1000); // Wait for 1 second before making the next request
+                        let tracks = await fetchTopTracks(token);
+                        console.log(tracks)
+                        console.log(tracks.items)
+                        if (tracks && tracks.items) { // Ensure topTracksData.items is defined
+                            console.log("Top tracks fetched:", tracks);
+                            localStorage.setItem('topTracks', JSON.stringify(tracks.items)); // Store topTracks in local storage
+                            setTopTracks(tracks.items);
+                            console.log(topTracks)
+                            await delay(1000); // Wait for 1 second before making the next request
+                        }
                     } else {
                         const storedTopTracks = JSON.parse(localStorage.getItem('topTracks'));
                         console.log("Top tracks fetched from local storage:", storedTopTracks);
@@ -99,6 +102,7 @@ const Stats = () => {
                 </div>
             )}
             {!isLoading && !profileName && <p>Loading profile...</p>} 
+            {!isLoading && !(topTracks.length > 0) && <p>Loading tracks ...</p>} 
             {!isLoading && !(suggestedPlaylist.length > 0) && <p>Loading playlists ...</p>} 
             {!isLoading && suggestedPlaylist.length > 0 && (
                 <div>
