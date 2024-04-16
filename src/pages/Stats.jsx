@@ -29,7 +29,6 @@ const Stats = () => {
                         const display_name = localStorage.getItem('profileName');
                         console.log("User profile fetched from local storage:", display_name);
                         setProfileName(display_name);
-                        await delay(1000); // Wait for 1 second before making the next request
                     }
                     // Fetch top tracks if not fetched yet or stored in localStorage
                     if (!localStorage.getItem('topTracks')) {
@@ -43,7 +42,6 @@ const Stats = () => {
                         const storedTopTracks = JSON.parse(localStorage.getItem('topTracks'));
                         console.log("Top tracks fetched from local storage:", storedTopTracks);
                         setTopTracks(storedTopTracks);
-                        await delay(1000); // Wait for 1 second before making the next request
                     }
                     // Fetch suggested playlist if not fetched yet or stored in localStorage
                     if (!localStorage.getItem('suggested_playlist')) {
@@ -60,7 +58,6 @@ const Stats = () => {
                         const storedSuggestedPlaylist = JSON.parse(localStorage.getItem('suggested_playlist'));
                         console.log("Suggested playlist fetched from local storage:", storedSuggestedPlaylist);
                         setSuggestedPlaylist(storedSuggestedPlaylist);
-                        await delay(1000); // Wait for 1 second before making the next request
                     }
                     setError('');
                     setIsLoading(false); // Set loading status to false once data is fetched
@@ -87,7 +84,7 @@ const Stats = () => {
             {isLoading && <p>Loading...</p>} {/* Display loading message if data is being fetched */}
             {!isLoading && error && <p>Error: {error}</p>} {/* Display error message if there's an error */}
             {!isLoading && profileName && <p>Welcome, {profileName}</p>}   
-            {!isLoading && (
+            {!isLoading && topTracks && (
                 <div>
                     <h2>Top Tracks</h2>
                     <ul>
