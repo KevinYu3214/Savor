@@ -13,7 +13,6 @@ const Search = () => {
   
   return (
       <>
-        <image src="" />
         <div className={styles.search}>
             <SearchBar setResults={setResults} />
             <SearchResultsList results={results} />
