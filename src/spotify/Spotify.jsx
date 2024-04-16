@@ -88,6 +88,9 @@ async function getTokenForFirstTime(code) {
 async function getAccessToken(userId) {
   try {
       const userDoc = await getDoc(doc(db, "User", userId));
+      if (!userDoc.exists()) {
+          throw new Error('User document does not exist.');
+      }
       if (userDoc.exists()) {
           const spotifyTokens = userDoc.data().spotifyTokens;
           if (spotifyTokens && spotifyTokens.accessToken) {
@@ -104,8 +107,13 @@ async function getAccessToken(userId) {
 // get spotify tokens from firebase
 async function getSpotifyTokens(userId) {
   try {
-    const userDoc = await getDoc(doc(db, "User", userId));
+    console.log(userId)
+    const userDocRef = doc(db, "User", userId);
+    console.log(userDocRef)
+    const userDoc = await getDoc(userDocRef);
+    console.log('found user');
     if (userDoc.exists()) {
+      console.log('found user');
       const spotifyTokens = userDoc.data().spotifyTokens || null;
       console.log('Spotify tokens retrieved from Firestore:', spotifyTokens);
       return spotifyTokens;
@@ -117,6 +125,7 @@ async function getSpotifyTokens(userId) {
     throw new Error('Failed to retrieve Spotify tokens');
   }
 }
+
 
 async function refreshToken(userId) {
   const userRef = doc(db, "User", userId);
@@ -167,8 +176,9 @@ async function refreshToken(userId) {
 async function ensureValidToken() {
   console.log("Checking if the access token is valid");
   try {
-    const userId = getCurrentUserId(); // Assuming you have a function to get the current user's ID
+    const userId = await getCurrentUserId(); // Assuming you have a function to get the current user's ID
     // Retrieve access token and expiration time from Firestore
+    console.log(userId);
     const spotifyTokens = await getSpotifyTokens(userId);
     console.log("Checking if the access token is valid");
     if (!spotifyTokens || !spotifyTokens.accessToken || !spotifyTokens.expiresAt) {
@@ -197,7 +207,7 @@ async function ensureValidToken() {
 
 async function search(input, setResults) {
   console.log("Checking if the access token is stored in Firestore");
-  const userId = getCurrentUserId(); // Assuming you have a function to get the current user's ID
+  const userId = await getCurrentUserId(); // Assuming you have a function to get the current user's ID
   const accessToken = await getAccessToken(userId);
   
   if (!accessToken) {
@@ -388,12 +398,14 @@ async function fetchTopTracks(token) {
 async function getCurrentUserId() {
   const auth = getAuth();
   const user = auth.currentUser;
-  if (user) {
-      return user.uid;
+  if (user && user.uid) {
+    console.log(user.uid.toString());
+    return user.uid.toString(); // Ensure it's always a string
   } else {
-      return null;
+    return ''; // Return an empty string if user ID is not available
   }
 }
+
 
 async function isConnectedToSpotify() {
   try {
