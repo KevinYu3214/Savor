@@ -1,15 +1,16 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { Navigate } from "react-router-dom";
 import "../global_styles/Account.scss";
 import Listening from "../components/Listening";
 import Profile from "../components/Profile";
 import SavedPreference from "../components/SavedPreference";
-import { generateSpotifyAuthRequest } from "../spotify/Spotify";
+import { generateSpotifyAuthRequest, getToken } from "../spotify/Spotify";
+import { storeSpotifyTokens } from "../spotify/Spotify";
+
 const Account = () => {
   const { logout, currentUser } = useAuth();
-  const [missingUser, setMissingUser] = useState(currentUser?false:true)
-
+  const [missingUser, setMissingUser] = useState(currentUser ? false : true);
   const [listening, setListening] = useState(true);
   const [profile, setProfile] = useState(false);
   const [preference, setPreference] = useState(false);
@@ -19,74 +20,96 @@ const Account = () => {
     setListening(true);
     setProfile(false);
     setPreference(false);
-  }
+  };
   const profileClick = () => {
     setListening(false);
     setProfile(true);
     setPreference(false);
-  }
+  };
   const preferenceClick = () => {
     setListening(false);
     setProfile(false);
     setPreference(true);
-  }
+  };
 
   const logOut = (e) => {
     e.preventDefault();
-    
-    setMissingUser(false)
+    setMissingUser(false);
     logout()
       .then(() => setMissingUser(true))
-      .catch((err) => console.log(err))
+      .catch((err) => console.log(err));
   };
+
+  const handleConnectSpotify = async () => {
+    try {
+      const code = new URLSearchParams(window.location.search).get('code');
+      if (!code) {
+        console.error('Authorization code not found in URL');
+        return;
+      }
+      const tokenData = await getToken(code);
+      console.log(tokenData);
+      await storeSpotifyTokens(currentUser.uid, tokenData.access_token, tokenData.refresh_token, tokenData.expires_in);
+      console.log('Spotify authentication successful');
+    } catch (error) {
+      console.error('Error refreshing Spotify token:', error);
+    }
+  };
+
   useEffect(() => {
     const fetchAuthUrl = async () => {
       const url = await generateSpotifyAuthRequest();
       setSpotifyAuthRequest(url);
     };
     fetchAuthUrl();
+
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('code')) {
+      handleConnectSpotify();
+    }
   }, []);
+
   return (
     <>
       {missingUser && <Navigate to="/login" />}
-        <div className="lift"></div>
-          <div className="a_header">
-            <div className="a_header_text">Account</div>
-            <button onClick={logOut} className="a_header_button">Log out</button>
+      <div className="lift"></div>
+      <div className="a_header">
+        <div className="a_header_text">Account</div>
+        <button onClick={logOut} className="a_header_button">Log out</button>
+      </div>
+      <div className="a_container">
+        <div className="sidebar">
+          <div className="page_selector" onClick={listenClick}>
+            <div className="page_selector__text">
+              Your Music
+            </div>
           </div>
-          <div className="a_container">
-            <div className="sidebar">
-              <div className="page_selector" onClick={listenClick}>
-                <div className="page_selector__text">
-                  Your Music
-                </div>
-              </div>
-              <div className="page_selector" onClick={profileClick}>
-                <div className="page_selector__text">
-                  User Info
-                </div>
-              </div>
-              <div className="page_selector" onClick={preferenceClick}>
-                <div className="page_selector__text">
-                  Preferences
-                </div>
-              </div>
-              {spotifyAuthRequest && (
+          <div className="page_selector" onClick={profileClick}>
+            <div className="page_selector__text">
+              User Info
+            </div>
+          </div>
+          <div className="page_selector" onClick={preferenceClick}>
+            <div className="page_selector__text">
+              Preferences
+            </div>
+          </div>
+          {spotifyAuthRequest && (
             <a href={spotifyAuthRequest}>
               <div className="page_selector">
                 <div className="page_selector__text">Connect Spotify</div>
               </div>
             </a>
           )}
-            </div>
-            <div className="info">
-              {listening && <Listening />}
-              {profile && <Profile />}
-              {preference && <SavedPreference />}
-            </div>
-          </div>
+        </div>
+        <div className="info">
+          {listening && <Listening />}
+          {profile && <Profile />}
+          {preference && <SavedPreference />}
+        </div>
+      </div>
     </>
   );
-}
+};
 
 export default Account;

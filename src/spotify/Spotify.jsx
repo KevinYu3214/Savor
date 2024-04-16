@@ -8,7 +8,7 @@ const fetch = window.fetch;
 
 export const clientId = '35031be6070048458899436547c2b842'; // Your clientId
 export const clientSecret = 'f6db2bf108264ec88a61a0a3aefd49e3'
-const redirectUrl = 'http://localhost:5173/stats'; // Your redirect URL - must be localhost URL and/or HTTPS
+const redirectUrl = 'http://localhost:5173/account'; // Your redirect URL - must be localhost URL and/or HTTPS
 const authorizationEndpoint = "https://accounts.spotify.com/authorize";
 const tokenEndpoint = "https://accounts.spotify.com/api/token"; // Token endpoint for exchanging codes and refreshing tokens
 const scope = 'user-read-private user-read-email user-top-read';
@@ -50,7 +50,7 @@ async function generateSpotifyAuthRequest() {
 
 
 // Exchanges the authorization code for an access token
-async function getToken(code, userId) {
+async function getToken(code) {
   console.log('getToken called with code:', code);
   if (!code) {
     throw new Error('Authorization code is required.');
@@ -81,61 +81,46 @@ async function getToken(code, userId) {
   }
 
   const tokenData = await response.json();
-  console.log('Token Data:', tokenData);
-  await saveTokenData(tokenData, userId); // Pass userId to saveTokenData
+  console.log('Token Data:', tokenData); // Debugging to verify token data includes a refresh token
+  saveTokenData(tokenData);
   return tokenData;
 }
 
-
 async function getSpotifyTokens(userId) {
-  try {
-    const userDoc = await getDoc(doc(db, "User", userId));
-    if (userDoc.exists()) {
-      return userDoc.data().spotifyTokens || null;
-    }
-    return null;
-  } catch (error) {
-    console.error("Error fetching Spotify tokens:", error);
-    return null;
+  const userDoc = await getDoc(doc(db, "User", userId));
+  if (userDoc.exists()) {
+      return userDoc.data().spotify || null;
   }
+  return null;
 }
-
 // Saves token data and calculates the expiry time
-async function saveTokenData(tokenData, userId) {
+function saveTokenData(tokenData) {
   const now = new Date();
   const expiresIn = tokenData.expires_in * 1000; // Convert to milliseconds
   const expiryTime = new Date(now.getTime() + expiresIn);
 
   localStorage.setItem('access_token', tokenData.access_token);
   localStorage.setItem('expires_at', expiryTime.toISOString());
-
-  // Save the refresh token to Firestore if it exists
   if (tokenData.refresh_token) {
-    console.log("Saving refresh token to Firestore")
-    await storeSpotifyTokens(userId, tokenData.access_token, tokenData.refresh_token, tokenData.expires_in);
+    localStorage.setItem('refresh_token', tokenData.refresh_token);
   }
 }
-
 
 
 async function refreshToken(userId) {
   // Retrieve the refresh token from Firestore instead of localStorage
   const userRef = doc(db, "User", userId);
   const userDoc = await getDoc(userRef);
-
   if (!userDoc.exists()) {
     console.error('User document does not exist in Firestore');
     throw new Error('User not found');
   }
+  const refreshToken = userDoc.data().spotifyTokens.refreshToken;
 
-  const spotifyTokens = userDoc.data().spotifyTokens;
-
-  if (!spotifyTokens || !spotifyTokens.refreshToken) {
+  if (!refreshToken) {
     console.error('No refresh token available in Firestore for user:', userId);
     throw new Error('No refresh token available');
   }
-
-  const refreshToken = spotifyTokens.refreshToken;
 
   const response = await fetch(tokenEndpoint, {
     method: 'POST',
@@ -155,6 +140,7 @@ async function refreshToken(userId) {
   }
 
   const tokenData = await response.json();
+  // Assume tokenData contains access_token and possibly a new refresh_token
 
   // Save the refreshed token data back to Firestore
   await updateDoc(userRef, {
@@ -169,11 +155,9 @@ async function refreshToken(userId) {
 
 // Checks if the access token is expired and refreshes it if necessary
 async function ensureValidToken() {
-  const userDocRef = doc(db, "User", userId);
   const expiresAt = localStorage.getItem('expires_at');
   if (!expiresAt || new Date() > new Date(expiresAt)) {
-    await refreshToken(userId);
-    ;
+    await refreshToken();
   }
   return localStorage.getItem('access_token');
 }
@@ -215,72 +199,157 @@ async function fetchUserProfile(accessToken) {
   const userData = await response.json();
   return userData;
 }
+
+
 async function refreshSpotifyToken(userId) {
   // Retrieve the stored refresh token from Firestore
   const userDocRef = doc(db, "User", userId);
   const userDocSnap = await getDoc(userDocRef);
 
   if (!userDocSnap.exists()) {
-    console.log("No user document found!");
-    return;
+      console.log("No user document found!");
+      return;
   }
 
   const spotifyTokens = userDocSnap.data().spotifyTokens;
   if (!spotifyTokens || !spotifyTokens.refreshToken) {
-    console.log("No refresh token available");
-    return;
+      console.log("No refresh token available");
+      return;
   }
 
   // Prepare the request for refreshing the token
   const params = new URLSearchParams({
-    grant_type: 'refresh_token',
-    refresh_token: spotifyTokens.refreshToken
+      grant_type: 'refresh_token',
+      refresh_token: spotifyTokens.refreshToken
   });
 
   const response = await fetch(tokenEndpoint, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'Authorization': `Basic ${btoa(`${clientId}:${clientSecret}`)}`
-    },
-    body: params
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': `Basic ${encodeClientCredentials(clientId, clientSecret)}`
+      },
+      body: params
   });
-
-  if (!response.ok) {
-    console.error("Failed to refresh token:", response.statusText);
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
 
   const data = await response.json();
 
+  if (!response.ok) {
+      console.error("Failed to refresh token:", data);
+      throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
   // Update the Firestore document with the new tokens and expiration
-  await storeSpotifyTokens(userId, data.access_token, data.refresh_token || undefined, data.expires_in);
+  await updateDoc(userDocRef, {
+      "spotifyTokens.accessToken": data.access_token,
+      "spotifyTokens.expiresAt": new Date().getTime() + (data.expires_in * 1000), // Save expiration time
+      // Update the refresh token if a new one was provided
+      ...(data.refresh_token && { "spotifyTokens.refreshToken": data.refresh_token }),
+  });
 
   return {
-    accessToken: data.access_token,
-    expiresIn: data.expires_in
+      accessToken: data.access_token,
+      expiresIn: data.expires_in
   };
 }
+
+
 
 async function storeSpotifyTokens(userId, accessToken, refreshToken, expiresIn) {
-  const userDocRef = doc(db, "User", userId);
-  const tokenData = {
-    spotifyTokens: {
-      accessToken,
-      // Only include refreshToken in tokenData if it's defined
-      refreshToken, // Include refresh token
-      expiresAt: new Date().getTime() + expiresIn * 1000, // Calculate the expiry timestamp
+  try {
+    // Check if any required token data is missing
+    if (!userId || !accessToken || !refreshToken || !expiresIn) {
+      throw new Error("Missing required token data");
     }
+
+    const userRef = doc(db, "User", userId);
+    const tokenData = {
+      accessToken,
+      refreshToken,
+      expiresAt: new Date().getTime() + expiresIn * 1000, // Calculate the expiry timestamp
+    };
+    await setDoc(userRef, { spotifyTokens: tokenData }, { merge: true });
+  } catch (error) {
+    console.error("Error storing Spotify tokens:", error);
+    throw new Error("Failed to store Spotify tokens");
+  }
+}
+
+
+async function suggestPlaylist(token, seedTracks) {
+  try {
+      const { danceability, energy, loudness, speechiness, acousticness, instrumentalness, liveness, valence } = await fetchAndCalculateAverageFeatures(seedTracks, token);
+      const response = await fetch(`https://api.spotify.com/v1/recommendations?limit=5&seed_tracks=${seedTracks.join(',')}&target_danceability=${danceability}&target_energy=${energy}&target_loudness=${loudness}&target_speechiness=${speechiness}&target_acousticness=${acousticness}&target_instrumentalness=${instrumentalness}&target_liveness=${liveness}&target_valence=${valence}`, {
+          headers: {
+              'Authorization': `Bearer ${token}`,
+          },
+      });
+
+      if (!response.ok) {
+          throw new Error(`Failed to fetch recommendations: ${response.status} - ${response.statusText}`);
+      }
+
+      const { tracks } = await response.json();
+      return tracks;
+  } catch (error) {
+      throw new Error(`Failed to fetch recommendations: ${error.message}`);
+  }
+}
+
+async function fetchAndCalculateAverageFeatures(seedTracks, accessToken) {
+  const response = await fetch(`https://api.spotify.com/v1/audio-features/?ids=${seedTracks.join(',')}`, {
+      headers: {
+          'Authorization': `Bearer ${accessToken}`,
+      },
+  });
+
+  if (!response.ok) {
+      throw new Error(`Failed to fetch audio features: ${response.status} - ${response.statusText}`);
+  }
+
+  const { audio_features } = await response.json();
+
+  const sum = arr => arr.reduce((acc, val) => acc + val, 0);
+  const average = arr => sum(arr) / arr.length;
+
+  return {
+      danceability: average(audio_features.map(feature => feature.danceability)),
+      energy: average(audio_features.map(feature => feature.energy)),
+      loudness: average(audio_features.map(feature => feature.loudness)),
+      speechiness: average(audio_features.map(feature => feature.speechiness)),
+      acousticness: average(audio_features.map(feature => feature.acousticness)),
+      instrumentalness: average(audio_features.map(feature => feature.instrumentalness)),
+      liveness: average(audio_features.map(feature => feature.liveness)),
+      valence: average(audio_features.map(feature => feature.valence)),
   };
-  await setDoc(userDocRef, tokenData, { merge: true });
+}
+// Function to fetch the current user's top tracks
+async function fetchTopTracks(token) {
+  try {
+    const response = await fetch('https://api.spotify.com/v1/me/top/tracks', {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch top tracks: ${response.status} - ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw new Error(`Failed to fetch top tracks: ${error.message}`);
+  }
 }
 
-
-async function isConnectedToSpotify(userId) {
-  const userDocRef = doc(db, "User", userId);
-  const userDocSnap = await getDoc(userDocRef);
-  return userDocSnap.exists() && userDocSnap.data().spotifyTokens;
+function isConnectedToSpotify() {
+  const auth = getAuth();
+  const user = auth.currentUser;
+  if (doc(db, "spotifyTokens", user.uid)) {
+      return true;
+  } else {
+      return false;
+  }
 }
-
-
-export { storeSpotifyTokens, refreshSpotifyToken, getSpotifyTokens, generateSpotifyAuthRequest, getToken, refreshToken, ensureValidToken, fetchUserProfile, search, isConnectedToSpotify };
+export { suggestPlaylist, fetchTopTracks, storeSpotifyTokens, refreshSpotifyToken, getSpotifyTokens, generateSpotifyAuthRequest, getToken, refreshToken, ensureValidToken, fetchUserProfile, search, isConnectedToSpotify };

@@ -26,13 +26,6 @@ export const MenuItemsNotLoggedIn = [
         title: 'Home',
         url: './',
         cName: 'nav-links'
-    },
-    {
-        id: 22,
-        title: 'Search',
-        url: './search',
-        cName: 'nav-links'
-    },
-    
+    },    
 ]
 

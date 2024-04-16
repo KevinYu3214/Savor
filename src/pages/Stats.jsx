@@ -1,188 +1,109 @@
 import React, { useEffect, useState } from 'react';
-import { getToken, fetchUserProfile, ensureValidToken, storeSpotifyTokens } from '../spotify/Spotify';
-import { getAuth } from "firebase/auth";
-import { auth } from '../firebase/firebase';
+import { fetchUserProfile, ensureValidToken, fetchTopTracks, suggestPlaylist } from '../spotify/Spotify'; // Import necessary functions from Spotify module
 
 const Stats = () => {
     const [profileName, setProfileName] = useState('');
     const [topTracks, setTopTracks] = useState([]);
     const [error, setError] = useState('');
     const [suggestedPlaylist, setSuggestedPlaylist] = useState([]);
-    const [accessToken, setAccessToken] = useState(null);
-    const [playlistAnalyzed, setPlaylistAnalyzed] = useState(false); // New state variable
+    const [profileFetched, setProfileFetched] = useState(false);
+    const [tracksFetched, setTracksFetched] = useState(false);
+    const [playlistFetched, setPlaylistFetched] = useState(false);
+    const [isLoading, setIsLoading] = useState(true); // State to track loading status
 
     useEffect(() => {
+        console.log("Fetching data...");
         const fetchData = async () => {
             try {
-                let token = localStorage.getItem('spotify_access_token');
-                if (!token) {
-                    token = await ensureValidToken(auth.currentUser.uid);
-                    localStorage.setItem('spotify_access_token', token);
-                }
-                setAccessToken(token);
-                
+                // Retrieve access token
+                const token = await ensureValidToken();
                 if (token) {
-                    const { display_name } = await fetchUserProfile(token);
-                    setProfileName(display_name);
-                    const storedTopTracks = localStorage.getItem('spotify_top_tracks');
-                    if (storedTopTracks) {
-                        setTopTracks(JSON.parse(storedTopTracks));
-                    } else {
-                        const topTracksData = await fetchTopTracks(token);
+                    console.log("Token retrieved:", token);
+                    let topTracksData = {};
+                    // Fetch user profile if not fetched yet
+                    if (!profileFetched) {
+                        console.log("Fetching user profile...");
+                        const { display_name } = await fetchUserProfile(token);
+                        console.log("User profile fetched:", display_name);
+                        setProfileName(display_name);
+                        setProfileFetched(true);
+                        await delay(1000); // Wait for 1 second before making the next request
+                    }
+                    // Fetch top tracks if not fetched yet
+                    if (!tracksFetched) {
+                        console.log("Fetching top tracks...");
+                        topTracksData = await fetchTopTracks(token);
+                        console.log("Top tracks fetched:", topTracksData);
                         setTopTracks(topTracksData.items);
-                        localStorage.setItem('spotify_top_tracks', JSON.stringify(topTracksData.items));
+                        setTracksFetched(true);
+                        await delay(1000); // Wait for 1 second before making the next request
+                    }
+                    // Fetch suggested playlist if not fetched yet
+                    if (!playlistFetched && !localStorage.getItem('suggested_playlist')) {
+                        let suggestedTracks = [];
+                        if (topTracksData && topTracksData.items) { // Ensure topTracksData.items is defined
+                            console.log("Fetching suggested playlist...");
+                            suggestedTracks = await suggestPlaylist(token, topTracksData.items.map(track => track.id));
+                            console.log("Suggested playlist fetched:", suggestedTracks);
+                            setSuggestedPlaylist(suggestedTracks);
+                            localStorage.setItem('suggested_playlist', JSON.stringify(suggestedTracks));
+                        }
+                        setPlaylistFetched(true);
+                        await delay(1000); // Wait for 1 second before making the next request
+                    } else if (!playlistFetched) {
+                        // Retrieve suggested playlist from local storage if not fetched yet
+                        console.log("Fetching suggested playlist from local storage...");
+                        const storedSuggestedPlaylist = JSON.parse(localStorage.getItem('suggested_playlist'));
+                        console.log("Suggested playlist fetched from local storage:", storedSuggestedPlaylist);
+                        setSuggestedPlaylist(storedSuggestedPlaylist);
+                        setPlaylistFetched(true);
+                        await delay(1000); // Wait for 1 second before making the next request
                     }
                     setError('');
+                    setIsLoading(false); // Set loading status to false once data is fetched
                 }
             } catch (error) {
-                setError(`Failed to fetch profile or top tracks: ${error.message}`);
+                setError(`Failed to fetch data: ${error.message}`);
+                setIsLoading(false); // Set loading status to false in case of error
             }
         };
+    
+        const delay = (milliseconds) => {
+            return new Promise(resolve => setTimeout(resolve, milliseconds));
+        };
+    
         fetchData();
-    }, []);
+    }, [profileFetched, tracksFetched, playlistFetched]);
 
-    useEffect(() => {
-        const handleSpotifyAuthFlow = async () => {
-            try {
-                const auth = getAuth();
-                const user = auth.currentUser;
-                const code = new URLSearchParams(window.location.search).get('code');
-                if (user && code) {
-                    const { access_token } = await getToken(code);
-                    await storeSpotifyTokens(user.uid, access_token);
-                    setAccessToken(access_token);
-                    await setProfileAndTracks(access_token);
-                    window.history.pushState({}, null, window.location.pathname);
-                }
-            } catch (err) {
-                setError(`Failed to exchange code for token: ${err.message}`);
-            }
-        };
-
-        handleSpotifyAuthFlow();
-    }, []);
-
-    useEffect(() => {
-        if (!playlistAnalyzed && topTracks.length > 0) {
-            suggestPlaylist(topTracks.map(track => track.id));
-            setPlaylistAnalyzed(true);
-        }
-    }, [topTracks, playlistAnalyzed]); // Added playlistAnalyzed to the dependencies
-
-    useEffect(() => {
-        if (suggestedPlaylist.length > 0) {
-            localStorage.setItem('spotify_suggested_playlist', JSON.stringify(suggestedPlaylist));
-        }
-    }, [suggestedPlaylist]);
-
-    useEffect(() => {
-        const storedTopTracks = localStorage.getItem('spotify_top_tracks');
-        if (storedTopTracks) {
-            setTopTracks(JSON.parse(storedTopTracks));
-        }
-    }, []);
-    useEffect(() => {
-        const storedSuggestedPlaylist = localStorage.getItem('spotify_suggested_playlist');
-        if (storedSuggestedPlaylist) {
-            setSuggestedPlaylist(JSON.parse(storedSuggestedPlaylist));
-        }
-    }, []);
-
-    async function setProfileAndTracks(token) {
-        try {
-            const { display_name } = await fetchUserProfile(token);
-            setProfileName(display_name);
-            const topTracksData = await fetchTopTracks(token);
-            setTopTracks(topTracksData.items);
-        } catch (error) {
-            setError(`Failed to fetch profile or top tracks: ${error.message}`);
-        }
-    }
-
-    async function fetchTopTracks(token) {
-        const response = await fetch('https://api.spotify.com/v1/me/top/tracks', {
-            headers: {
-                'Authorization': `Bearer ${token}`,
-            },
-        });
-      
-        if (!response.ok) {
-            throw new Error(`Failed to fetch top tracks: ${response.status} - ${response.statusText}`);
-        }
-      
-        return await response.json();
-    }    
-
-    async function suggestPlaylist(seedTracks) {
-        try {
-            const { danceability, energy, loudness, speechiness, acousticness, instrumentalness, liveness, valence } = await fetchAndCalculateAverageFeatures(seedTracks);
-            const response = await fetch(`https://api.spotify.com/v1/recommendations?limit=5&seed_tracks=${seedTracks.join(',')}&target_danceability=${danceability}&target_energy=${energy}&target_loudness=${loudness}&target_speechiness=${speechiness}&target_acousticness=${acousticness}&target_instrumentalness=${instrumentalness}&target_liveness=${liveness}&target_valence=${valence}`, {
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`,
-                },
-            });
-
-            if (!response.ok) {
-                throw new Error(`Failed to fetch recommendations: ${response.status} - ${response.statusText}`);
-            }
-
-            const { tracks } = await response.json();
-            const filteredPlaylist = tracks.filter(track => !topTracks.some(topTrack => topTrack.id === track.id) && !topTracks.some(topTrack => topTrack.name === track.name));
-            setSuggestedPlaylist(filteredPlaylist);
-        } catch (error) {
-            setError(`Failed to fetch recommendations: ${error.message}`);
-        }
-    }
-
-    async function fetchAndCalculateAverageFeatures(seedTracks) {
-        const response = await fetch(`https://api.spotify.com/v1/audio-features/?ids=${seedTracks.join(',')}`, {
-            headers: {
-                'Authorization': `Bearer ${accessToken}`,
-            },
-        });
-
-        if (!response.ok) {
-            throw new Error(`Failed to fetch audio features: ${response.status} - ${response.statusText}`);
-        }
-
-        const { audio_features } = await response.json();
-
-        const sum = arr => arr.reduce((acc, val) => acc + val, 0);
-        const average = arr => sum(arr) / arr.length;
-
-        return {
-            danceability: average(audio_features.map(feature => feature.danceability)),
-            energy: average(audio_features.map(feature => feature.energy)),
-            loudness: average(audio_features.map(feature => feature.loudness)),
-            speechiness: average(audio_features.map(feature => feature.speechiness)),
-            acousticness: average(audio_features.map(feature => feature.acousticness)),
-            instrumentalness: average(audio_features.map(feature => feature.instrumentalness)),
-            liveness: average(audio_features.map(feature => feature.liveness)),
-            valence: average(audio_features.map(feature => feature.valence)),
-        };
-    }
-
+    console.log("Rendering component...");
     return (
         <div>
             <h1>Spotify Profile</h1>
-            {error && <p>Error: {error}</p>}
-            {profileName && <p>Welcome, {profileName}</p>}   
-            <div>
-                <h2>Top Tracks</h2>
-                <ul>
-                    {topTracks.map(track => (
-                        <li key={track.id}>{track.name} by {track.artists.map(artist => artist.name).join(', ')}</li>
-                    ))}
-                </ul>
-            </div>
-            {!profileName && <p>Loading profile...</p>}
-            {!topTracks.length && <p>Loading top tracks...</p>}
-            <h2>Suggested Playlist</h2>
-            <ul>
-                {suggestedPlaylist.map(track => (
-                    <li key={track.id}>{track.name} by {track.artists.map(artist => artist.name).join(', ')}</li>
-                ))}
-            </ul>
+            {isLoading && <p>Loading...</p>} {/* Display loading message if data is being fetched */}
+            {!isLoading && error && <p>Error: {error}</p>} {/* Display error message if there's an error */}
+            {!isLoading && profileName && <p>Welcome, {profileName}</p>}   
+            {!isLoading && (
+                <div>
+                    <h2>Top Tracks</h2>
+                    <ul>
+                        {topTracks.map(track => (
+                            <li key={track.id}>{track.name} by {track.artists.map(artist => artist.name).join(', ')}</li>
+                        ))}
+                    </ul>
+                </div>
+            )}
+            {!isLoading && !profileName && <p>Loading profile...</p>} {/* Display loading message for profile */}
+            {!isLoading && !topTracks.length && <p>Loading top tracks...</p>} {/* Display loading message for top tracks */}
+            {!isLoading && (
+                <div>
+                    <h2>Suggested Playlist</h2>
+                    <ul>
+                        {suggestedPlaylist.map(track => (
+                            <li key={track.id}>{track.name} by {track.artists.map(artist => artist.name).join(', ')}</li>
+                        ))}
+                    </ul>
+                </div>
+            )}
         </div>
     );
 }
