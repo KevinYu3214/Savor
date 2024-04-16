@@ -1,0 +1,24 @@
+@import "../global_styles/abstract/variables.scss";
+
+.browsePL{
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   
+}
+.workoutPL{
+    cursor: pointer;
+}
+
+.overlayPL {
+    position: fixed; // or `absolute` depending on your needs
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.75); // semi-transparent background
+    z-index: 10; // Ensure it's above other content
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }

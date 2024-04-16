@@ -1,7 +1,7 @@
 import React from "react";
 import MusicList from "./MusicList";
 import Star from "../components/Star.jsx";
-// import "./PlaylistComponent.scss"
+import "./PlaylistComponent.scss";
 
 const PlaylistComponent = () => {
   return (
