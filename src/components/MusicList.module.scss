@@ -33,11 +33,15 @@
     cursor: pointer;
     display: inline-block;
     position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 200px;
   }
   .songTitleML:hover{
-    text-decoration:underline;
-    color: $bg2;
-    background-color: pink; 
+    
+    color: $bg3;
+   
   }                
 }
 
