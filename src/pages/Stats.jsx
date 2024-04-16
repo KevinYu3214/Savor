@@ -51,8 +51,6 @@ const Stats = () => {
                         setPlaylistFetched(true);
                         await delay(1000); // Wait for 1 second before making the next request
                     } else if (!playlistFetched) {
-                        // Retrieve suggested playlist from local storage if not fetched yet
-                        console.log("Fetching suggested playlist from local storage...");
                         const storedSuggestedPlaylist = JSON.parse(localStorage.getItem('suggested_playlist'));
                         console.log("Suggested playlist fetched from local storage:", storedSuggestedPlaylist);
                         setSuggestedPlaylist(storedSuggestedPlaylist);

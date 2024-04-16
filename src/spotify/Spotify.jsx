@@ -50,7 +50,7 @@ async function generateSpotifyAuthRequest() {
 
 
 // Exchanges the authorization code for an access token
-async function getToken(code) {
+async function getTokenForFirstTime(code) {
   console.log('getToken called with code:', code);
   if (!code) {
     throw new Error('Authorization code is required.');
@@ -81,8 +81,6 @@ async function getToken(code) {
   }
 
   const tokenData = await response.json();
-  console.log('Token Data:', tokenData); // Debugging to verify token data includes a refresh token
-  saveTokenData(tokenData);
   return tokenData;
 }
 async function getAccessToken(userId) {
@@ -115,22 +113,8 @@ async function getSpotifyTokens(userId) {
     throw new Error('Failed to retrieve Spotify tokens');
   }
 }
-// Saves token data and calculates the expiry time
-function saveTokenData(tokenData) {
-  const now = new Date();
-  const expiresIn = tokenData.expires_in * 1000; // Convert to milliseconds
-  const expiryTime = new Date(now.getTime() + expiresIn);
-  console.log('Saved token data:', tokenData);
-  localStorage.setItem('access_token', tokenData.access_token);
-  localStorage.setItem('expires_at', expiryTime.toISOString());
-  if (tokenData.refresh_token) {
-    localStorage.setItem('refresh_token', tokenData.refresh_token);
-  }
-}
-
 
 async function refreshToken(userId) {
-  // Retrieve the refresh token from Firestore instead of localStorage
   const userRef = doc(db, "User", userId);
   const userDoc = await getDoc(userRef);
   if (!userDoc.exists()) {
@@ -176,14 +160,38 @@ async function refreshToken(userId) {
 }
 
 // Checks if the access token is expired and refreshes it if necessary
+// Checks if the access token is expired and refreshes it if necessary
+// Checks if the access token is expired and refreshes it if necessary
 async function ensureValidToken() {
-  console.log("Checking if the access token");
-  const expiresAt = localStorage.getItem('expires_at');
-  if (!expiresAt || new Date() > new Date(expiresAt)) {
-    await refreshToken();
+  console.log("Checking if the access token is valid");
+  try {
+    const userId = getCurrentUserId(); // Assuming you have a function to get the current user's ID
+    // Retrieve access token and expiration time from Firestore
+    const spotifyTokens = await getSpotifyTokens(userId);
+    console.log("Checking if the access token is valid");
+    if (!spotifyTokens || !spotifyTokens.accessToken || !spotifyTokens.expiresAt) {
+      console.log("No valid access token found. Refreshing token...");
+      await refreshSpotifyToken(userId);
+    } else {
+      const { accessToken, expiresAt } = spotifyTokens;
+      const now = new Date().getTime();
+      const expiresAtDate = new Date(expiresAt.seconds * 1000 + expiresAt.nanoseconds / 1000000);
+
+      if (now > expiresAtDate.getTime()) {
+        console.log("Access token is expired. Refreshing token...");
+        await refreshSpotifyToken(userId);
+      } else {
+        console.log("Access token is valid");
+        return accessToken;
+      }
+    }
+  } catch (error) {
+    console.error("Error checking or refreshing access token:", error.message);
+    throw new Error("Failed to ensure valid token");
   }
-  return localStorage.getItem('access_token');
 }
+
+
 
 async function search(input, setResults) {
   console.log("Checking if the access token is stored in Firestore");
@@ -394,4 +402,4 @@ function isConnectedToSpotify() {
       return false;
   }
 }
-export { getCurrentUserId, suggestPlaylist, fetchTopTracks, storeSpotifyTokens, refreshSpotifyToken, getSpotifyTokens, generateSpotifyAuthRequest, getToken, refreshToken, ensureValidToken, fetchUserProfile, search, isConnectedToSpotify };
+export { getCurrentUserId, suggestPlaylist, fetchTopTracks, storeSpotifyTokens, refreshSpotifyToken, getSpotifyTokens, generateSpotifyAuthRequest, getTokenForFirstTime, refreshToken, ensureValidToken, fetchUserProfile, search, isConnectedToSpotify };
