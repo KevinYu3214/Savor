@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { fetchUserProfile, ensureValidToken, fetchTopTracks, suggestPlaylist } from '../spotify/Spotify'; // Import necessary functions from Spotify module
-
+import Song from '../components/Song';
+import PlaylistComponent from '../components/PlaylistComponent';
 const Stats = () => {
     const [profileName, setProfileName] = useState('');
     const [topTracks, setTopTracks] = useState([]);
@@ -107,11 +108,12 @@ const Stats = () => {
             {!isLoading && suggestedPlaylist.length > 0 && (
                 <div>
                     <h2>Suggested Playlist</h2>
-                    <ul>
+                    <PlaylistComponent songs={suggestedPlaylist}/>
+                    {/* <ul>
                         {suggestedPlaylist.map(track => (
-                            <li key={track.id}>{track.name} by {track.artists.map(artist => artist.name).join(', ')}</li>
+                             <Song result={track} />
                         ))}
-                    </ul>
+                    </ul> */}
                 </div>
             )}
         </div>
