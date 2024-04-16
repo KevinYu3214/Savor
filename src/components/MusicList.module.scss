@@ -36,13 +36,15 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    width: 200px;
+    width: 20%;
   }
   .songTitleML:hover{
     
     color: $bg3;
    
-  }                
+  }   
+  
+  
 }
 
 .album {
