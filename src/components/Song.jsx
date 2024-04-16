@@ -13,6 +13,7 @@ import {
   doc,
 } from "firebase/firestore";
 import Star from "../components/Star.jsx";
+import { getFeatures } from "../spotify/Spotify.jsx";
 
 const Song = ({ result }) => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -28,6 +29,8 @@ const Song = ({ result }) => {
 
   const songCollectionList = collection(db, "Song");
 
+  var energy = getFeatures(result.id, "energy");
+
   useEffect(() => {
     const newAudio = new Audio(result.preview_url);
     setAudio(newAudio);
@@ -42,6 +45,10 @@ const Song = ({ result }) => {
 
   useEffect(() => {
     getSongList();
+  }, []);
+
+  useEffect(() => {
+    console.log(energy);
   }, []);
 
   const getSongList = async () => {
