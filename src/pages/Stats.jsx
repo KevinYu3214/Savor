@@ -4,11 +4,8 @@ import { fetchUserProfile, ensureValidToken, fetchTopTracks, suggestPlaylist } f
 const Stats = () => {
     const [profileName, setProfileName] = useState('');
     const [topTracks, setTopTracks] = useState([]);
-    const [error, setError] = useState('');
     const [suggestedPlaylist, setSuggestedPlaylist] = useState([]);
-    const [profileFetched, setProfileFetched] = useState(false);
-    const [tracksFetched, setTracksFetched] = useState(false);
-    const [playlistFetched, setPlaylistFetched] = useState(false);
+    const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(true); // State to track loading status
 
     useEffect(() => {
@@ -20,41 +17,49 @@ const Stats = () => {
                 if (token) {
                     console.log("Token retrieved:", token);
                     let topTracksData = {};
-                    // Fetch user profile if not fetched yet
-                    if (!profileFetched) {
+                    // Fetch user profile if not fetched yet or stored in localStorage
+                    if (!localStorage.getItem('profileName')) {
                         console.log("Fetching user profile...");
                         const { display_name } = await fetchUserProfile(token);
                         console.log("User profile fetched:", display_name);
+                        localStorage.setItem('profileName', display_name); // Store profileName in local storage
                         setProfileName(display_name);
-                        setProfileFetched(true);
+                        await delay(1000); // Wait for 1 second before making the next request
+                    } else {
+                        const display_name = localStorage.getItem('profileName');
+                        console.log("User profile fetched from local storage:", display_name);
+                        setProfileName(display_name);
                         await delay(1000); // Wait for 1 second before making the next request
                     }
-                    // Fetch top tracks if not fetched yet
-                    if (!tracksFetched) {
+                    // Fetch top tracks if not fetched yet or stored in localStorage
+                    if (!localStorage.getItem('topTracks')) {
                         console.log("Fetching top tracks...");
                         topTracksData = await fetchTopTracks(token);
                         console.log("Top tracks fetched:", topTracksData);
-                        setTopTracks(topTracksData.items);
-                        setTracksFetched(true);
+                        setTopTracks(topTracksData);
+                        localStorage.setItem('topTracks', JSON.stringify(topTracksData.items)); // Store topTracks in local storage
+                        await delay(1000); // Wait for 1 second before making the next request
+                    } else {
+                        const storedTopTracks = JSON.parse(localStorage.getItem('topTracks'));
+                        console.log("Top tracks fetched from local storage:", storedTopTracks);
+                        setTopTracks(storedTopTracks);
                         await delay(1000); // Wait for 1 second before making the next request
                     }
-                    // Fetch suggested playlist if not fetched yet
-                    if (!playlistFetched && !localStorage.getItem('suggested_playlist')) {
+                    // Fetch suggested playlist if not fetched yet or stored in localStorage
+                    if (!localStorage.getItem('suggested_playlist')) {
                         let suggestedTracks = [];
                         if (topTracksData && topTracksData.items) { // Ensure topTracksData.items is defined
                             console.log("Fetching suggested playlist...");
                             suggestedTracks = await suggestPlaylist(token, topTracksData.items.map(track => track.id));
                             console.log("Suggested playlist fetched:", suggestedTracks);
-                            setSuggestedPlaylist(suggestedTracks);
                             localStorage.setItem('suggested_playlist', JSON.stringify(suggestedTracks));
+                            setSuggestedPlaylist(suggestedTracks);
+                            await delay(1000); // Wait for 1 second before making the next request
                         }
-                        setPlaylistFetched(true);
-                        await delay(1000); // Wait for 1 second before making the next request
-                    } else if (!playlistFetched) {
+                    } else {
                         const storedSuggestedPlaylist = JSON.parse(localStorage.getItem('suggested_playlist'));
                         console.log("Suggested playlist fetched from local storage:", storedSuggestedPlaylist);
                         setSuggestedPlaylist(storedSuggestedPlaylist);
-                        setPlaylistFetched(true);
                         await delay(1000); // Wait for 1 second before making the next request
                     }
                     setError('');
@@ -71,7 +76,9 @@ const Stats = () => {
         };
     
         fetchData();
-    }, [profileFetched, tracksFetched, playlistFetched]);
+    }, []);
+    
+    
 
     console.log("Rendering component...");
     return (
