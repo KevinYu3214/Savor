@@ -85,20 +85,42 @@ async function getToken(code) {
   saveTokenData(tokenData);
   return tokenData;
 }
-
-async function getSpotifyTokens(userId) {
-  const userDoc = await getDoc(doc(db, "User", userId));
-  if (userDoc.exists()) {
-      return userDoc.data().spotify || null;
+async function getAccessToken(userId) {
+  try {
+      const userDoc = await getDoc(doc(db, "User", userId));
+      if (userDoc.exists()) {
+          const spotifyTokens = userDoc.data().spotifyTokens;
+          if (spotifyTokens && spotifyTokens.accessToken) {
+              return spotifyTokens.accessToken;
+          }
+      }
+      return null;
+  } catch (error) {
+      console.error('Error fetching access token:', error);
+      return null;
   }
-  return null;
+}
+async function getSpotifyTokens(userId) {
+  try {
+    const userDoc = await getDoc(doc(db, "User", userId));
+    if (userDoc.exists()) {
+      const spotifyTokens = userDoc.data().spotifyTokens || null;
+      console.log('Spotify tokens retrieved from Firestore:', spotifyTokens);
+      return spotifyTokens;
+    }
+    console.log('No Spotify tokens found in Firestore for user:', userId);
+    return null;
+  } catch (error) {
+    console.error('Error retrieving Spotify tokens:', error);
+    throw new Error('Failed to retrieve Spotify tokens');
+  }
 }
 // Saves token data and calculates the expiry time
 function saveTokenData(tokenData) {
   const now = new Date();
   const expiresIn = tokenData.expires_in * 1000; // Convert to milliseconds
   const expiryTime = new Date(now.getTime() + expiresIn);
-
+  console.log('Saved token data:', tokenData);
   localStorage.setItem('access_token', tokenData.access_token);
   localStorage.setItem('expires_at', expiryTime.toISOString());
   if (tokenData.refresh_token) {
@@ -155,6 +177,7 @@ async function refreshToken(userId) {
 
 // Checks if the access token is expired and refreshes it if necessary
 async function ensureValidToken() {
+  console.log("Checking if the access token");
   const expiresAt = localStorage.getItem('expires_at');
   if (!expiresAt || new Date() > new Date(expiresAt)) {
     await refreshToken();
@@ -163,26 +186,35 @@ async function ensureValidToken() {
 }
 
 async function search(input, setResults) {
-    const accessToken = localStorage.getItem('access_token');
-    // Get request using search to get the Artist ID
-    var searchParameters = {
+  console.log("Checking if the access token is stored in Firestore");
+  const userId = getCurrentUserId(); // Assuming you have a function to get the current user's ID
+  const accessToken = await getAccessToken(userId);
+  
+  if (!accessToken) {
+      console.error("Access token not found in Firestore");
+      return;
+  }
+
+  const searchParameters = {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + accessToken
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + accessToken
       }
-    }    
+  };
 
-    // Get request with Artist ID grab all the tracks from that artist
-    var artistID = await fetch('https://api.spotify.com/v1/search?q=' + input + '&type=track', searchParameters)
-      .then(response => response.json())
-      .then(data => {
-        console.log(data.tracks.items);
-        setResults(data.tracks.items);
-      });
+  try {
+      const response = await fetch('https://api.spotify.com/v1/search?q=' + input + '&type=track', searchParameters);
+      if (!response.ok) {
+          throw new Error(`Failed to search for tracks: ${response.status} - ${response.statusText}`);
+      }
 
-    // Display albums to the user
+      const data = await response.json();
+      setResults(data.tracks.items);
+  } catch (error) {
+      console.error('Error searching for tracks:', error);
   }
+}
 
 // Function to fetch the current user's Spotify profile
 async function fetchUserProfile(accessToken) {
@@ -269,6 +301,7 @@ async function storeSpotifyTokens(userId, accessToken, refreshToken, expiresIn) 
       expiresAt: new Date().getTime() + expiresIn * 1000, // Calculate the expiry timestamp
     };
     await setDoc(userRef, { spotifyTokens: tokenData }, { merge: true });
+    console.log('Spotify tokens stored in Firestore:', tokenData);
   } catch (error) {
     console.error("Error storing Spotify tokens:", error);
     throw new Error("Failed to store Spotify tokens");
@@ -342,6 +375,15 @@ async function fetchTopTracks(token) {
     throw new Error(`Failed to fetch top tracks: ${error.message}`);
   }
 }
+const getCurrentUserId = () => {
+  const auth = getAuth();
+  const user = auth.currentUser;
+  if (user) {
+      return user.uid;
+  } else {
+      return null;
+  }
+}
 
 function isConnectedToSpotify() {
   const auth = getAuth();
@@ -352,4 +394,4 @@ function isConnectedToSpotify() {
       return false;
   }
 }
-export { suggestPlaylist, fetchTopTracks, storeSpotifyTokens, refreshSpotifyToken, getSpotifyTokens, generateSpotifyAuthRequest, getToken, refreshToken, ensureValidToken, fetchUserProfile, search, isConnectedToSpotify };
+export { getCurrentUserId, suggestPlaylist, fetchTopTracks, storeSpotifyTokens, refreshSpotifyToken, getSpotifyTokens, generateSpotifyAuthRequest, getToken, refreshToken, ensureValidToken, fetchUserProfile, search, isConnectedToSpotify };
