@@ -30,7 +30,6 @@ const Stats = () => {
                     }
                     console.log("before if");
                     if (!localStorage.getItem('topTracks')) {
-                        console.log("passed");
                         console.log("Fetching top tracks...");
                         const newTopTracks = await fetchTopTracks(token);
                         console.log("Top tracks fetched:", newTopTracks);
@@ -39,7 +38,6 @@ const Stats = () => {
                         localStorage.setItem('topTracks', JSON.stringify(newTopTracks.items)); // Store topTracks in local storage
                         await delay(1000); // Wait for 1 second before making the next request
                     } else {
-                        console.log("failed");
                         const storedTopTracks = JSON.parse(localStorage.getItem('topTracks'));
                         console.log("Top tracks fetched from local storage:", storedTopTracks);
                         setTopTracks(storedTopTracks);

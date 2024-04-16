@@ -13,7 +13,6 @@ import {
   doc,
 } from "firebase/firestore";
 import Star from "../components/Star.jsx";
-import { getFeatures } from "../spotify/Spotify.jsx";
 
 const Song = ({ result }) => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -22,14 +21,13 @@ const Song = ({ result }) => {
   const [selectedDropdownText, setSelectedDropdownText] =
     useState("Dropdown Menu");
   const [rating, setRating] = useState("");
-  const [finishDate, setFinishDate] = useState("");
+  const [date, setDate] = useState("");
   const [notes, setNotes] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
   const songCollectionList = collection(db, "Song");
-
-  var energy = getFeatures(result.id, "energy");
+  const rankingCollectionList = collection(db, "Ranking");
 
   useEffect(() => {
     const newAudio = new Audio(result.preview_url);
@@ -47,10 +45,6 @@ const Song = ({ result }) => {
     getSongList();
   }, []);
 
-  useEffect(() => {
-    console.log(energy);
-  }, []);
-
   const getSongList = async () => {
     const data = await getDocs(songCollectionList);
     setSongList(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
@@ -64,13 +58,13 @@ const Song = ({ result }) => {
     if (currentSongDetails) {
       // Update local states with the details from the found song entry.
       setRating(currentSongDetails.rating || "");
-      setFinishDate(currentSongDetails.finishDate || "");
+      setDate(currentSongDetails.date || "");
       setNotes(currentSongDetails.notes || "");
       setSelectedDropdownText(currentSongDetails.status || "Status");
     } else {
       // Reset to default values if the song is not found (useful for when a new song is selected).
       setRating("");
-      setFinishDate("");
+      setDate("");
       setNotes("");
       setSelectedDropdownText("Status");
     }
@@ -83,21 +77,27 @@ const Song = ({ result }) => {
     }
 
     try {
-      const songsQuery = query(
-        songCollectionList,
+      const rankingQuery = query(
+        rankingCollectionList,
         where("userId", "==", auth.currentUser.uid),
         where("songId", "==", result.id)
       );
+      const songsQuery = query(
+        songCollectionList,
+        where("songId", "==", result.id)
+      );
+      
 
-      const querySnapshot = await getDocs(songsQuery);
+      const rankingQuerySnapshot = await getDocs(rankingQuery);
+      const songsQuerySnapshot = await getDocs(songsQuery);
 
-      if (!querySnapshot.empty) {
+      if (!rankingQuerySnapshot.empty || !songsQuerySnapshot.empty) {
         // Song exists, update it
-        const songDoc = querySnapshot.docs[0];
-        await updateDoc(doc(db, "Song", songDoc.id), {
+        const rankingDoc = rankingQuerySnapshot.docs[0];
+        await updateDoc(doc(db, "Ranking", rankingDoc.id), {
           status: selectedDropdownText,
           rating,
-          finishDate,
+          date,
           notes,
         });
       } else {
@@ -106,9 +106,12 @@ const Song = ({ result }) => {
           album: result.album.name,
           artist: result.artists[0].name,
           title: result.name,
+          songId: result.id,
+        });
+        await addDoc(rankingCollectionList, {
           status: selectedDropdownText,
           rating,
-          finishDate,
+          date,
           notes,
           userId: auth.currentUser.uid,
           songId: result.id,
@@ -152,16 +155,16 @@ const Song = ({ result }) => {
   const deleteSong = async (songId) => {
     if (!songId) return;
 
-    const songsQuery = query(
-      songCollectionList,
+    const rankingQuery = query(
+      rankingCollectionList,
       where("songId", "==", songId),
       where("userId", "==", auth.currentUser.uid)
     );
-    const querySnapshot = await getDocs(songsQuery);
+    const querySnapshot = await getDocs(rankingQuery);
 
     if (!querySnapshot.empty) {
-      const songDoc = querySnapshot.docs[0];
-      await deleteDoc(doc(db, "Song", songDoc.id));
+      const rankingDoc = querySnapshot.docs[0];
+      await deleteDoc(doc(db, "Ranking", rankingDoc.id));
       console.log("Song deleted successfully");
       getSongList(); // Refresh list
     } else {
@@ -208,8 +211,8 @@ const Song = ({ result }) => {
           className="songDate"
           type="date"
           placeholder="Finish Date"
-          value={finishDate}
-          onChange={(e) => setFinishDate(e.target.value)}
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
         />
         <textarea
           className="songNotes"
@@ -263,3 +266,4 @@ const Song = ({ result }) => {
 };
 
 export default Song;
+
