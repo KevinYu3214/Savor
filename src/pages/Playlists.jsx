@@ -21,14 +21,14 @@ const Playlists = () => {
       {isShown && (
         <div className="overlayPL" onClick={handleClick}>
           <div onClick={(e) => e.stopPropagation()}>
-            <PlaylistComponent></PlaylistComponent>
+            {/*<PlaylistComponent></PlaylistComponent>*/}
           </div>
         </div>
       )}
       <h1>
         Top Music<span>Today</span>
       </h1>
-      <PlaylistComponent />
+      {/*<PlaylistComponent />*/}
     </body>
   );
 };

@@ -5,9 +5,9 @@ import Star from "../components/Star.jsx";
 
 import icon from "../assets/icon.png";
 
-function MusicList() {
-  const songs = [
-    {
+function MusicList(props) {
+  const songs = props.songs;
+  /*{
       key: "1",
       title: "Song 1 is way too long how should I style this",
       artist: "Artist 1",
@@ -47,14 +47,16 @@ function MusicList() {
       year: "2023",
       duration: "1:00",
     },
-  ];
+  ]; */
   return (
     <div className={styles.musicBox}>
       {songs.map((song) => (
         <div className={styles.songItem}>
           <img src={icon} className={styles.album} alt="" />
-          <span className={styles.songTitleML}>{song.title}</span>
-          <div className={styles.artistNameML}>{song.artist}</div>
+          <span className={styles.songTitleML}>{song.name}</span>
+          <div className={styles.artistNameML}>
+            {song.artists.map((artist) => artist.name).join(", ")}
+          </div>
           <Star className={styles.rank} />
           <div className={styles.duration}> {song.duration} </div>
         </div>

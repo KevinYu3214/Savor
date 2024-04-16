@@ -3,7 +3,7 @@ import MusicList from "./MusicList";
 import Star from "../components/Star.jsx";
 import "./PlaylistComponent.scss";
 
-const PlaylistComponent = () => {
+const PlaylistComponent = (props) => {
   return (
     <div className="containerPL">
       <div className="playlistDetails">
@@ -13,12 +13,12 @@ const PlaylistComponent = () => {
 
       <div className="musicListDetails">
         <div className="blank"> Blankkkkkkk</div>
-        <div className="songTitle"> Title </div>
+        <div className="title"> Title </div>
         <div> Album </div>
         <div> Rank </div>
         <div> Duration </div>
       </div>
-      <MusicList />
+      <MusicList songs={props.songs} />
     </div>
   );
 };
