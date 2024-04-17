@@ -1,0 +1,104 @@
+.main {
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    margin-top: 80vh;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.maskText {
+    height: 50vh; /* Decreased height */
+    background-image: url("../assets/generatePlaylistImages/activity/sleeping.jpeg"); /* Use the sleeping image as background */
+    background-size: cover; /* Fill width and height without stretching */
+    background-position: center;
+    font-size: 85px; /* Reduced font size */
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 85px; /* Reduced line height */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding-top: 50px; /* Reduced padding */
+    background-clip: text; /* Clip the background to the text */
+    -webkit-background-clip: text; /* For browser compatibility */
+    color: transparent; /* Hide the text */
+    user-select: none; /* Disable text selection */
+    pointer-events: none; /* Disable pointer events */
+}
+
+
+.overlay {
+    position: absolute;
+    top: 60%; /* Adjusted position from the top */
+    left: 25%; /* Adjusted position from the left */
+    width: 60%; /* Reduced width */
+    height: 30%; /* Reduced height */
+    background: rgba(0, 0, 0, 0.5); /* Transparent gradient background */
+    border-radius: 50px; /* Adjusted border radius for slight curvature */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden; /* Hide overflowing content */
+}
+
+.tags {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto; /* Enable horizontal scrolling */
+    margin-bottom: 10px; /* Add some margin to the bottom for spacing */
+    padding: 0 10px; /* Add padding to prevent tags from sticking to the edges */
+    max-width: calc(100% - 20px); /* Limit maximum width to prevent horizontal scrolling of overlay */
+}
+
+.tags button {
+    background-color: #fff;
+    color: #000;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    white-space: nowrap; /* Prevent text from wrapping */
+}
+
+.arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.arrow.left {
+    left: 0;
+}
+
+.arrow.right {
+    right: 0;
+}
+
+.arrow:before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 6px;
+    height: 6px;
+    border-top: 2px solid white;
+    border-right: 2px solid white;
+    transform: rotate(45deg);
+}
+
+.arrow.right:before {
+    transform: rotate(-135deg);
+}
+.aiImage {
+    border-radius: 100px; /* Adjusted border radius for slight curvature */
+  }
+  

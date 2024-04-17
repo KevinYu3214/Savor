@@ -2,12 +2,25 @@ import React, { useEffect, useState } from 'react';
 import { fetchUserProfile, ensureValidToken, fetchTopTracks, suggestPlaylist } from '../spotify/Spotify'; // Import necessary functions from Spotify module
 import Song from '../components/Song';
 import PlaylistComponent from '../components/PlaylistComponent';
+
+import sleeping from "../assets/generatePlaylistImages/activity/sleeping.jpeg";
+import cleaning from "../assets/generatePlaylistImages/activity/cleaning.jpeg";
+import cooking from "../assets/generatePlaylistImages/activity/cooking.jpeg";
+import driving from "../assets/generatePlaylistImages/activity/driving.jpeg";
+import party from "../assets/generatePlaylistImages/activity/party.jpeg";
+import studying from "../assets/generatePlaylistImages/activity/studying.jpeg";
+import workout from "../assets/generatePlaylistImages/activity/workout.jpeg";
+import './Stats.scss'; // Import the SCSS file
+
 const Stats = () => {
     const [profileName, setProfileName] = useState('');
     const [topTracks, setTopTracks] = useState([]);
     const [suggestedPlaylist, setSuggestedPlaylist] = useState([]);
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(true); // State to track loading status
+    const [currentImage, setCurrentImage] = useState(sleeping); // State to track the current image
+    const [currentText, setCurrentText] = useState('Sleeping'); // State to track the current text
+    const [maskTextBackground, setMaskTextBackground] = useState(sleeping); // State to track the background image for maskText
 
     useEffect(() => {
         console.log("Fetching data...");
@@ -83,7 +96,11 @@ const Stats = () => {
         fetchData();
     }, []);
     
-    
+    const handleTagClick = (image, text) => {
+        setCurrentImage(image);
+        setCurrentText(text);
+        setMaskTextBackground(image); // Set the background image for maskText
+    };
 
     console.log("Rendering component...");
     return (
@@ -116,6 +133,29 @@ const Stats = () => {
                     </ul> */}
                 </div>
             )}
+
+            <div className="main">
+                {/* The curved, somewhat transparent box */}
+                <div className="overlay">
+                    <div className="maskText" style={{backgroundImage: `url(${maskTextBackground})`}}>
+                        <h2>{currentText}</h2>
+                    </div>
+                    <div className="tags">
+                        {/* Clickable tags */}
+                        <button onClick={() => handleTagClick(sleeping, 'Sleeping')}>Sleeping</button>
+                        <button onClick={() => handleTagClick(cleaning, 'Cleaning')}>Cleaning</button>
+                        <button onClick={() => handleTagClick(cooking, 'Cooking')}>Cooking</button>
+                        <button onClick={() => handleTagClick(driving, 'Driving')}>Driving</button>
+                        <button onClick={() => handleTagClick(party, 'Party')}>Party</button>
+                        <button onClick={() => handleTagClick(studying, 'Studying')}>Studying</button>
+                        <button onClick={() => handleTagClick(workout, 'Workout')}>Workout</button>
+                    </div>
+                    <div className="arrow left"></div>
+                    <div className="arrow right"></div>
+                </div>
+                {/* The image */}
+                <img src={currentImage} alt="activity" className="aiImage" />
+            </div>
         </div>
     );
 }
