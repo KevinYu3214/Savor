@@ -204,3 +204,25 @@ html {
     all: unset;
   }
   
+  .overlayStats{
+    position: fixed; // or `absolute` depending on your needs
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.75); // semi-transparent background
+    z-index: 10; // Ensure it's above other content
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .playlistIcon{
+    display: flex;
+    align-items: center;
+    width: 10%;
+    height: 10%;
+    cursor: pointer;
+    background-color: grey;
+    box-shadow: 10px;
+  }

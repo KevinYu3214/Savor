@@ -36,6 +36,10 @@ const Stats = () => {
     setPlaylistShown(true);
   };
 
+  const handleOverlayClick = () => {
+    setPlaylistShown(false);
+  };
+
   useEffect(() => {
     console.log("Fetching data...");
     const fetchData = async () => {
@@ -168,14 +172,28 @@ const Stats = () => {
       {!isLoading && suggestedPlaylist.length > 0 && (
         <div>
           <h2>Suggested Playlist</h2>
-          <PlaylistComponent songs={suggestedPlaylist} />
-          <img
-            src={podium}
-            onClick={() => handlePlaylistClick(suggestedPlaylist)}
-          />
+          <div className="TopPlaylistContainer">
+            <img
+              className="playlistIcon"
+              src={podium}
+              onClick={() => handlePlaylistClick(topTracks)}
+            />
+            <h3 clasName="playlistTitle">Your Top Tracks</h3>
+          </div>
+          <div className="TopPlaylistContainer">
+            <img
+              className="playlistIcon"
+              src={podium}
+              onClick={() => handlePlaylistClick(suggestedPlaylist)}
+            />
+            <h3 clasName="playlistTitle">Suggested Tracks</h3>
+          </div>
+
           {playlistShown && (
-            <div>
-              <PlaylistComponent songs={toDisplay} />
+            <div className="overlayStats" onClick={handleOverlayClick}>
+              <div onClick={(e) => e.stopPropagation()}>
+                <PlaylistComponent songs={toDisplay} />
+              </div>
             </div>
           )}
           {/* <ul>
