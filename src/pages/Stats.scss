@@ -1,51 +1,17 @@
-.main {
-    height: 100vh;
-    width: 100%;
-    overflow: hidden;
-    position: relative;
-    margin-top: 80vh;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.maskText {
-    height: 50vh; /* Decreased height */
-    background-image: url("../assets/generatePlaylistImages/activity/sleeping.jpeg"); /* Use the sleeping image as background */
-    background-size: cover; /* Fill width and height without stretching */
-    background-position: center;
-    font-size: 85px; /* Reduced font size */
-    text-transform: uppercase;
-    text-align: center;
-    line-height: 85px; /* Reduced line height */
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding-top: 50px; /* Reduced padding */
-    background-clip: text; /* Clip the background to the text */
-    -webkit-background-clip: text; /* For browser compatibility */
-    color: transparent; /* Hide the text */
-    user-select: none; /* Disable text selection */
-    pointer-events: none; /* Disable pointer events */
-}
-
-
-.overlay {
-    position: absolute;
-    top: 60%; /* Adjusted position from the top */
-    left: 25%; /* Adjusted position from the left */
-    width: 60%; /* Reduced width */
-    height: 30%; /* Reduced height */
-    background: rgba(0, 0, 0, 0.5); /* Transparent gradient background */
-    border-radius: 50px; /* Adjusted border radius for slight curvature */
+.orchid-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden; /* Hide overflowing content */
+    margin-top: 80px;
+    background-color: mediumorchid;
+    height: 85vh;
+    display: flex;
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+    position: relative; /* Add position relative */
 }
 
 .tags {
+    margin-top: 50px;
     display: flex;
     gap: 20px;
     overflow-x: auto; /* Enable horizontal scrolling */
@@ -63,7 +29,16 @@
     cursor: pointer;
     white-space: nowrap; /* Prevent text from wrapping */
 }
-
+body,
+html {
+  font-family: "Poppins", sans-serif;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-weight: bold;
+  color: black;
+}
 .arrow {
     position: absolute;
     top: 50%;
@@ -100,5 +75,132 @@
 }
 .aiImage {
     border-radius: 100px; /* Adjusted border radius for slight curvature */
+  }
+  
+
+  /* Define styles for the specific div with class "custom-div" */
+.custom-div {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: center;
+    min-width: 650px;
+    min-height: 400px;
+    max-width: 650px;
+    max-height: 400px;
+    background: linear-gradient(
+        35deg,
+        white 0%,
+        white 84.7%,
+        MediumOrchid 85%,
+        MediumOrchid 91%,
+        white 91.3%
+      );    box-shadow: 0 10px 60px 0 DarkViolet, inset 0px -10px 17px 2px MediumOrchid;
+    border-radius: 25px;
+    z-index: 1; /* Adjust z-index to bring the custom-div above other elements */
+  }
+  
+  .custom-div::before {
+    position: absolute;
+    backdrop-filter: blur(15px);
+    bottom: -40px;
+    right: -45px;
+    width: 140px;
+    height: 140px;
+    content: "";
+    border-radius: 800px;
+    background: #ffffff66;
+    box-shadow: 0 10px 30px DarkViolet, inset 0px -8px 15px 0px rgba(128, 0, 128, 0.5); /* Adjusted box-shadow values */
+    border: 0.1px solid transparent;
+  }
+  
+  .custom-div > p {
+    position: relative;
+    right: -10px;
+    bottom: 15px;
+    font-size: 60pt;
+    font-weight: bolder;
+    margin: 0;
+    padding: 20px 35px 10px 25px;
+    line-height: 36pt;
+    text-align: center;
+    color: #3d0d49;
+    align-self: center;
+    order: 2;
+  }
+  
+  .custom-div > p > span {
+    position: absolute;
+    bottom: -10px;
+    left: 15%;
+    width: 70%;
+    height: 30px;
+    background: MediumOrchid;
+    content: "";
+    z-index: -1;
+  }
+  
+  .custom-div > p > i {
+    color: white;
+    display: block; /* Ensure the span is a block element */
+    margin-top: 30px;
+    text-shadow: 1px 1px 0px MediumOrchid, 2px 2px 0px MediumOrchid,
+      3px 3px 0px MediumOrchid, -1px -1px 0px MediumOrchid;
+  }
+  
+  .custom-div::after {
+    backdrop-filter: blur(5px);
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+    top: -30px;
+    left: -30px;
+    width: 40%;
+    height: 20%;
+    overflow: hidden; /* Hide overflow */
+    background: #ffffff55;
+    content: "AVORSAVORSAVORSAVOR";
+    text-align: center;
+    color: #3d0d49;
+    line-height: 30pt;
+    font-size: 20pt;
+    border-radius: 15px;
+    box-shadow: 0 5px 30px 0 MediumOrchid, inset 0px -10px 20px 0px #ba55d3bb;
+    border: 0.1px solid transparent;
+}
+  
+  .custom-div > div {
+    all: unset;
+    position: relative;
+    width: 300px;
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 35px 0px 40px 30px;
+    border-radius: 15px;
+    background-image: url("../assets/generatePlaylistImages/activity/sleeping.jpeg"); /* Use the sleeping image as background */
+    background-size: cover;
+    background-position: center;
+    border: 2px solid #3d0d49;
+    z-index: -1;
+  }
+  
+  .custom-div > div::before {
+    all: unset;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    content: "";
+  }
+  
+  .custom-div > div::after {
+    all: unset;
   }
   

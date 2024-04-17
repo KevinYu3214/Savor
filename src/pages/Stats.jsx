@@ -21,6 +21,7 @@ const Stats = () => {
     const [currentImage, setCurrentImage] = useState(sleeping); // State to track the current image
     const [currentText, setCurrentText] = useState('Sleeping'); // State to track the current text
     const [maskTextBackground, setMaskTextBackground] = useState(sleeping); // State to track the background image for maskText
+    const [selectedImage, setSelectedImage] = useState(sleeping); // Initial value is sleeping image
 
     useEffect(() => {
         console.log("Fetching data...");
@@ -100,7 +101,9 @@ const Stats = () => {
         setCurrentImage(image);
         setCurrentText(text);
         setMaskTextBackground(image); // Set the background image for maskText
+        setSelectedImage(image); // Set the selected image
     };
+    
 
     console.log("Rendering component...");
     return (
@@ -133,14 +136,14 @@ const Stats = () => {
                     </ul> */}
                 </div>
             )}
-
-            <div className="main">
-                {/* The curved, somewhat transparent box */}
-                <div className="overlay">
-                    <div className="maskText" style={{backgroundImage: `url(${maskTextBackground})`}}>
-                        <h2>{currentText}</h2>
+            <div className="orchid-container"> {/* Add the orchid container */}
+                
+                <div className="custom-div">
+                    <p><span></span>mood:<br/><i>SLEEP</i></p>
+                    <div>
                     </div>
-                    <div className="tags">
+                </div>
+                <div className="tags">
                         {/* Clickable tags */}
                         <button onClick={() => handleTagClick(sleeping, 'Sleeping')}>Sleeping</button>
                         <button onClick={() => handleTagClick(cleaning, 'Cleaning')}>Cleaning</button>
@@ -150,11 +153,6 @@ const Stats = () => {
                         <button onClick={() => handleTagClick(studying, 'Studying')}>Studying</button>
                         <button onClick={() => handleTagClick(workout, 'Workout')}>Workout</button>
                     </div>
-                    <div className="arrow left"></div>
-                    <div className="arrow right"></div>
-                </div>
-                {/* The image */}
-                <img src={currentImage} alt="activity" className="aiImage" />
             </div>
         </div>
     );
