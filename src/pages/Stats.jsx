@@ -184,18 +184,18 @@ const Stats = () => {
   const activityEmojis = ["😴", "🧹", "🍳", "🚗", "🎉", "📚", "💪"];
   const activityTexts = ["sleep", "clean", "cook", "drive", "party", "study", "gym"];
   const activityImages = [
-    sleeping, // URL for sleeping image
-    cleaning, // URL for cleaning image
+    sleeping, 
+    cleaning, 
     cooking, // URL for cooking image
     driving, // URL for driving image
     party, // URL for party image
-    studying, // URL for studying image
-    workout // URL for workout image
+    studying,
+    workout 
   ];
   
 
   const energyEmojis = ["⚡️", "🔋", "🌀"];
-  const energyTexts = ["high", "medium energy", "low"];
+  const energyTexts = ["high", "medium", "low"];
   const energyImages = [
     high_energy, // URL for high energy image
     medium_energy, // URL for medium energy image

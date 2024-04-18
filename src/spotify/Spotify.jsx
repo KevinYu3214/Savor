@@ -346,6 +346,24 @@ async function suggestPlaylist(token, seedTracks) {
       throw new Error(`Failed to fetch recommendations: ${error.message}`);
   }
 }
+async function generateCustomPlaylist(token, seedTracks, features) {
+  try {
+    const response = await fetch(`https://api.spotify.com/v1/recommendations?limit=20&seed_tracks=${seedTracks.join(',')}&${features}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch recommendations: ${response.status} - ${response.statusText}`);
+    }
+
+    const { tracks } = await response.json();
+    return tracks;
+  } catch (error) {
+    throw new Error(`Failed to fetch recommendations: ${error.message}`);
+  }
+}
 
 async function fetchAndCalculateAverageFeatures(seedTracks, accessToken) {
   const response = await fetch(`https://api.spotify.com/v1/audio-features/?ids=${seedTracks.join(',')}`, {
