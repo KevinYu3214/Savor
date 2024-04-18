@@ -140,10 +140,9 @@ async function ensureValidToken() {
       await refreshSpotifyToken(userId);
     } else {
       const { accessToken, expiresAt } = spotifyTokens;
-      const now = new Date().getTime();
-      const expiresAtDate = new Date(expiresAt.seconds * 1000 + expiresAt.nanoseconds / 1000000);
-
-      if (now > expiresAtDate.getTime()) {
+      const now = new Date().getTime();  
+      console.log(now + " " + expiresAt);
+      if (now > expiresAt) {
         console.log("Access token is expired. Refreshing token...");
         await refreshSpotifyToken(userId);
       } else {
