@@ -35,18 +35,23 @@ const Stats = () => {
   const [topTracks, setTopTracks] = useState([]);
   const [suggestedPlaylist, setSuggestedPlaylist] = useState([]);
   const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(true); // State to track loading status
+  const [isLoading, setIsLoading] = useState(true); 
   const [toDisplay, setToDisplay] = useState([]); //for loading playlists
   const [playlistShown, setPlaylistShown] = useState(false);
-  const [currentImage, setCurrentImage] = useState(sleeping); // State to track the current image
+  const [currentImage, setCurrentImage] = useState(sleeping);
   const [currentText, setCurrentText] = useState("Sleeping"); // State to track the current text
-  const [maskTextBackground, setMaskTextBackground] = useState(sleeping); // State to track the background image for maskText
-  const [selectedImage, setSelectedImage] = useState(sleeping); // Initial value is sleeping image
-  const [imageColor, setImageColor] = useState(""); // State to store the dominant color extracted from the image
+  const [maskTextBackground, setMaskTextBackground] = useState(sleeping); //state to track the background image for maskText
+  const [selectedImage, setSelectedImage] = useState(sleeping); 
+  const [imageColor, setImageColor] = useState(""); 
   const [secondaryColor, setSecondaryColor] = useState("");
   const [tertiaryColor, setTertiaryColor] = useState("");
   const [category, setCategory] = useState("activity"); // Default category is "activity"
   const [categoryIndex, setCategoryIndex] = useState(0); // State to track the category index
+  const [activity, setActivity] = useState(0.5);
+  const [energy, setEnergy] = useState(0.5);
+  const [mood, setMood] = useState(0.5);
+  const [token, setToken] = useState(null); // State to store the token
+  const [generatedPlaylist, setGeneratedPlaylist] = useState([]);
 
   const handlePlaylistClick = (contents) => {
     setToDisplay(contents);
@@ -87,12 +92,14 @@ const Stats = () => {
     const fetchData = async () => {
       try {
         // Retrieve access token
-        const token = await ensureValidToken();
-        if (token) {
-          console.log("Token retrieved:", token);
+        const fetchedToken = await ensureValidToken();
+        if (fetchedToken) {
+          console.log("Token retrieved:", fetchedToken);
           if (!localStorage.getItem("profileName")) {
             console.log("Fetching user profile...");
-            const { display_name } = await fetchUserProfile(token);
+            setToken(fetchedToken); // Set the token in state
+            console.log("Token retrieved:", token);
+            const { display_name } = await fetchUserProfile(fetchedToken);
             console.log("User profile fetched:", display_name);
             localStorage.setItem("profileName", display_name); // Store profileName in local storage
             setProfileName(display_name);
@@ -107,7 +114,7 @@ const Stats = () => {
           }
           if (!localStorage.getItem("topTracks")) {
             console.log("Fetching top tracks...");
-            let tracks = await fetchTopTracks(token);
+            let tracks = await fetchTopTracks(fetchedToken);
             console.log(tracks);
             console.log(tracks.items);
             if (tracks && tracks.items) {
@@ -131,7 +138,7 @@ const Stats = () => {
 
           if (!localStorage.getItem("suggested_playlist")) {
             let suggestedTracks = [];
-            let tracks = await fetchTopTracks(token);
+            let tracks = await fetchTopTracks(fetchedToken);
             console.log(tracks);
             console.log(tracks.items);
             if (tracks && tracks.items) {
@@ -140,7 +147,7 @@ const Stats = () => {
               const slicedTracks = tracks.items.slice(0, 5);
               console.log(slicedTracks);
               suggestedTracks = await suggestPlaylist(
-                token,
+                fetchedToken,
                 slicedTracks.map((track) => track.id)
               );
               console.log("Suggested playlist fetched:", suggestedTracks);
@@ -267,21 +274,21 @@ const Stats = () => {
   
   
   const handleTagClick = async (image, emoji, text) => {
-    let energy = 0.5; 
-    let mood = 0.5;
-    let activity = 0.5;
+    let newEnergy = 0.5; 
+    let newMood = 0.5;
+    let newActivity = 0.5;
     let imageUrl = ""; // Initialize imageUrl variable to store the selected image URL
     switch (category) {
       case "activity":
-        activity = activityValues[activityEmojis.indexOf(emoji)];
+        newActivity = activityValues[activityEmojis.indexOf(emoji)];
         imageUrl = activityImages[activityEmojis.indexOf(emoji)];
         break;
       case "energy":
-        energy = energyValues[energyEmojis.indexOf(emoji)];
+        newEnergy = energyValues[energyEmojis.indexOf(emoji)];
         imageUrl = energyImages[energyEmojis.indexOf(emoji)];
         break;
       case "mood":
-        mood = moodValues[moodEmojis.indexOf(emoji)];
+        newMood = moodValues[moodEmojis.indexOf(emoji)];
         imageUrl = moodImages[moodEmojis.indexOf(emoji)];
         break;
       default:
@@ -295,12 +302,25 @@ const Stats = () => {
       setSelectedImage(imageUrl); // Set the selected image URL
       extractDominantColor(imageUrl); // Extract dominant color when a tag is clicked
       
+      setActivity(newActivity);
+      setEnergy(newEnergy);
+      setMood(newMood);
+      
       console.log("Energy:", energy);
       console.log("Mood:", mood);
       console.log("Activity:", activity);
     }
   };
-  
+
+  const handleGeneratePlaylistClick = async () => {
+    const fetchedToken = await ensureValidToken();
+    console.log("Generate Playlist");
+    if (fetchedToken) {
+      console.log(fetchedToken, energy, mood, activity);
+      await generateCustomPlaylist(fetchedToken, energy, mood, activity);
+    }
+    console.log(fetchedToken);
+  };
 
   console.log("Rendering component...");
   return (
@@ -378,9 +398,13 @@ const Stats = () => {
           <button onClick={() => handleCategoryChange("energy")}>Energy</button>
           <button onClick={() => handleCategoryChange("mood")}>Mood</button>
         </div>
+        <br></br>
+        <button onClick={handleGeneratePlaylistClick}>Generate Custom Playlist</button>
       </div>
     </div>
   );
 };
 
 export default Stats;
+
+    

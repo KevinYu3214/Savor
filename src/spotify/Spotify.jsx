@@ -349,13 +349,12 @@ async function suggestPlaylist(token, seedTracks) {
 const generateCustomPlaylist = async (token, energy, mood, activity) => {
   try {
     console.log("Generating custom playlist...");
-    // You can access the current values of energy, mood, and activity here
-    console.log("Energy:", energyValues[categoryIndex]);
-    console.log("Mood:", moodValues[categoryIndex]);
-    console.log("Activity:", activityValues[categoryIndex]);
+
+    // Map energy, mood, and activity to seed parameters
+    const seedParams = mapEnergyMoodActivityToSeeds(energy, mood, activity);
 
     // Fetch recommendations from Spotify API based on the selected energy, mood, and activity
-    const response = await fetch(`https://api.spotify.com/v1/recommendations?limit=20&target_energy=${energy}&target_valence=${mood}&target_danceability=${activity}`, {
+    const response = await fetch(`https://api.spotify.com/v1/recommendations?limit=20&${seedParams}`, {
       headers: {
         'Authorization': `Bearer ${token}`,
       },
@@ -366,11 +365,45 @@ const generateCustomPlaylist = async (token, energy, mood, activity) => {
     }
 
     const { tracks } = await response.json();
+    console.log(tracks)
     return tracks;
   } catch (error) {
     throw new Error(`Failed to fetch recommendations: ${error.message}`);
   }
 };
+
+const mapEnergyMoodActivityToSeeds = (energy, mood, activity) => {
+  // Map energy, mood, and activity values to corresponding seed parameters
+  let seedParams = '';
+
+  if (energy >= 0.7) {
+    seedParams += 'seed_genres=party';
+  } else if (energy >= 0.4) {
+    seedParams += 'seed_genres=pop';
+  } else {
+    seedParams += 'seed_genres=acoustic';
+  }
+
+  if (mood >= 0.7) {
+    seedParams += '&seed_tracks=6J2VvzKQY2xd4YXUyW6eIP,3m2Xwri7aQidwm0CqPdHXb,7qiZfU4dY1lWllzX7mPBI3'; // IDs for happy tracks
+  } else if (mood >= 0.4) {
+    seedParams += '&seed_tracks=4iJyoBOLtHqaGxP12qzhQI,3tjFYV6RSFtuktYl3ZtYcq,0rTV5WefWd1J3OwIheTzxM'; // IDs for energetic tracks
+  } else {
+    seedParams += '&seed_tracks=37i9dQZF1DX7qK8ma5wgG1,37i9dQZF1DX6xOPeSOGone,37i9dQZF1DWWEJlAGA9gs0'; // IDs for calm tracks
+  }
+
+  if (activity >= 0.7) {
+    seedParams += '&seed_artists=1uNFoZAHBGtllmzznpCI3s'; // Example artist ID for workout music
+  } else if (activity >= 0.4) {
+    seedParams += '&seed_genres=workout';
+  } else {
+    seedParams += '&seed_genres=chill';
+  }
+
+  return seedParams;
+};
+
+
 
 
 async function fetchAndCalculateAverageFeatures(seedTracks, accessToken) {
