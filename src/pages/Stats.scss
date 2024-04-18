@@ -1,8 +1,12 @@
+$custom-color: var(--custom-color);
+$secondary-color: var(--secondary-color);
+$tertiary-color: var(--secondary-color);
+
 .orchid-container {
+    background-color: $custom-color; // Use the CSS variable for background color
     display: flex;
     flex-direction: column;
     margin-top: 80px;
-    background-color: mediumorchid;
     height: 85vh;
     display: flex;
     align-items: center; /* Center vertically */
@@ -73,10 +77,6 @@ html {
 .arrow.right:before {
     transform: rotate(-135deg);
 }
-.aiImage {
-    border-radius: 100px; /* Adjusted border radius for slight curvature */
-  }
-  
 
   /* Define styles for the specific div with class "custom-div" */
 .custom-div {
@@ -93,10 +93,10 @@ html {
         35deg,
         white 0%,
         white 84.7%,
-        MediumOrchid 85%,
-        MediumOrchid 91%,
+        $custom-color 85%,
+        $custom-color 91%,
         white 91.3%
-      );    box-shadow: 0 10px 60px 0 DarkViolet, inset 0px -10px 17px 2px MediumOrchid;
+      );    box-shadow: 0 10px 60px 0 $secondary-color, inset 0px -10px 17px 2px $custom-color;
     border-radius: 25px;
     z-index: 1; /* Adjust z-index to bring the custom-div above other elements */
   }
@@ -111,7 +111,7 @@ html {
     content: "";
     border-radius: 800px;
     background: #ffffff66;
-    box-shadow: 0 10px 30px DarkViolet, inset 0px -8px 15px 0px rgba(128, 0, 128, 0.5); /* Adjusted box-shadow values */
+    box-shadow: 0 10px 30px $secondary-color, inset 0px -8px 15px 0px $tertiary-color; /* Adjusted box-shadow values */
     border: 0.1px solid transparent;
   }
   
@@ -136,7 +136,7 @@ html {
     left: 15%;
     width: 70%;
     height: 30px;
-    background: MediumOrchid;
+    background: $custom-color;
     content: "";
     z-index: -1;
   }
@@ -145,52 +145,27 @@ html {
     color: white;
     display: block; /* Ensure the span is a block element */
     margin-top: 30px;
-    text-shadow: 1px 1px 0px MediumOrchid, 2px 2px 0px MediumOrchid,
-      3px 3px 0px MediumOrchid, -1px -1px 0px MediumOrchid;
+    text-shadow: 1px 1px 0px $custom-color, 2px 2px 0px $custom-color,
+      3px 3px 0px $custom-color, -1px -1px 0px $custom-color;
   }
-  
-  .custom-div::after {
-    backdrop-filter: blur(5px);
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Center vertically */
-    justify-content: center; /* Center horizontally */
-    top: -30px;
-    left: -30px;
-    width: 40%;
-    height: 20%;
-    overflow: hidden; /* Hide overflow */
-    background: #ffffff55;
-    content: "AVORSAVORSAVORSAVOR";
-    text-align: center;
-    color: #3d0d49;
-    line-height: 30pt;
-    font-size: 20pt;
-    border-radius: 15px;
-    box-shadow: 0 5px 30px 0 MediumOrchid, inset 0px -10px 20px 0px #ba55d3bb;
-    border: 0.1px solid transparent;
-}
-  
-  .custom-div > div {
+
+  .custom-image-container {
     all: unset;
     position: relative;
     width: 300px;
-    height: 250px;
+    height: 300px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     margin: 35px 0px 40px 30px;
     border-radius: 15px;
-    background-image: url("../assets/generatePlaylistImages/activity/sleeping.jpeg"); /* Use the sleeping image as background */
     background-size: cover;
     background-position: center;
-    border: 2px solid #3d0d49;
     z-index: -1;
   }
   
-  .custom-div > div::before {
+  .custom-image-container::before {
     all: unset;
     position: absolute;
     top: 0;
@@ -199,8 +174,13 @@ html {
     height: 100%;
     content: "";
   }
-  
-  .custom-div > div::after {
+  .custom-image-container img {
+    border: 2px solid #3d0d49;
+    max-width: 100%; /* Ensure the image doesn't exceed the container width */
+    max-height: 100%; /* Ensure the image doesn't exceed the container height */
+    border-radius: 15px; /* Match the border radius of the container */
+  }
+  .custom-image-container::after {
     all: unset;
   }
   

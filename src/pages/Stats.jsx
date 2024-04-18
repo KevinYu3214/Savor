@@ -7,6 +7,9 @@ import {
 } from "../spotify/Spotify"; // Import necessary functions from Spotify module
 import Song from "../components/Song";
 import PlaylistComponent from "../components/PlaylistComponent";
+import { ColorExtractor } from 'react-color-extractor';
+import tinycolor from 'tinycolor2'; // Import tinycolor2 library
+
 
 import sleeping from "../assets/generatePlaylistImages/activity/sleeping.jpeg";
 import cleaning from "../assets/generatePlaylistImages/activity/cleaning.jpeg";
@@ -30,6 +33,9 @@ const Stats = () => {
   const [currentText, setCurrentText] = useState("Sleeping"); // State to track the current text
   const [maskTextBackground, setMaskTextBackground] = useState(sleeping); // State to track the background image for maskText
   const [selectedImage, setSelectedImage] = useState(sleeping); // Initial value is sleeping image
+  const [imageColor, setImageColor] = useState(""); // State to store the dominant color extracted from the image
+  const [secondaryColor, setSecondaryColor] = useState("");
+  const [tertiaryColor, setTertiaryColor] = useState("");
 
   const handlePlaylistClick = (contents) => {
     setToDisplay(contents);
@@ -38,6 +44,36 @@ const Stats = () => {
 
   const handleOverlayClick = () => {
     setPlaylistShown(false);
+  };
+
+  const extractDominantColor = (colors) => {
+    console.log("ExtractDominantColor");
+    if (colors && colors.length > 0) {
+      const primaryColor = colors[0]; // Get the first color
+      console.log("primaryColor", colors);
+      setImageColor(primaryColor);
+  
+      // Call getColors to get both secondary and tertiary colors
+      const { secondaryColor, tertiaryColor } = getColors(primaryColor);
+  
+      // Set the secondary and tertiary colors
+      setSecondaryColor(secondaryColor);
+      setTertiaryColor(tertiaryColor);
+  
+      console.log("secondaryColor", secondaryColor); // Log the secondary color
+      console.log("tertiaryColor", tertiaryColor); // Log the tertiary color
+    }
+  };
+
+  const getColors = (color) => {
+    // Convert the color to tinycolor instance
+    const primaryColor = tinycolor(color);
+    // Calculate the complementary color
+    const secondaryColor = primaryColor.darken(20).toHexString();
+    const tertiaryColor = primaryColor.darken(10).toHexString();
+
+    // Return the hexadecimal representation of the secondary color
+    return { secondaryColor, tertiaryColor };
   };
 
   useEffect(() => {
@@ -135,12 +171,16 @@ const Stats = () => {
     fetchData();
   }, []);
 
-  const handleTagClick = (image, text) => {
-    setCurrentImage(image);
-    setCurrentText(text);
-    setMaskTextBackground(image); // Set the background image for maskText
-    setSelectedImage(image); // Set the selected image
+  const handleTagClick = async (image, text) => {
+    if (selectedImage !== image) { // Check if the selected image has changed
+      setCurrentImage(image);
+      setCurrentText(text);
+      setMaskTextBackground(image); // Set the background image for maskText
+      setSelectedImage(image); // Set the selected image
+      extractDominantColor(image); // Extract dominant color when a tag is clicked
+    }
   };
+  
 
   console.log("Rendering component...");
   return (
@@ -178,7 +218,7 @@ const Stats = () => {
               src={podium}
               onClick={() => handlePlaylistClick(topTracks)}
             />
-            <h3 clasName="playlistTitle">Your Top Tracks</h3>
+            <h3 className="playlistTitle">Your Top Tracks</h3>
           </div>
           <div className="TopPlaylistContainer">
             <img
@@ -186,7 +226,7 @@ const Stats = () => {
               src={podium}
               onClick={() => handlePlaylistClick(suggestedPlaylist)}
             />
-            <h3 clasName="playlistTitle">Suggested Tracks</h3>
+            <h3 className="playlistTitle">Suggested Tracks</h3>
           </div>
 
           {playlistShown && (
@@ -203,8 +243,9 @@ const Stats = () => {
                     </ul> */}
         </div>
       )}
-      <div className="orchid-container">
-        {" "}
+      <div className="orchid-container" 
+        style={{ "--custom-color": imageColor, "--secondary-color": secondaryColor,
+        "--tertiary-color": tertiaryColor }}>
         {/* Add the orchid container */}
         <div className="custom-div">
           <p>
@@ -212,8 +253,14 @@ const Stats = () => {
             <br />
             <i>SLEEP</i>
           </p>
-          <div></div>
-        </div>
+          <div className="custom-image-container">
+          <ColorExtractor getColors={extractDominantColor}>
+              <img src={selectedImage} alt="Selected" />
+            </ColorExtractor>
+
+          </div>
+          <image></image>
+                  </div>
         <div className="tags">
           {/* Clickable tags */}
           <button onClick={() => handleTagClick(sleeping, "Sleeping")}>
