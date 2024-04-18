@@ -121,7 +121,7 @@ const Stats = () => {
               localStorage.setItem("topTracks", JSON.stringify(tracks.items)); // Store topTracks in local storage
               setTopTracks(tracks.items);
               console.log(topTracks);
-              await delay(1000); // Wait for 1 second before making the next request
+              await delay(2000); // Wait for 2 seconds before making the next request
             }
           } else {
             const storedTopTracks = JSON.parse(
@@ -165,6 +165,7 @@ const Stats = () => {
               storedSuggestedPlaylist
             );
             setSuggestedPlaylist(storedSuggestedPlaylist);
+            await delay(500);
           }
           setError("");
           setIsLoading(false); // Set loading status to false once data is fetched
@@ -172,7 +173,7 @@ const Stats = () => {
       } catch (error) {
         setError(`Failed to fetch data: ${error.message}`);
         setIsLoading(false); // Set loading status to false in case of error
-      }
+      } 
     };
 
     fetchData();
@@ -323,8 +324,17 @@ const Stats = () => {
   console.log("Rendering component...");
   return (
     <div>
-      <h1>Spotify Profile</h1>
-      {isLoading && <p>Loading...</p>}
+      
+      {isLoading && 
+        <section class="wrapper">
+            <div class="loader">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+        </section>}
+        {!isLoading && <h1>Spotify Profile</h1>}
       {!isLoading && error && <p>Error: {error}</p>}
       {!isLoading && profileName && <p>Welcome, {profileName}</p>}
       {!isLoading && topTracks.length > 0 && (
@@ -373,6 +383,7 @@ const Stats = () => {
           )}
         </div>
       )}
+      {!isLoading && (
       <div className="orchid-container" 
         style={{ "--custom-color": imageColor, "--secondary-color": secondaryColor,
         "--tertiary-color": tertiaryColor }}>
@@ -399,6 +410,7 @@ const Stats = () => {
         <br></br>
         <button onClick={handleGeneratePlaylistClick}>Generate Custom Playlist</button>
       </div>
+      )}
       {!isLoading && generatedPlaylist.length > 0 && (
         <div>
             <h2>Suggested Playlist</h2>
@@ -411,6 +423,7 @@ const Stats = () => {
             </div>
         </div>
       )}
+      
     </div>
   );
 };
