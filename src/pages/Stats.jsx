@@ -47,10 +47,8 @@ const Stats = () => {
   };
 
   const extractDominantColor = (colors) => {
-    console.log("ExtractDominantColor");
     if (colors && colors.length > 0) {
       const primaryColor = colors[0]; // Get the first color
-      console.log("primaryColor", colors);
       setImageColor(primaryColor);
   
       // Call getColors to get both secondary and tertiary colors
@@ -59,9 +57,6 @@ const Stats = () => {
       // Set the secondary and tertiary colors
       setSecondaryColor(secondaryColor);
       setTertiaryColor(tertiaryColor);
-  
-      console.log("secondaryColor", secondaryColor); // Log the secondary color
-      console.log("tertiaryColor", tertiaryColor); // Log the tertiary color
     }
   };
 
@@ -249,9 +244,9 @@ const Stats = () => {
         {/* Add the orchid container */}
         <div className="custom-div">
           <p>
-            <span></span>mood:
+            <span></span>now:
             <br />
-            <i>SLEEP</i>
+            <i>{currentText}</i>
           </p>
           <div className="custom-image-container">
           <ColorExtractor getColors={extractDominantColor}>
@@ -262,26 +257,28 @@ const Stats = () => {
           <image></image>
                   </div>
         <div className="tags">
-          {/* Clickable tags */}
-          <button onClick={() => handleTagClick(sleeping, "Sleeping")}>
-            Sleeping
+          <button onClick={() => handleTagClick(sleeping, "sleep")}>
+            😴
           </button>
-          <button onClick={() => handleTagClick(cleaning, "Cleaning")}>
-            Cleaning
+          <button onClick={() => handleTagClick(cleaning, "clean")}>
+            🧹
           </button>
-          <button onClick={() => handleTagClick(cooking, "Cooking")}>
-            Cooking
+          <button onClick={() => handleTagClick(cooking, "cook")}>
+            🍳
           </button>
-          <button onClick={() => handleTagClick(driving, "Driving")}>
-            Driving
+          <button onClick={() => handleTagClick(driving, "drive")}>
+            🚗
           </button>
-          <button onClick={() => handleTagClick(party, "Party")}>Party</button>
-          <button onClick={() => handleTagClick(studying, "Studying")}>
-            Studying
+          <button onClick={() => handleTagClick(party, "party")}>
+            🎉
           </button>
-          <button onClick={() => handleTagClick(workout, "Workout")}>
-            Workout
+          <button onClick={() => handleTagClick(studying, "study")}>
+            📚
           </button>
+          <button onClick={() => handleTagClick(workout, "gym")}>
+            💪
+          </button>
+
         </div>
       </div>
     </div>
