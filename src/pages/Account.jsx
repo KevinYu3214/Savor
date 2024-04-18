@@ -18,6 +18,7 @@ const Account = () => {
 
   const fetchSpotifyConnectionStatus = async () => {
     const connected = await isConnectedToSpotify();
+    console.log(connected)
     setSpotifyConnected(connected);
   };
 

@@ -437,6 +437,7 @@ async function getCurrentUserId() {
 async function isConnectedToSpotify() {
   try {
     const userId = await getCurrentUserId();
+    console.log(userId);
     if (!userId) {
           return false;
         }
@@ -455,24 +456,5 @@ async function isConnectedToSpotify() {
   }
 }
 
-async function getFeatures(song_id, feature){
-  const accessToken = localStorage.getItem('access_token');
-  // Get request using search to get the Artist ID
-  var searchParameters = {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + accessToken
-    }
-  }    
-  var audio_features = await fetch('https://api.spotify.com/v1/audio-features/' + song_id, searchParameters)
-    .then(response => response.json())
 
-
-  if(feature == "valence"){ return audio_features.valence; }
-  if(feature == "danceability"){ return audio_features.danceability; }
-  if(feature == "energy"){ return audio_features.energy; }
-  else return;
-}
-
-export {getTokenAndSet, generateCustomPlaylist, getFeatures, getCurrentUserId, suggestPlaylist, fetchTopTracks, refreshSpotifyToken, getSpotifyTokens, generateSpotifyAuthRequest, ensureValidToken, fetchUserProfile, search, isConnectedToSpotify };
+export {getTokenAndSet, generateCustomPlaylist, getCurrentUserId, suggestPlaylist, fetchTopTracks, refreshSpotifyToken, getSpotifyTokens, generateSpotifyAuthRequest, ensureValidToken, fetchUserProfile, search, isConnectedToSpotify };
