@@ -4,12 +4,12 @@ import {
   ensureValidToken,
   fetchTopTracks,
   suggestPlaylist,
+  generateCustomPlaylist
 } from "../spotify/Spotify"; // Import necessary functions from Spotify module
 import Song from "../components/Song";
 import PlaylistComponent from "../components/PlaylistComponent";
 import { ColorExtractor } from 'react-color-extractor';
 import tinycolor from 'tinycolor2'; // Import tinycolor2 library
-
 
 import sleeping from "../assets/generatePlaylistImages/activity/sleeping.jpeg";
 import cleaning from "../assets/generatePlaylistImages/activity/cleaning.jpeg";
@@ -186,13 +186,13 @@ const Stats = () => {
   const activityImages = [
     sleeping, 
     cleaning, 
-    cooking, // URL for cooking image
-    driving, // URL for driving image
-    party, // URL for party image
+    cooking, 
+    driving, 
+    party, 
     studying,
     workout 
   ];
-  
+  const activityValues = [0.1, 0.5, 0.8, 0.6, 0.9, 0.4, 0.7];
 
   const energyEmojis = ["⚡️", "🔋", "🌀"];
   const energyTexts = ["high", "medium", "low"];
@@ -201,6 +201,7 @@ const Stats = () => {
     medium_energy, // URL for medium energy image
     low_energy // URL for low energy image
   ];
+  const energyValues = [0.9, 0.5, 0.2];
 
   const moodEmojis = ["😊", "😄", "😢", "😎"];
   const moodTexts = ["happy", "energetic", "sad", "calm"];  
@@ -210,7 +211,9 @@ const Stats = () => {
     sad, // URL for sad mood image
     calm // URL for calm mood image
   ];
-  
+  const moodValues = [0.9, 0.8, 0.2, 0.5];
+
+
   const handleCategoryChange = (newCategory) => {
     setCategory(newCategory);
     switch (newCategory) {
@@ -264,15 +267,21 @@ const Stats = () => {
   
   
   const handleTagClick = async (image, emoji, text) => {
+    let energy = 0.5; 
+    let mood = 0.5;
+    let activity = 0.5;
     let imageUrl = ""; // Initialize imageUrl variable to store the selected image URL
     switch (category) {
       case "activity":
+        activity = activityValues[activityEmojis.indexOf(emoji)];
         imageUrl = activityImages[activityEmojis.indexOf(emoji)];
         break;
       case "energy":
+        energy = energyValues[energyEmojis.indexOf(emoji)];
         imageUrl = energyImages[energyEmojis.indexOf(emoji)];
         break;
       case "mood":
+        mood = moodValues[moodEmojis.indexOf(emoji)];
         imageUrl = moodImages[moodEmojis.indexOf(emoji)];
         break;
       default:
@@ -285,6 +294,10 @@ const Stats = () => {
       setMaskTextBackground(imageUrl); // Set the background image for maskText
       setSelectedImage(imageUrl); // Set the selected image URL
       extractDominantColor(imageUrl); // Extract dominant color when a tag is clicked
+      
+      console.log("Energy:", energy);
+      console.log("Mood:", mood);
+      console.log("Activity:", activity);
     }
   };
   

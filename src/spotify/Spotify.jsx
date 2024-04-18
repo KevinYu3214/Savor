@@ -346,9 +346,16 @@ async function suggestPlaylist(token, seedTracks) {
       throw new Error(`Failed to fetch recommendations: ${error.message}`);
   }
 }
-async function generateCustomPlaylist(token, seedTracks, features) {
+const generateCustomPlaylist = async (token, energy, mood, activity) => {
   try {
-    const response = await fetch(`https://api.spotify.com/v1/recommendations?limit=20&seed_tracks=${seedTracks.join(',')}&${features}`, {
+    console.log("Generating custom playlist...");
+    // You can access the current values of energy, mood, and activity here
+    console.log("Energy:", energyValues[categoryIndex]);
+    console.log("Mood:", moodValues[categoryIndex]);
+    console.log("Activity:", activityValues[categoryIndex]);
+
+    // Fetch recommendations from Spotify API based on the selected energy, mood, and activity
+    const response = await fetch(`https://api.spotify.com/v1/recommendations?limit=20&target_energy=${energy}&target_valence=${mood}&target_danceability=${activity}`, {
       headers: {
         'Authorization': `Bearer ${token}`,
       },
@@ -363,7 +370,8 @@ async function generateCustomPlaylist(token, seedTracks, features) {
   } catch (error) {
     throw new Error(`Failed to fetch recommendations: ${error.message}`);
   }
-}
+};
+
 
 async function fetchAndCalculateAverageFeatures(seedTracks, accessToken) {
   const response = await fetch(`https://api.spotify.com/v1/audio-features/?ids=${seedTracks.join(',')}`, {
@@ -465,4 +473,4 @@ async function getFeatures(song_id, feature){
   else return;
 }
 
-export {getFeatures, getCurrentUserId, suggestPlaylist, fetchTopTracks, storeSpotifyTokens, refreshSpotifyToken, getSpotifyTokens, generateSpotifyAuthRequest, getTokenForFirstTime, refreshToken, ensureValidToken, fetchUserProfile, search, isConnectedToSpotify };
+export {generateCustomPlaylist, getFeatures, getCurrentUserId, suggestPlaylist, fetchTopTracks, storeSpotifyTokens, refreshSpotifyToken, getSpotifyTokens, generateSpotifyAuthRequest, getTokenForFirstTime, refreshToken, ensureValidToken, fetchUserProfile, search, isConnectedToSpotify };
