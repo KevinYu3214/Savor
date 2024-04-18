@@ -144,7 +144,7 @@ async function ensureValidToken() {
       console.log(now + " " + expiresAt);
       if (now > expiresAt) {
         console.log("Access token is expired. Refreshing token...");
-        await refreshSpotifyToken(userId);
+        return await refreshSpotifyToken(userId);
       } else {
         console.log("Access token is valid");
         return accessToken;
@@ -214,6 +214,7 @@ async function getTokenAndSet () {
     const tokenData = await getTokenForFirstTime(code);
     console.log(tokenData);
     await storeSpotifyTokens(tokenData.access_token, tokenData.refresh_token, tokenData.expires_in);
+    return tokenData.access_token;
     console.log('Spotify authentication successful');
   } catch (error) {
     console.error('Error refreshing Spotify token:', error);
@@ -233,7 +234,7 @@ async function refreshSpotifyToken(userId) {
   const spotifyTokens = userDocSnap.data().spotifyTokens;
   if (!spotifyTokens || !spotifyTokens.refreshToken) {
       console.log("No refresh token available");
-      return;
+      return await getTokenAndSet();
   }
 
   // Prepare the request for refreshing the token
@@ -270,6 +271,11 @@ async function refreshSpotifyToken(userId) {
       accessToken: data.access_token,
       expiresIn: data.expires_in
   };
+}
+function encodeClientCredentials(clientId, clientSecret) {
+  const credentials = `${clientId}:${clientSecret}`;
+  const encodedCredentials = btoa(credentials);
+  return encodedCredentials;
 }
 
 // store tokens in Firestore
