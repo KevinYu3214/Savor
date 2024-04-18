@@ -5,8 +5,7 @@ import "../global_styles/Account.scss";
 import Listening from "../components/Listening";
 import Profile from "../components/Profile";
 import SavedPreference from "../components/SavedPreference";
-import { generateSpotifyAuthRequest, getTokenForFirstTime,isConnectedToSpotify } from "../spotify/Spotify";
-import { storeSpotifyTokens } from "../spotify/Spotify";
+import { generateSpotifyAuthRequest, isConnectedToSpotify, getTokenAndSet } from "../spotify/Spotify";
 
 const Account = () => {
   const { logout, currentUser } = useAuth();
@@ -48,15 +47,7 @@ const Account = () => {
 
   const handleConnectSpotify = async () => {
     try {
-      const code = new URLSearchParams(window.location.search).get('code');
-      if (!code) {
-        console.error('Authorization code not found in URL');
-        return;
-      }
-      const tokenData = await getTokenForFirstTime(code);
-      console.log(tokenData);
-      await storeSpotifyTokens(currentUser.uid, tokenData.access_token, tokenData.refresh_token, tokenData.expires_in);
-      console.log('Spotify authentication successful');
+      await getTokenAndSet()
     } catch (error) {
       console.error('Error refreshing Spotify token:', error);
     }

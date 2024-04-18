@@ -126,52 +126,6 @@ async function getSpotifyTokens(userId) {
   }
 }
 
-
-async function refreshToken(userId) {
-  const userRef = doc(db, "User", userId);
-  const userDoc = await getDoc(userRef);
-  if (!userDoc.exists()) {
-    console.error('User document does not exist in Firestore');
-    throw new Error('User not found');
-  }
-  const refreshToken = userDoc.data().spotifyTokens.refreshToken;
-
-  if (!refreshToken) {
-    console.error('No refresh token available in Firestore for user:', userId);
-    throw new Error('No refresh token available');
-  }
-
-  const response = await fetch(tokenEndpoint, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body: new URLSearchParams({
-      client_id: clientId,
-      grant_type: 'refresh_token',
-      refresh_token: refreshToken,
-    }),
-  });
-
-  if (!response.ok) {
-    console.error('Failed to refresh token', response.statusText);
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-
-  const tokenData = await response.json();
-  // Assume tokenData contains access_token and possibly a new refresh_token
-
-  // Save the refreshed token data back to Firestore
-  await updateDoc(userRef, {
-    "spotifyTokens.accessToken": tokenData.access_token,
-    "spotifyTokens.expiresAt": new Date().getTime() + (tokenData.expires_in * 1000), // Save expiration time
-    // Update the refresh token if a new one was provided
-    ...(tokenData.refresh_token && {"spotifyTokens.refreshToken": tokenData.refresh_token}),
-  });
-
-  return tokenData.access_token;
-}
-
 // ensure token not expired
 async function ensureValidToken() {
   console.log("Checking if the access token is valid");
@@ -251,6 +205,21 @@ async function fetchUserProfile(accessToken) {
   return userData;
 }
 
+async function getTokenAndSet () {
+  try {
+    const code = new URLSearchParams(window.location.search).get('code');
+    if (!code) {
+      console.error('Authorization code not found in URL');
+      return;
+    }
+    const tokenData = await getTokenForFirstTime(code);
+    console.log(tokenData);
+    await storeSpotifyTokens(tokenData.access_token, tokenData.refresh_token, tokenData.expires_in);
+    console.log('Spotify authentication successful');
+  } catch (error) {
+    console.error('Error refreshing Spotify token:', error);
+  }
+}
 
 async function refreshSpotifyToken(userId) {
   // Retrieve the stored refresh token from Firestore
@@ -305,9 +274,9 @@ async function refreshSpotifyToken(userId) {
 }
 
 // store tokens in Firestore
-async function storeSpotifyTokens(userId, accessToken, refreshToken, expiresIn) {
+async function storeSpotifyTokens(accessToken, refreshToken, expiresIn) {
   try {
-    // Check if any required token data is missing
+    const userId = await getCurrentUserId(); // Fetch the current user's ID
     if (!userId || !accessToken || !refreshToken || !expiresIn) {
       throw new Error("Missing required token data");
     }
@@ -506,4 +475,4 @@ async function getFeatures(song_id, feature){
   else return;
 }
 
-export {generateCustomPlaylist, getFeatures, getCurrentUserId, suggestPlaylist, fetchTopTracks, storeSpotifyTokens, refreshSpotifyToken, getSpotifyTokens, generateSpotifyAuthRequest, getTokenForFirstTime, refreshToken, ensureValidToken, fetchUserProfile, search, isConnectedToSpotify };
+export {getTokenAndSet, generateCustomPlaylist, getFeatures, getCurrentUserId, suggestPlaylist, fetchTopTracks, refreshSpotifyToken, getSpotifyTokens, generateSpotifyAuthRequest, ensureValidToken, fetchUserProfile, search, isConnectedToSpotify };
