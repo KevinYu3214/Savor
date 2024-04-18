@@ -38,9 +38,7 @@ const Stats = () => {
   const [isLoading, setIsLoading] = useState(true); 
   const [toDisplay, setToDisplay] = useState([]); //for loading playlists
   const [playlistShown, setPlaylistShown] = useState(false);
-  const [currentImage, setCurrentImage] = useState(sleeping);
   const [currentText, setCurrentText] = useState("Sleeping"); // State to track the current text
-  const [maskTextBackground, setMaskTextBackground] = useState(sleeping); //state to track the background image for maskText
   const [selectedImage, setSelectedImage] = useState(sleeping); 
   const [imageColor, setImageColor] = useState(""); 
   const [secondaryColor, setSecondaryColor] = useState("");
@@ -274,50 +272,51 @@ const Stats = () => {
   
   
   const handleTagClick = async (image, emoji, text) => {
-    let newEnergy = 0.5; 
-    let newMood = 0.5;
-    let newActivity = 0.5;
-    let imageUrl = ""; // Initialize imageUrl variable to store the selected image URL
+    let newEnergy = energy;
+    let newMood = mood;
+    let newActivity = activity;
+    let imageUrl = "";
+  
     switch (category) {
       case "activity":
-        newActivity = activityValues[activityEmojis.indexOf(emoji)];
-        imageUrl = activityImages[activityEmojis.indexOf(emoji)];
+        newActivity = activityValues[activityTexts.indexOf(text)];
+        imageUrl = image;
         break;
       case "energy":
-        newEnergy = energyValues[energyEmojis.indexOf(emoji)];
-        imageUrl = energyImages[energyEmojis.indexOf(emoji)];
+        newEnergy = energyValues[energyTexts.indexOf(text)];
+        imageUrl = image;
         break;
       case "mood":
-        newMood = moodValues[moodEmojis.indexOf(emoji)];
-        imageUrl = moodImages[moodEmojis.indexOf(emoji)];
+        newMood = moodValues[moodTexts.indexOf(text)];
+        imageUrl = image;
         break;
       default:
         return;
     }
     
-    if (selectedImage !== imageUrl) { // Check if the selected image has changed
-      setCurrentImage(imageUrl);
+    if (selectedImage !== imageUrl) {
       setCurrentText(text);
-      setMaskTextBackground(imageUrl); // Set the background image for maskText
-      setSelectedImage(imageUrl); // Set the selected image URL
-      extractDominantColor(imageUrl); // Extract dominant color when a tag is clicked
-      
+      setSelectedImage(imageUrl);
+      extractDominantColor(imageUrl);
+  
       setActivity(newActivity);
       setEnergy(newEnergy);
       setMood(newMood);
       
-      console.log("Energy:", energy);
-      console.log("Mood:", mood);
-      console.log("Activity:", activity);
+      console.log("Energy:", newEnergy);
+      console.log("Mood:", newMood);
+      console.log("Activity:", newActivity);
     }
   };
+  
 
   const handleGeneratePlaylistClick = async () => {
     const fetchedToken = await ensureValidToken();
     console.log("Generate Playlist");
     if (fetchedToken) {
       console.log(fetchedToken, energy, mood, activity);
-      await generateCustomPlaylist(fetchedToken, energy, mood, activity);
+      let tracks = await generateCustomPlaylist(fetchedToken, energy, mood, activity);
+      setGeneratedPlaylist(tracks);
     }
     console.log(fetchedToken);
   };
@@ -401,6 +400,14 @@ const Stats = () => {
         <br></br>
         <button onClick={handleGeneratePlaylistClick}>Generate Custom Playlist</button>
       </div>
+      <h2>Suggested Playlist</h2>
+          <div className="TopPlaylistContainer">
+            <img
+              className="playlistIcon"
+              src={podium}
+              onClick={() => handlePlaylistClick(generatedPlaylist)}
+            />
+          </div>
     </div>
   );
 };
