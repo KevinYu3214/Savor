@@ -175,10 +175,6 @@ const Stats = () => {
       }
     };
 
-    const delay = (milliseconds) => {
-      return new Promise((resolve) => setTimeout(resolve, milliseconds));
-    };
-
     fetchData();
   }, []);
 
@@ -316,11 +312,14 @@ const Stats = () => {
     if (fetchedToken) {
       console.log(fetchedToken, energy, mood, activity);
       let tracks = await generateCustomPlaylist(fetchedToken, energy, mood, activity);
+      await delay(1000); // Wait for 1 second before making the next request
       setGeneratedPlaylist(tracks);
     }
     console.log(fetchedToken);
   };
-
+  const delay = (milliseconds) => {
+    return new Promise((resolve) => setTimeout(resolve, milliseconds));
+  };
   console.log("Rendering component...");
   return (
     <div>
@@ -400,14 +399,18 @@ const Stats = () => {
         <br></br>
         <button onClick={handleGeneratePlaylistClick}>Generate Custom Playlist</button>
       </div>
-      <h2>Suggested Playlist</h2>
-          <div className="TopPlaylistContainer">
-            <img
-              className="playlistIcon"
-              src={podium}
-              onClick={() => handlePlaylistClick(generatedPlaylist)}
-            />
-          </div>
+      {!isLoading && generatedPlaylist.length > 0 && (
+        <div>
+            <h2>Suggested Playlist</h2>
+            <div className="TopPlaylistContainer">
+              <img
+                className="playlistIcon"
+                src={podium}
+                onClick={() => handlePlaylistClick(generatedPlaylist)}
+              />
+            </div>
+        </div>
+      )}
     </div>
   );
 };
