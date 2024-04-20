@@ -7,6 +7,13 @@ import icon from "../assets/icon.png";
 
 function MusicList(props) {
   const songs = props.songs;
+  // Function to convert milliseconds to minutes and seconds
+  const formatDuration = (duration_ms) => {
+    const totalSeconds = Math.floor(duration_ms / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+  };
   /*{
       key: "1",
       title: "Song 1 is way too long how should I style this",
@@ -52,13 +59,16 @@ function MusicList(props) {
     <div className={styles.musicBox}>
       {songs.map((song) => (
         <div className={styles.songItem}>
-          <img src={icon} className={styles.album} alt="" />
+          <img src={song.album.images[1].url} className={styles.album} alt="" />
           <span className={styles.songTitleML}>{song.name}</span>
           <div className={styles.artistNameML}>
             {song.artists.map((artist) => artist.name).join(", ")}
           </div>
           <Star className={styles.rank} />
-          <div className={styles.duration}> {song.duration} </div>
+          <div className={styles.duration}>
+            {" "}
+            {formatDuration(song.duration_ms)}{" "}
+          </div>
         </div>
       ))}
     </div>

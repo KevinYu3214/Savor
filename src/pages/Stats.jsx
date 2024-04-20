@@ -4,12 +4,12 @@ import {
   ensureValidToken,
   fetchTopTracks,
   suggestPlaylist,
-  generateCustomPlaylist
+  generateCustomPlaylist,
 } from "../spotify/Spotify"; // Import necessary functions from Spotify module
 import Song from "../components/Song";
 import PlaylistComponent from "../components/PlaylistComponent";
-import { ColorExtractor } from 'react-color-extractor';
-import tinycolor from 'tinycolor2'; // Import tinycolor2 library
+import { ColorExtractor } from "react-color-extractor";
+import tinycolor from "tinycolor2"; // Import tinycolor2 library
 
 import sleeping from "../assets/generatePlaylistImages/activity/sleeping.jpeg";
 import cleaning from "../assets/generatePlaylistImages/activity/cleaning.jpeg";
@@ -35,12 +35,12 @@ const Stats = () => {
   const [topTracks, setTopTracks] = useState([]);
   const [suggestedPlaylist, setSuggestedPlaylist] = useState([]);
   const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(true); 
+  const [isLoading, setIsLoading] = useState(true);
   const [toDisplay, setToDisplay] = useState([]); //for loading playlists
   const [playlistShown, setPlaylistShown] = useState(false);
   const [currentText, setCurrentText] = useState("Sleeping"); // State to track the current text
-  const [selectedImage, setSelectedImage] = useState(sleeping); 
-  const [imageColor, setImageColor] = useState(""); 
+  const [selectedImage, setSelectedImage] = useState(sleeping);
+  const [imageColor, setImageColor] = useState("");
   const [secondaryColor, setSecondaryColor] = useState("");
   const [tertiaryColor, setTertiaryColor] = useState("");
   const [category, setCategory] = useState("activity"); // Default category is "activity"
@@ -64,10 +64,10 @@ const Stats = () => {
     if (colors && colors.length > 0) {
       const primaryColor = colors[0]; // Get the first color
       setImageColor(primaryColor);
-  
+
       // Call getColors to get both secondary and tertiary colors
       const { secondaryColor, tertiaryColor } = getColors(primaryColor);
-  
+
       // Set the secondary and tertiary colors
       setSecondaryColor(secondaryColor);
       setTertiaryColor(tertiaryColor);
@@ -173,26 +173,32 @@ const Stats = () => {
       } catch (error) {
         setError(`Failed to fetch data: ${error.message}`);
         setIsLoading(false); // Set loading status to false in case of error
-      } 
+      }
     };
 
     fetchData();
   }, []);
 
-
   const actionTexts = ["doing", "energy", "mood"];
 
-
   const activityEmojis = ["😴", "🧹", "🍳", "🚗", "🎉", "📚", "💪"];
-  const activityTexts = ["sleep", "clean", "cook", "drive", "party", "study", "gym"];
+  const activityTexts = [
+    "sleep",
+    "clean",
+    "cook",
+    "drive",
+    "party",
+    "study",
+    "gym",
+  ];
   const activityImages = [
-    sleeping, 
-    cleaning, 
-    cooking, 
-    driving, 
-    party, 
+    sleeping,
+    cleaning,
+    cooking,
+    driving,
+    party,
     studying,
-    workout 
+    workout,
   ];
   const activityValues = [0.1, 0.5, 0.8, 0.6, 0.9, 0.4, 0.7];
 
@@ -201,20 +207,19 @@ const Stats = () => {
   const energyImages = [
     high_energy, // URL for high energy image
     medium_energy, // URL for medium energy image
-    low_energy // URL for low energy image
+    low_energy, // URL for low energy image
   ];
   const energyValues = [0.9, 0.5, 0.2];
 
   const moodEmojis = ["😊", "😄", "😢", "😎"];
-  const moodTexts = ["happy", "energetic", "sad", "calm"];  
+  const moodTexts = ["happy", "energetic", "sad", "calm"];
   const moodImages = [
     happy, // URL for happy mood image
     energetic, // URL for energetic mood image
     sad, // URL for sad mood image
-    calm // URL for calm mood image
+    calm, // URL for calm mood image
   ];
   const moodValues = [0.9, 0.8, 0.2, 0.5];
-
 
   const handleCategoryChange = (newCategory) => {
     setCategory(newCategory);
@@ -246,19 +251,34 @@ const Stats = () => {
     switch (category) {
       case "activity":
         return activityEmojis.map((emoji, index) => (
-          <button key={index} onClick={() => handleTagClick(activityImages[index], emoji, activityTexts[index])}>
+          <button
+            key={index}
+            onClick={() =>
+              handleTagClick(activityImages[index], emoji, activityTexts[index])
+            }
+          >
             {emoji}
           </button>
         ));
       case "energy":
         return energyEmojis.map((emoji, index) => (
-          <button key={index} onClick={() => handleTagClick(energyImages[index], emoji, energyTexts[index])}>
+          <button
+            key={index}
+            onClick={() =>
+              handleTagClick(energyImages[index], emoji, energyTexts[index])
+            }
+          >
             {emoji}
           </button>
         ));
       case "mood":
         return moodEmojis.map((emoji, index) => (
-          <button key={index} onClick={() => handleTagClick(moodImages[index], emoji, moodTexts[index])}>
+          <button
+            key={index}
+            onClick={() =>
+              handleTagClick(moodImages[index], emoji, moodTexts[index])
+            }
+          >
             {emoji}
           </button>
         ));
@@ -266,14 +286,13 @@ const Stats = () => {
         return null;
     }
   };
-  
-  
+
   const handleTagClick = async (image, emoji, text) => {
     let newEnergy = energy;
     let newMood = mood;
     let newActivity = activity;
     let imageUrl = "";
-  
+
     switch (category) {
       case "activity":
         newActivity = activityValues[activityTexts.indexOf(text)];
@@ -290,31 +309,36 @@ const Stats = () => {
       default:
         return;
     }
-    
+
     if (selectedImage !== imageUrl) {
       setCurrentText(text);
       setSelectedImage(imageUrl);
       extractDominantColor(imageUrl);
-  
+
       setActivity(newActivity);
       setEnergy(newEnergy);
       setMood(newMood);
-      
+
       console.log("Energy:", newEnergy);
       console.log("Mood:", newMood);
       console.log("Activity:", newActivity);
     }
   };
-  
 
   const handleGeneratePlaylistClick = async () => {
     const fetchedToken = await ensureValidToken();
     console.log("Generate Playlist");
     if (fetchedToken) {
       console.log(fetchedToken, energy, mood, activity);
-      let tracks = await generateCustomPlaylist(fetchedToken, energy, mood, activity);
+      let tracks = await generateCustomPlaylist(
+        fetchedToken,
+        energy,
+        mood,
+        activity
+      );
       await delay(1000); // Wait for 1 second before making the next request
       setGeneratedPlaylist(tracks);
+      handlePlaylistClick(generatedPlaylist);
     }
     console.log(fetchedToken);
   };
@@ -324,17 +348,17 @@ const Stats = () => {
   console.log("Rendering component...");
   return (
     <div>
-      
-      {isLoading && 
+      {isLoading && (
         <section class="wrapper">
-            <div class="loader">
-              <span></span>
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-        </section>}
-        {!isLoading && <h1>Spotify Profile</h1>}
+          <div class="loader">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </section>
+      )}
+      {!isLoading && <h1>Spotify Profile</h1>}
       {!isLoading && error && <p>Error: {error}</p>}
       {!isLoading && profileName && <p>Welcome, {profileName}</p>}
       {!isLoading && topTracks.length > 0 && (
@@ -384,50 +408,57 @@ const Stats = () => {
         </div>
       )}
       {!isLoading && (
-      <div className="orchid-container" 
-        style={{ "--custom-color": imageColor, "--secondary-color": secondaryColor,
-        "--tertiary-color": tertiaryColor }}>
-        <div className="custom-div">
-          <p>
-            <span></span>{actionTexts[categoryIndex]}:
-            <br />
-            <i>{currentText}</i>
-          </p>
-          <div className="custom-image-container">
-            <ColorExtractor getColors={extractDominantColor}>
-              <img src={selectedImage} alt="Selected" />
-            </ColorExtractor>
+        <div
+          className="orchid-container"
+          style={{
+            "--custom-color": imageColor,
+            "--secondary-color": secondaryColor,
+            "--tertiary-color": tertiaryColor,
+          }}
+        >
+          <div className="custom-div">
+            <p>
+              <span></span>
+              {actionTexts[categoryIndex]}:
+              <br />
+              <i>{currentText}</i>
+            </p>
+            <div className="custom-image-container">
+              <ColorExtractor getColors={extractDominantColor}>
+                <img src={selectedImage} alt="Selected" />
+              </ColorExtractor>
+            </div>
           </div>
+          <div className="tags">{renderTagButtons()}</div>
+          <div className="category-buttons">
+            <button onClick={() => handleCategoryChange("activity")}>
+              Activity
+            </button>
+            <button onClick={() => handleCategoryChange("energy")}>
+              Energy
+            </button>
+            <button onClick={() => handleCategoryChange("mood")}>Mood</button>
+          </div>
+          <br></br>
+          <button onClick={handleGeneratePlaylistClick}>
+            Generate Custom Playlist
+          </button>
         </div>
-        <div className="tags">
-        {renderTagButtons()}
-        </div>
-        <div className="category-buttons">
-          <button onClick={() => handleCategoryChange("activity")}>Activity</button>
-          <button onClick={() => handleCategoryChange("energy")}>Energy</button>
-          <button onClick={() => handleCategoryChange("mood")}>Mood</button>
-        </div>
-        <br></br>
-        <button onClick={handleGeneratePlaylistClick}>Generate Custom Playlist</button>
-      </div>
       )}
       {!isLoading && generatedPlaylist.length > 0 && (
         <div>
-            <h2>Suggested Playlist</h2>
-            <div className="TopPlaylistContainer">
-              <img
-                className="playlistIcon"
-                src={podium}
-                onClick={() => handlePlaylistClick(generatedPlaylist)}
-              />
-            </div>
+          <h2>Suggested Playlist</h2>
+          <div className="TopPlaylistContainer">
+            <img
+              className="playlistIcon"
+              src={podium}
+              onClick={() => handlePlaylistClick(generatedPlaylist)}
+            />
+          </div>
         </div>
       )}
-      
     </div>
   );
 };
 
 export default Stats;
-
-    

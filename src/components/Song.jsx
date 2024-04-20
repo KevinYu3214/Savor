@@ -86,7 +86,6 @@ const Song = ({ result }) => {
         songCollectionList,
         where("songId", "==", result.id)
       );
-      
 
       const rankingQuerySnapshot = await getDocs(rankingQuery);
       const songsQuerySnapshot = await getDocs(songsQuery);
@@ -266,4 +265,3 @@ const Song = ({ result }) => {
 };
 
 export default Song;
-

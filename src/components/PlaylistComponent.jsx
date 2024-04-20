@@ -12,9 +12,9 @@ const PlaylistComponent = ({ songs }) => {
       </div>
 
       <div className="musicListDetails">
-        <div className="blank"> Blankkkkkkk</div>
+        <div className="blank">K </div>
         <div className="title"> Title </div>
-        <div> Album </div>
+        <div className="artistPC"> Artist </div>
         <div> Rank </div>
         <div> Duration </div>
       </div>
