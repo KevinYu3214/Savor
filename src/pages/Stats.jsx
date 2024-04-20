@@ -20,6 +20,7 @@ import studying from "../assets/generatePlaylistImages/activity/studying.jpeg";
 import workout from "../assets/generatePlaylistImages/activity/workout.jpeg";
 import "./Stats.scss"; // Import the SCSS file
 import podium from "../assets/playlist icons/podium.png"; // Import
+import suggestion from "../assets/playlist icons/suggestion.png"; // Import
 
 import high_energy from "../assets/generatePlaylistImages/energy/high_energy.jpeg";
 import low_energy from "../assets/generatePlaylistImages/energy/low_energy.jpeg";
@@ -381,30 +382,32 @@ const Stats = () => {
       )}
       {!isLoading && suggestedPlaylist.length > 0 && (
         <div>
-          <h2>Suggested Playlist</h2>
-          <div className="TopPlaylistContainer">
-            <img
-              className="playlistIcon"
-              src={podium}
-              onClick={() => handlePlaylistClick(topTracks)}
-            />
-            <h3 className="playlistTitle">Your Top Tracks</h3>
-          </div>
-          <div className="TopPlaylistContainer">
-            <img
-              className="playlistIcon"
-              src={podium}
-              onClick={() => handlePlaylistClick(suggestedPlaylist)}
-            />
-            <h3 className="playlistTitle">Suggested Tracks</h3>
-          </div>
-          {playlistShown && (
-            <div className="overlayStats" onClick={handleOverlayClick}>
-              <div onClick={(e) => e.stopPropagation()}>
-                <PlaylistComponent songs={toDisplay} />
-              </div>
+          <h1>Your Playlists</h1>
+          <div className="allPlaylistsContainer">
+            <div className="topPlaylistContainer">
+              <img
+                className="playlistIcon"
+                src={podium}
+                onClick={() => handlePlaylistClick(topTracks)}
+              />
+              <h3 className="playlistTitle">Your Top Tracks</h3>
             </div>
-          )}
+            <div className="suggestedPlaylistContainer">
+              <img
+                className="playlistIcon"
+                src={suggestion}
+                onClick={() => handlePlaylistClick(suggestedPlaylist)}
+              />
+              <h3 className="playlistTitle">Suggested Tracks</h3>
+            </div>
+            {playlistShown && (
+              <div className="overlayStats" onClick={handleOverlayClick}>
+                <div onClick={(e) => e.stopPropagation()}>
+                  <PlaylistComponent songs={toDisplay} />
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       )}
       {!isLoading && (

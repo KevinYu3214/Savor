@@ -1,6 +1,8 @@
 $custom-color: var(--custom-color);
 $secondary-color: var(--secondary-color);
 $tertiary-color: var(--secondary-color);
+@import "../global_styles/abstract/variables.scss";
+
 
 .orchid-container {
     background-color: $custom-color; // Use the CSS variable for background color
@@ -199,16 +201,44 @@ html {
     align-items: center;
   }
 
+  .allPlaylistsContainer{
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5%;
+    text-align: center;
+  }
   .playlistIcon{
     display: flex;
     align-items: center;
-    width: 10%;
-    height: 10%;
+    width: 150px;
+    height: 150px;
     cursor: pointer;
-    background-color: grey;
-    box-shadow: 10px;
-  }
+    background: linear-gradient(-45deg, #4B0082, #ff6ea1, purple , pink);
+    background-size: 400% 400%; /* Adding this line */
+    animation: gradient 15s ease infinite;
+    border-radius: 4px;
+    @keyframes gradient {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
 
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5); /* Add box shadow */
+  }
+  
+
+  .playlistTitle{
+    margin-top: 5%;
+    transform: translate(-1%, 0);
+  }
   .wrapper{
     display: flex;
     justify-content: center;
@@ -269,3 +299,4 @@ html {
           transform: translateY(-30px);
       }
   }
+
