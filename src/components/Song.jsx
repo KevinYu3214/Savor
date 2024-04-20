@@ -13,6 +13,7 @@ import {
   doc,
 } from "firebase/firestore";
 import Star from "../components/Star.jsx";
+//import { getFeatures } from "../spotify/Spotify.jsx";
 
 const Song = ({ result }) => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -29,6 +30,8 @@ const Song = ({ result }) => {
   const songCollectionList = collection(db, "Song");
   const rankingCollectionList = collection(db, "Ranking");
 
+  //var energy = getFeatures(result.id, "energy");
+
   useEffect(() => {
     const newAudio = new Audio(result.preview_url);
     setAudio(newAudio);
@@ -44,6 +47,10 @@ const Song = ({ result }) => {
   useEffect(() => {
     getSongList();
   }, []);
+
+  //useEffect(() => {
+    //console.log(energy);
+  //}, []);
 
   const getSongList = async () => {
     const data = await getDocs(songCollectionList);
@@ -182,81 +189,86 @@ const Song = ({ result }) => {
 
   return (
     <div className="songContainer">
-      <div className="songInfo">
-        <div className="songImageContainer">
-          <img
-            src={result.album.images[1].url}
-            alt="Song"
-            className="songImage"
-          />
-          {result.preview_url ? (
-            <button className="playButton" onClick={togglePlayPause}>
-              <img src={playButton} alt="Play/Pause" />
-            </button>
-          ) : (
-            <div className="noSampleBox">No Sample</div>
-          )}
-        </div>
-        <div className="songText">
-          <div className="songTitle">{result.name}</div>
-          <div className="songAlbum">Album: {result.album.name}</div>
-          <div className="songArtist"> Artist: {result.artists[0].name}</div>
-        </div>
-      </div>
-      <div className="songMisc">
-        <Star className="songStar"> </Star>
-
-        <input
-          className="songDate"
-          type="date"
-          placeholder="Finish Date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-        />
-        <textarea
-          className="songNotes"
-          placeholder="Notes"
-          value={notes}
-          onChange={(e) => setNotes(e.target.value)}
-        />
-        <button onClick={onSubmitMusic} className="addFirebaseButton">
-          Save
-        </button>
-        <button
-          onClick={() => deleteSong(result.id)}
-          className="actionButton deleteButton"
-        >
-          Delete
-        </button>
-        <div className="sec-center">
-          {/* Dropdown for song status */}
-          <input
-            className="dropdown"
-            type="checkbox"
-            id="dropdown"
-            name="dropdown"
-          />
-          <label className="for-dropdown" htmlFor="dropdown">
-            {selectedDropdownText} <i className="uil uil-arrow-down"></i>
-          </label>
-          <div className="section-dropdown">
-            {["Plan to Listen", "Listened", "Favorites", "Recommendations"].map(
-              (text, index) => (
-                <a
-                  key={index}
-                  href="#"
-                  className={`dropdown-link ${
-                    selectedDropdownText === text ? "active" : ""
-                  }`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleDropdownChange(text);
-                  }}
-                >
-                  {text} <i className="uil uil-plus toggle-icon"></i>
-                </a>
-              )
+      <div class="songBasicsContainer">
+        <div className="songInfo">
+          <div className="songImageContainer">
+            <img
+              src={result.album.images[1].url}
+              alt="Song"
+              className="songImage"
+            />
+            {result.preview_url ? (
+              <button className="playButton" onClick={togglePlayPause}>
+                <img src={playButton} alt="Play/Pause" />
+              </button>
+            ) : (
+              <div className="noSampleBox">No Sample</div>
             )}
+          </div>
+
+          <div className="songMisc">
+            
+            <div className="songText">
+              <div className="songTitle">{result.name}</div>
+              <div className="artistInfo">Albumtest: {result.album.name}</div>
+              <div className="artistInfo"> Artist: {result.artists[0].name}</div>
+            </div>
+
+            <Star className="songStar"> </Star>
+
+            <input
+              className="songDate"
+              type="date"
+              placeholder="Finish Date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+            />
+            <textarea
+              className="songNotes"
+              placeholder="Notes"
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+            />
+            <button onClick={onSubmitMusic} className="addFirebaseButton">
+              Save
+            </button>
+            <button
+              onClick={() => deleteSong(result.id)}
+              className="actionButton deleteButton"
+            >
+              Delete
+            </button>
+            <div className="sec-center">
+              {/* Dropdown for song status */}
+              <input
+                className="dropdown"
+                type="checkbox"
+                id="dropdown"
+                name="dropdown"
+              />
+              <label className="for-dropdown" htmlFor="dropdown">
+                {selectedDropdownText} <i className="uil uil-arrow-down"></i>
+              </label>
+              <div className="section-dropdown">
+                {["Plan to Listen", "Listened", "Favorites", "Recommendations"].map(
+                  (text, index) => (
+                    <a
+                      key={index}
+                      href="#"
+                      className={`dropdown-link ${
+                        selectedDropdownText === text ? "active" : ""
+                      }`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleDropdownChange(text);
+                      }}
+                    >
+                      {text} <i className="uil uil-plus toggle-icon"></i>
+                    </a>
+                  )
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </div>
