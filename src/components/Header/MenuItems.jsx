@@ -18,12 +18,6 @@ export const MenuItems = [
         url: './stats',
         cName: 'nav-links'
     },
-    {
-        id: 3,
-        title: 'Account',
-        url: './account',
-        cName: 'nav-links'
-    },
     
 ]
 // keep all menu names here to easily change 
@@ -34,11 +28,5 @@ export const MenuItemsNotLoggedIn = [
         url: './',
         cName: 'nav-links'
     },    
-    {
-        id: 12,
-        title: 'Account',
-        url: './account',
-        cName: 'nav-links'
-    },
 ]
 

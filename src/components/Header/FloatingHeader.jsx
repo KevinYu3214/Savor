@@ -17,6 +17,11 @@ const FloatingHeader = () => {
         {menuItems.map(item => (
                         <li key={item.id}><a href={item.url}>{item.title}</a></li>
                     ))}
+         <li>
+          <a href='./account'>
+            Account
+          </a>
+        </li>            
         </ul>
       </nav>
     </div>
