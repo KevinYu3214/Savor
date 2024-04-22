@@ -28,7 +28,7 @@ function Home() {
   const { theme } = useContext(ThemeContext); // Get the theme from context
 
   const handleClick = () => {
-    window.location.href = "http://localhost:5173/account";
+    window.location.href = "/account";
     console.log("Clicked the button");
   };
 
