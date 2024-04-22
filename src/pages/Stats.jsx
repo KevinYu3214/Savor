@@ -38,6 +38,8 @@ const Stats = () => {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [toDisplay, setToDisplay] = useState([]); //for loading playlists
+  const [playlistImage, setPlaylistImage] = useState("http://placehold.it/");
+  const [playlistName, setPlaylistName] = useState("Name");
   const [playlistShown, setPlaylistShown] = useState(false);
   const [currentText, setCurrentText] = useState("Sleeping"); // State to track the current text
   const [selectedImage, setSelectedImage] = useState(sleeping);
@@ -52,9 +54,13 @@ const Stats = () => {
   const [token, setToken] = useState(null); // State to store the token
   const [generatedPlaylist, setGeneratedPlaylist] = useState([]);
 
-  const handlePlaylistClick = (contents) => {
+  const handlePlaylistClick = (contents, image, name) => {
     setToDisplay(contents);
     setPlaylistShown(true);
+    setPlaylistImage(image);
+    setPlaylistName(name);
+    console.log("image " + playlistImage);
+    console.log(playlistName);
   };
 
   const handleOverlayClick = () => {
@@ -314,6 +320,7 @@ const Stats = () => {
     if (selectedImage !== imageUrl) {
       setCurrentText(text);
       setSelectedImage(imageUrl);
+
       extractDominantColor(imageUrl);
 
       setActivity(newActivity);
@@ -339,7 +346,7 @@ const Stats = () => {
       );
       await delay(1000); // Wait for 1 second before making the next request
       setGeneratedPlaylist(tracks);
-      handlePlaylistClick(generatedPlaylist);
+      handlePlaylistClick(generatedPlaylist, playlistImage, playlistName);
     }
     console.log(fetchedToken);
   };
@@ -388,7 +395,9 @@ const Stats = () => {
               <img
                 className="playlistIcon"
                 src={podium}
-                onClick={() => handlePlaylistClick(topTracks)}
+                onClick={() =>
+                  handlePlaylistClick(topTracks, podium, "Your Top Tracks")
+                }
               />
               <h3 className="playlistTitle">Your Top Tracks</h3>
             </div>
@@ -396,14 +405,24 @@ const Stats = () => {
               <img
                 className="playlistIcon"
                 src={suggestion}
-                onClick={() => handlePlaylistClick(suggestedPlaylist)}
+                onClick={() =>
+                  handlePlaylistClick(
+                    suggestedPlaylist,
+                    suggestion,
+                    "Suggested Tracks"
+                  )
+                }
               />
               <h3 className="playlistTitle">Suggested Tracks</h3>
             </div>
             {playlistShown && (
               <div className="overlayStats" onClick={handleOverlayClick}>
                 <div onClick={(e) => e.stopPropagation()}>
-                  <PlaylistComponent songs={toDisplay} />
+                  <PlaylistComponent
+                    songs={toDisplay}
+                    image={playlistImage}
+                    name={playlistName}
+                  />
                 </div>
               </div>
             )}
