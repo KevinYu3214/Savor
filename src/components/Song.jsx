@@ -19,6 +19,7 @@ const Song = ({ result }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [audio, setAudio] = useState(null);
   const [songList, setSongList] = useState([]);
+  const [rankingList, setRankingList] = useState([]);
   const [selectedDropdownText, setSelectedDropdownText] =
     useState("Dropdown Menu");
   const [rating, setRating] = useState("");
@@ -53,21 +54,24 @@ const Song = ({ result }) => {
   //}, []);
 
   const getSongList = async () => {
-    const data = await getDocs(songCollectionList);
-    setSongList(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    const songData = await getDocs(songCollectionList);
+    const rankingData = await getDocs(rankingCollectionList);
+    setSongList(songData.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    setRankingList(rankingData.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
   };
   useEffect(() => {
-    // This useEffect reacts to changes in either the songList or the result (selected song).
-    const currentSongDetails = songList.find(
-      (song) => song.songId === result.id
+    // This useEffect reacts to changes in either the rankingList or the result (selected song).
+
+    const currentRankingDetails = rankingList.find(
+      (ranking) => ranking.songId === result.id
     );
 
-    if (currentSongDetails) {
+    if (currentRankingDetails) {
       // Update local states with the details from the found song entry.
-      setRating(currentSongDetails.rating || "");
-      setDate(currentSongDetails.date || "");
-      setNotes(currentSongDetails.notes || "");
-      setSelectedDropdownText(currentSongDetails.status || "Status");
+      setRating(currentRankingDetails.rating || "");
+      setDate(currentRankingDetails.date || "");
+      setNotes(currentRankingDetails.notes || "");
+      setSelectedDropdownText(currentRankingDetails.status || "Status");
     } else {
       // Reset to default values if the song is not found (useful for when a new song is selected).
       setRating("");
@@ -75,7 +79,8 @@ const Song = ({ result }) => {
       setNotes("");
       setSelectedDropdownText("Status");
     }
-  }, [songList, result]);
+  }, [rankingList, result]);
+  
   const onSubmitMusic = async () => {
     if (!auth.currentUser?.uid) {
       setErrorMessage("You need to sign in to add a song.");
@@ -112,6 +117,7 @@ const Song = ({ result }) => {
           album: result.album.name,
           artist: result.artists[0].name,
           title: result.name,
+          image: result.album.images[1].url,
           songId: result.id,
         });
         await addDoc(rankingCollectionList, {
