@@ -366,9 +366,8 @@ const Stats = () => {
           </div>
         </section>
       )}
-      {!isLoading && <h1>Spotify Profile</h1>}
       {!isLoading && error && <p>Error: {error}</p>}
-      {!isLoading && profileName && <p>Welcome, {profileName}</p>}
+      {!isLoading && profileName && <h2>Welcome, {profileName}</h2>}
       {!isLoading && topTracks.length > 0 && (
         <div>
           <h2>Top Tracks</h2>
