@@ -3,12 +3,12 @@ import MusicList from "./MusicList";
 import Star from "../components/Star.jsx";
 import "./PlaylistComponent.scss";
 
-const PlaylistComponent = ({ songs }) => {
+const PlaylistComponent = ({ songs, image, name }) => {
   return (
     <div className="containerPL">
       <div className="playlistDetails">
-        <img src="http://placehold.it/" className="playlistImage" />
-        <div className="playlistName"> Name </div>
+        <img src={image} className="playlistImage" />
+        <div className="playlistName"> {name} </div>
       </div>
 
       <div className="musicListDetails">
