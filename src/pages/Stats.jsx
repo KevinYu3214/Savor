@@ -346,7 +346,7 @@ const Stats = () => {
       );
       await delay(1000); // Wait for 1 second before making the next request
       setGeneratedPlaylist(tracks);
-      handlePlaylistClick(generatedPlaylist, playlistImage, playlistName);
+      handlePlaylistClick(tracks, playlistImage, playlistName);
     }
     console.log(fetchedToken);
   };
