@@ -5,7 +5,7 @@ import {
   fetchTopTracks,
   suggestPlaylist,
   generateCustomPlaylist,
-  isConnectedToSpotify
+  isConnectedToSpotify,
 } from "../spotify/Spotify"; // Import necessary functions from Spotify module
 import Song from "../components/Song";
 import PlaylistComponent from "../components/PlaylistComponent";
@@ -30,15 +30,11 @@ import calm from "../assets/generatePlaylistImages/mood/calm.jpeg";
 import energetic from "../assets/generatePlaylistImages/mood/energetic.jpeg";
 import happy from "../assets/generatePlaylistImages/mood/happy.jpeg";
 import sad from "../assets/generatePlaylistImages/mood/sad.jpeg";
-import './Playlists.scss';
+import "./Playlists.scss";
 
 const ConnectText = () => {
-  return (
-    <div className="connectText">
-      Make sure to sign into spotify!
-    </div>
-  );
-}
+  return <div className="connectText">Make sure to sign into spotify!</div>;
+};
 
 const LoadingComponent = () => {
   return (
@@ -52,7 +48,6 @@ const LoadingComponent = () => {
     </section>
   );
 };
-
 
 const Playlists = () => {
   const [profileName, setProfileName] = useState("");
@@ -120,8 +115,6 @@ const Playlists = () => {
     // Return the hexadecimal representation of the secondary color
     return { secondaryColor, tertiaryColor };
   };
-
- 
 
   useEffect(() => {
     console.log("Fetching data...");
@@ -386,16 +379,16 @@ const Playlists = () => {
   console.log("Rendering component...");
   return (
     <div>
-      {isLoading && ( 
+      {isLoading && (
         <div className="center">
           <LoadingComponent />
-          {!isSpotifyConnected && isLoading && (
-            <ConnectText />
-          )}
+          {!isSpotifyConnected && isLoading && <ConnectText />}
         </div>
       )}
       {!isLoading && error && <p>Error: {error}</p>}
-      {!isLoading && profileName && <h2>Welcome, {profileName}</h2>}
+      {!isLoading && profileName && (
+        <h2 className="welcomeText">Welcome, {profileName}</h2>
+      )}
       {!isLoading && suggestedPlaylist.length > 0 && (
         <div>
           <h1>Your Playlists</h1>
@@ -461,17 +454,31 @@ const Playlists = () => {
             </div>
           </div>
           <div className="tags">{renderTagButtons()}</div>
-          <div className="category-buttons">
-            <button onClick={() => handleCategoryChange("activity")}>
+          <div>
+            <button
+              className="category-buttons"
+              onClick={() => handleCategoryChange("activity")}
+            >
               Activity
             </button>
-            <button onClick={() => handleCategoryChange("energy")}>
+            <button
+              className="category-buttons"
+              onClick={() => handleCategoryChange("energy")}
+            >
               Energy
             </button>
-            <button onClick={() => handleCategoryChange("mood")}>Mood</button>
+            <button
+              className="category-buttons"
+              onClick={() => handleCategoryChange("mood")}
+            >
+              Mood
+            </button>
           </div>
           <br></br>
-          <button onClick={handleGeneratePlaylistClick}>
+          <button
+            className="category-buttons"
+            onClick={handleGeneratePlaylistClick}
+          >
             Generate Custom Playlist
           </button>
         </div>

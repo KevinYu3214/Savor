@@ -118,6 +118,8 @@
   .background {
       background-color: $white;
   }
+
+
 }
 
 
@@ -135,6 +137,12 @@
   }
   .background {
       background-color: $darkest-purple;
+  }
+  .accountCircle{
+    background-color: white;
+    color: white;
+   border-radius: 50%;
+ 
   }
 }
 

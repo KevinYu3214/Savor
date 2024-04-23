@@ -28,7 +28,9 @@ const Header = () => {
     <div className={`${styles.header} ${styles[theme]}`}>
       <div className={styles.header__content}>
         <div className={styles.header__company}>
-          <span className={styles.logo} onClick={returnHome}>SAVOR</span>
+          <span className={styles.logo} onClick={returnHome}>
+            SAVOR
+          </span>
         </div>
         <div>
           <nav
@@ -41,7 +43,7 @@ const Header = () => {
             ))}
             <a className={styles.nav__item} href={"/account"}>
               <IconContext.Provider value={{ size: 50 }}>
-                <MdAccountCircle />
+                <MdAccountCircle className={styles.accountCircle} />
               </IconContext.Provider>
             </a>
           </nav>
