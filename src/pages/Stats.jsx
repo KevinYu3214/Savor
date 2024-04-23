@@ -5,7 +5,7 @@ import PlaylistComponent from "../components/PlaylistComponent";
 import workout from "../assets/playlist icons/workout.jpg";
 import "../global_styles/Stats.scss";
 
-const Playlists = () => {
+const Stats = () => {
   const [isShown, setIsShown] = useState(false);
 
   const handleClick = () => {
@@ -33,5 +33,5 @@ const Playlists = () => {
   );
 };
 
-export default Playlists;
+export default Stats;
 
