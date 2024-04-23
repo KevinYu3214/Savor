@@ -396,24 +396,6 @@ const Playlists = () => {
       )}
       {!isLoading && error && <p>Error: {error}</p>}
       {!isLoading && profileName && <h2>Welcome, {profileName}</h2>}
-      {!isLoading && topTracks.length > 0 && (
-        <div>
-          <h2>Top Tracks</h2>
-          <ul>
-            {topTracks.map((track) => (
-              <li key={track.id}>
-                {track.name} by{" "}
-                {track.artists.map((artist) => artist.name).join(", ")}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-      {!isLoading && !profileName && <p>Loading profile...</p>}
-      {!isLoading && !(topTracks.length > 0) && <p>Loading tracks ...</p>}
-      {!isLoading && !(suggestedPlaylist.length > 0) && (
-        <p>Loading playlists ...</p>
-      )}
       {!isLoading && suggestedPlaylist.length > 0 && (
         <div>
           <h1>Your Playlists</h1>
