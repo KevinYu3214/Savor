@@ -19,7 +19,6 @@ import driving from "../assets/generatePlaylistImages/activity/driving.jpeg";
 import party from "../assets/generatePlaylistImages/activity/party.jpeg";
 import studying from "../assets/generatePlaylistImages/activity/studying.jpeg";
 import workout from "../assets/generatePlaylistImages/activity/workout.jpeg";
-import "./Playlist.scss"; // Import the SCSS file
 import podium from "../assets/playlist icons/podium.png"; // Import
 import suggestion from "../assets/playlist icons/suggestion.png"; // Import
 
@@ -31,8 +30,8 @@ import calm from "../assets/generatePlaylistImages/mood/calm.jpeg";
 import energetic from "../assets/generatePlaylistImages/mood/energetic.jpeg";
 import happy from "../assets/generatePlaylistImages/mood/happy.jpeg";
 import sad from "../assets/generatePlaylistImages/mood/sad.jpeg";
-
 import './Playlists.scss';
+
 const ConnectText = () => {
   return (
     <div className="connectText">
