@@ -31,6 +31,9 @@ const Account = () => {
     setListening(false);
     setProfile(true);
     setPreference(false);
+    console.log(listening);
+    console.log(profile);
+    console.log(preference);
   };
   const preferenceClick = () => {
     setListening(false);

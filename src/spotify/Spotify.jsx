@@ -8,7 +8,7 @@ const fetch = window.fetch;
 
 export const clientId = '35031be6070048458899436547c2b842'; // Your clientId
 export const clientSecret = 'f6db2bf108264ec88a61a0a3aefd49e3'
-const redirectUrl = 'https://savor-wheaton.web.app/account'; // Your redirect URL - must be localhost URL and/or HTTPS
+const redirectUrl = 'https://savor-wheaton.web.app/playlists'; // Your redirect URL - must be localhost URL and/or HTTPS
 const authorizationEndpoint = "https://accounts.spotify.com/authorize";
 const tokenEndpoint = "https://accounts.spotify.com/api/token"; // Token endpoint for exchanging codes and refreshing tokens
 const scope = 'user-read-private user-read-email user-top-read';
@@ -171,8 +171,8 @@ async function getSong(songId, setResults) {
         'Authorization': 'Bearer ' + accessToken
     }
   };
-  const songFetch = "https://api.spotify.com/v1/tracks/" + {songId};
 
+  const songFetch = "https://api.spotify.com/v1/tracks/" + songId;
 
   try {
       const response = await fetch(songFetch, searchParameters);
@@ -181,11 +181,12 @@ async function getSong(songId, setResults) {
       }
 
       const data = await response.json();
-      setResults(data.tracks.items);
+      return data;
   } catch (error) {
       console.error('Error searching for tracks:', error);
   }
 }
+
 
 async function search(input, setResults) {
   const accessToken = await ensureValidToken();
