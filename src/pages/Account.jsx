@@ -4,7 +4,7 @@ import { Navigate } from "react-router-dom";
 import "../global_styles/Account.scss";
 import Profile from "../components/Profile";
 import SavedPreference from "../components/SavedPreference";
-import { generateSpotifyAuthRequest, isConnectedToSpotify, getTokenAndSet } from "../spotify/Spotify";
+import { generateSpotifyAuthRequest, deleteSpotifyTokenFromFirestore, isConnectedToSpotify, getTokenAndSet } from "../spotify/Spotify";
 
 const Account = () => {
   const { logout, currentUser } = useAuth();
@@ -23,7 +23,17 @@ const Account = () => {
     // Store spotifyConnected in local storage
     localStorage.setItem("spotifyConnected", connected ? "true" : "false");
   };
-
+  const deleteSpotifyToken = async () => {
+    // Delete token from Firestore
+    try {
+      await deleteSpotifyTokenFromFirestore();
+      localStorage.setItem("spotifyConnected", "false");
+      setSpotifyConnected(false);
+    } catch (error) {
+      console.error('Error deleting Spotify token:', error);
+    }
+  };
+  
   const profileClick = () => {
     setProfile(true);
     setPreference(false);
@@ -93,8 +103,13 @@ const Account = () => {
               </div>
             </a>
           ) : (
-            <div className={`page_selector ${spotifyConnected ? 'spotify_connected' : ''}`}>
-                <div className="page_selector__text">Spotify Connected</div>
+            <div>
+              <div className={`page_selector ${spotifyConnected ? 'spotify_connected' : ''}`}>
+                  <div className="page_selector__text">Spotify Connected</div>
+              </div>
+              <div>
+                <button onClick={deleteSpotifyToken} className="delete_spotify_button">Delete Spotify Token</button>
+              </div>
             </div>
           )}
         </div>

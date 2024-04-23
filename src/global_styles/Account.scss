@@ -41,6 +41,29 @@ $syne-font: "Syne", sans-serif;
     cursor: pointer;
 }
 
+.a_header_button,
+.delete_spotify_button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  width: 200px; /* Adjust width as needed */
+  height: 50px;
+  color: #fff;
+  border-radius: 50px;
+  font-size: 18px;
+  font-weight: 500;
+  background-color: $primary; /* Change background color */
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 0 0.5em 0 $primary;
+}
+
+.delete_spotify_button:hover {
+  background-color: darken($primary, 10%); /* Darken color on hover */
+  box-shadow: 0 0 0.5em 0 darken($primary, 10%); /* Darken shadow on hover */
+}
+
 .sidebar {
     display: flex;
     flex-direction: column;

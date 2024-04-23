@@ -1,5 +1,5 @@
 import { db } from "../firebase/firebase";
-import { doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc, updateDoc, deleteDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 // Assuming these are defined in your environment
@@ -303,6 +303,33 @@ async function refreshSpotifyToken(userId) {
       expiresIn: data.expires_in
   };
 }
+
+async function deleteSpotifyTokenFromFirestore() {
+  try {
+    const userId = await getCurrentUserId();
+    if (!userId) {
+      throw new Error('User ID not found.');
+    }
+
+    const userDocRef = doc(db, "User", userId);
+    const userDocSnap = await getDoc(userDocRef);
+
+    if (!userDocSnap.exists()) {
+      console.log("No user document found!");
+      return;
+    }
+
+    // Delete the Spotify tokens field from the user document
+    await updateDoc(userDocRef, {
+      spotifyTokens: null // Set the field to null to delete it
+    });
+    
+    console.log("Spotify token deleted from Firestore.");
+  } catch (error) {
+    console.error("Error deleting Spotify token from Firestore:", error);
+    throw new Error("Failed to delete Spotify token from Firestore");
+  }
+}
 function encodeClientCredentials(clientId, clientSecret) {
   const credentials = `${clientId}:${clientSecret}`;
   const encodedCredentials = btoa(credentials);
@@ -331,6 +358,15 @@ async function storeSpotifyTokens(accessToken, refreshToken, expiresIn) {
   }
 }
 
+async function deleteSpotifyToken() {
+  // Remove token from local storage
+  localStorage.removeItem("spotifyConnected");
+  // Remove token from Firestore
+  const userId = getCurrentUserId(); // Assuming you have a function to get the current user's ID
+  if (userId) {
+    refreshSpotifyToken(userId);
+  }
+};
 
 async function suggestPlaylist(token, seedTracks) {
   try {
@@ -493,4 +529,4 @@ async function isConnectedToSpotify() {
 }
 
 
-export {getTokenAndSet, generateCustomPlaylist, getCurrentUserId, suggestPlaylist, fetchTopTracks, refreshSpotifyToken, getSpotifyTokens, generateSpotifyAuthRequest, ensureValidToken, fetchUserProfile, search, isConnectedToSpotify, getSong };
+export {getTokenAndSet, deleteSpotifyTokenFromFirestore, generateCustomPlaylist, getCurrentUserId, suggestPlaylist, fetchTopTracks, refreshSpotifyToken, getSpotifyTokens, generateSpotifyAuthRequest, ensureValidToken, fetchUserProfile, search, isConnectedToSpotify, getSong };
