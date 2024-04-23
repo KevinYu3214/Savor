@@ -261,6 +261,19 @@ html {
     margin-top: 5%;
     transform: translate(-1%, 0);
   }
+
+  .light {
+    .playlistTitle {
+      color: black;
+    }
+  }
+
+  .dark {
+    .playlistTitle {
+      color: white;
+    }
+  }
+
   .wrapper{
     display: flex;
     justify-content: center;

@@ -17,7 +17,7 @@ const Header = () => {
   console.log(theme);
 
   const returnHome = () => {
-    window.location.href = "http://localhost:5173/";
+    window.location.href = "/";
   };
 
   // Define which menu items to use based on user status

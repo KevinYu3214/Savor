@@ -29,7 +29,6 @@ function Home() {
 
   const handleClick = () => {
     window.location.href = "/account";
-    console.log("Clicked the button");
   };
 
   return (

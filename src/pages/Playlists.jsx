@@ -394,20 +394,6 @@ const Playlists = () => {
     <div>
       {isLoading && <LoadingComponent />}
       {!isLoading && error && <p>Error: {error}</p>}
-      {!isLoading && profileName && <h2>Welcome, {profileName}</h2>}
-      {!isLoading && topTracks.length > 0 && (
-        <div>
-          <h2>Top Tracks</h2>
-          <ul>
-            {topTracks.map((track) => (
-              <li key={track.id}>
-                {track.name} by{" "}
-                {track.artists.map((artist) => artist.name).join(", ")}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
       {!isLoading && !profileName && <p>Loading profile...</p>}
       {!isLoading && !(topTracks.length > 0) && <p>Loading tracks ...</p>}
       {!isLoading && !(suggestedPlaylist.length > 0) && (
@@ -415,7 +401,6 @@ const Playlists = () => {
       )}
       {!isLoading && suggestedPlaylist.length > 0 && (
         <div>
-          <h1>Your Playlists</h1>
           <div className="allPlaylistsContainer">
             <div className="topPlaylistContainer">
               <img
@@ -494,9 +479,9 @@ const Playlists = () => {
         </div>
       )}
       {!isLoading && generatedPlaylist.length > 0 && (
-        <div>
-          <h2>Suggested Playlist</h2>
-          <div className="TopPlaylistContainer">
+        <div className= "allPlaylistContainer">
+          <h2 className="playlistTitle">Suggested Playlist</h2>
+          <div className="topPlaylistContainer">
             <img
               className="playlistIcon"
               src={podium}
