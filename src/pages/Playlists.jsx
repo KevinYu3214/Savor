@@ -78,6 +78,11 @@ const Playlists = () => {
   const [generatedPlaylist, setGeneratedPlaylist] = useState([]);
   const [isSpotifyConnected, setIsSpotifyConnected] = useState(false);
 
+  useEffect(() => {
+    const spotifyConnected = localStorage.getItem("spotifyConnected");
+    setIsSpotifyConnected(spotifyConnected === "true");
+  }, []);
+
   const handlePlaylistClick = (contents, image, name) => {
     setToDisplay(contents);
     setPlaylistShown(true);
@@ -122,7 +127,6 @@ const Playlists = () => {
     console.log("Fetching data...");
     const fetchData = async () => {
       try {
-        // Retrieve access token
         const fetchedToken = await ensureValidToken();
         if (fetchedToken) {
           console.log("Token retrieved:", fetchedToken);
@@ -385,7 +389,7 @@ const Playlists = () => {
       {isLoading && ( 
         <div className="center">
           <LoadingComponent />
-          {!isSpotifyConnected && ( 
+          {!isSpotifyConnected && isLoading && (
             <ConnectText />
           )}
         </div>
