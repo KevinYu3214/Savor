@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { Navigate } from "react-router-dom";
 import "../global_styles/Account.scss";
-import Listening from "../components/Listening";
 import Profile from "../components/Profile";
 import SavedPreference from "../components/SavedPreference";
 import { generateSpotifyAuthRequest, isConnectedToSpotify, getTokenAndSet, ensureValidToken } from "../spotify/Spotify";
@@ -10,7 +9,6 @@ import { generateSpotifyAuthRequest, isConnectedToSpotify, getTokenAndSet, ensur
 const Account = () => {
   const { logout, currentUser } = useAuth();
   const [missingUser, setMissingUser] = useState(currentUser ? false : true);
-  const [listening, setListening] = useState(true);
   const [profile, setProfile] = useState(false);
   const [preference, setPreference] = useState(false);
   const [spotifyAuthRequest, setSpotifyAuthRequest] = useState('');
@@ -22,21 +20,11 @@ const Account = () => {
     setSpotifyConnected(connected);
   };
 
-  const listenClick = () => {
-    setListening(true);
-    setProfile(false);
-    setPreference(false);
-  };
   const profileClick = () => {
-    setListening(false);
     setProfile(true);
     setPreference(false);
-    console.log(listening);
-    console.log(profile);
-    console.log(preference);
   };
   const preferenceClick = () => {
-    setListening(false);
     setProfile(false);
     setPreference(true);
   };
@@ -85,11 +73,6 @@ const Account = () => {
       </div>
       <div className="a_container">
         <div className="sidebar">
-          <div className="page_selector" onClick={listenClick}>
-            <div className="page_selector__text">
-              Your Music
-            </div>
-          </div>
           <div className="page_selector" onClick={profileClick}>
             <div className="page_selector__text">
               User Info
@@ -114,7 +97,6 @@ const Account = () => {
           )}
         </div>
         <div className="info">
-          {listening && <Listening />}
           {profile && <Profile />}
           {preference && <SavedPreference />}
         </div>
