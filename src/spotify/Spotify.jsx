@@ -498,7 +498,7 @@ async function getCurrentUserId() {
   const auth = getAuth();
   const user = auth.currentUser;
   if (user && user.uid) {
-    console.log(user.uid.toString());
+    //console.log(user.uid.toString());
     return user.uid.toString(); // Ensure it's always a string
   } else {
     return ''; // Return an empty string if user ID is not available
@@ -509,7 +509,7 @@ async function getCurrentUserId() {
 async function isConnectedToSpotify() {
   try {
     const userId = await getCurrentUserId();
-    console.log(userId);
+    //console.log(userId);
     if (!userId) {
           return false;
         }

@@ -9,7 +9,7 @@ import { generateSpotifyAuthRequest, deleteSpotifyTokenFromFirestore, isConnecte
 const Account = () => {
   const { logout, currentUser } = useAuth();
   const [missingUser, setMissingUser] = useState(currentUser ? false : true);
-  const [profile, setProfile] = useState(false);
+  const [profile, setProfile] = useState(true);
   const [preference, setPreference] = useState(false);
   const [spotifyAuthRequest, setSpotifyAuthRequest] = useState('');
   const [spotifyConnected, setSpotifyConnected] = useState(() => {

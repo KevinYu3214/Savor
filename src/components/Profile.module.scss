@@ -9,8 +9,6 @@
 
 .user{
     height: 25%;
-    display: flex;
-    flex-direction: column;
     &__text{
         font-size:36px;
         font-weight: 400;
@@ -20,13 +18,49 @@
 .spotify{
     height: 10%;
     width: 80%;
-    display: flex;
-    flex-direction: column;
     margin-left: 20px;
     &__text{
         font-size:24px;
         font-weight: 400;
     }
+}
+
+.info_change{
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
+}
+
+.info_change_label{
+  font-size: 24px;
+  font-weight: 400;
+  margin-right:5px;
+  margin: auto;
+}
+
+.info_change input{
+  height: 50px;
+  width: 150px;
+  border: none;
+  background: transparent;
+  outline: none;
+  color: #797979;
+  font-size: 15px;
+}
+
+.info_change_button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  width: 150px;
+  height: 50px;
+  background-color: red;
+  border-radius: 50px;
+  font-size: 18px;
+  font-weight: 500;
+  box-shadow: 0 0 0.5em 0 $primary;
+  cursor: pointer;
 }
 
 .light {
