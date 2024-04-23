@@ -5,6 +5,7 @@ import {
   fetchTopTracks,
   suggestPlaylist,
   generateCustomPlaylist,
+  isConnectedToSpotify
 } from "../spotify/Spotify"; // Import necessary functions from Spotify module
 import Song from "../components/Song";
 import PlaylistComponent from "../components/PlaylistComponent";
@@ -18,7 +19,7 @@ import driving from "../assets/generatePlaylistImages/activity/driving.jpeg";
 import party from "../assets/generatePlaylistImages/activity/party.jpeg";
 import studying from "../assets/generatePlaylistImages/activity/studying.jpeg";
 import workout from "../assets/generatePlaylistImages/activity/workout.jpeg";
-import "./Stats.scss"; // Import the SCSS file
+import "./Playlist.scss"; // Import the SCSS file
 import podium from "../assets/playlist icons/podium.png"; // Import
 import suggestion from "../assets/playlist icons/suggestion.png"; // Import
 
@@ -30,6 +31,32 @@ import calm from "../assets/generatePlaylistImages/mood/calm.jpeg";
 import energetic from "../assets/generatePlaylistImages/mood/energetic.jpeg";
 import happy from "../assets/generatePlaylistImages/mood/happy.jpeg";
 import sad from "../assets/generatePlaylistImages/mood/sad.jpeg";
+
+import './Playlists.scss';
+const ConnectText = () => {
+  return (
+    <div className="connectText">
+      Make sure to sign into spotify!
+    </div>
+  );
+}
+
+const LoadingComponent = () => {
+  return (
+    <div className="center">
+      <ConnectText />
+      <section className="wrapper">
+        <div className="loader">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </section>
+    </div>
+  );
+};
+
 
 const Playlists = () => {
   const [profileName, setProfileName] = useState("");
@@ -53,6 +80,7 @@ const Playlists = () => {
   const [mood, setMood] = useState(0.5);
   const [token, setToken] = useState(null); // State to store the token
   const [generatedPlaylist, setGeneratedPlaylist] = useState([]);
+  const [isSpotifyConnected, setIsSpotifyConnected] = useState(false);
 
   const handlePlaylistClick = (contents, image, name) => {
     setToDisplay(contents);
@@ -91,6 +119,15 @@ const Playlists = () => {
     // Return the hexadecimal representation of the secondary color
     return { secondaryColor, tertiaryColor };
   };
+
+  useEffect(() => {
+    const checkSpotifyConnection = async () => {
+      const connected = await isConnectedToSpotify();
+      setIsSpotifyConnected(connected);
+    };
+  
+    checkSpotifyConnection();
+  }, []);
 
   useEffect(() => {
     console.log("Fetching data...");
@@ -356,16 +393,7 @@ const Playlists = () => {
   console.log("Rendering component...");
   return (
     <div>
-      {isLoading && (
-        <section class="wrapper">
-          <div class="loader">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-        </section>
-      )}
+      {isLoading && <LoadingComponent />}
       {!isLoading && error && <p>Error: {error}</p>}
       {!isLoading && profileName && <h2>Welcome, {profileName}</h2>}
       {!isLoading && topTracks.length > 0 && (

@@ -5,7 +5,7 @@ import "../global_styles/Account.scss";
 import Listening from "../components/Listening";
 import Profile from "../components/Profile";
 import SavedPreference from "../components/SavedPreference";
-import { generateSpotifyAuthRequest, isConnectedToSpotify, getTokenAndSet } from "../spotify/Spotify";
+import { generateSpotifyAuthRequest, isConnectedToSpotify, getTokenAndSet, ensureValidToken } from "../spotify/Spotify";
 
 const Account = () => {
   const { logout, currentUser } = useAuth();
@@ -17,7 +17,7 @@ const Account = () => {
   const [spotifyConnected, setSpotifyConnected] = useState(false);
 
   const fetchSpotifyConnectionStatus = async () => {
-    const connected = await isConnectedToSpotify();
+    const connected = await ensureValidToken();
     console.log(connected)
     setSpotifyConnected(connected);
   };
@@ -48,7 +48,7 @@ const Account = () => {
 
   const handleConnectSpotify = async () => {
     try {
-      await getTokenAndSet()
+      await ensureValidToken()
     } catch (error) {
       console.error('Error refreshing Spotify token:', error);
     }
