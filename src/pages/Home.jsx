@@ -1,5 +1,4 @@
 import React, { useContext, useState } from 'react'
-import Header from "../components/Header/Header";
 import Button from '../components/CustomButtons/Button';
 import ipod from "../assets/ipod.svg"
 import ThemeContext from '../contexts/ThemeContext';
