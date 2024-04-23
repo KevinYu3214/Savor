@@ -156,7 +156,36 @@ async function ensureValidToken() {
   }
 }
 
+async function getSong(songId, setResults) {
+  const accessToken = await ensureValidToken();
 
+  if (!accessToken) {
+      console.error("Access token not found in Firestore");
+      return;
+  }
+
+  const searchParameters = {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + accessToken
+    }
+  };
+  const songFetch = "https://api.spotify.com/v1/tracks/" + {songId};
+
+
+  try {
+      const response = await fetch(songFetch, searchParameters);
+      if (!response.ok) {
+          throw new Error(`Failed to search for tracks: ${response.status} - ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      setResults(data.tracks.items);
+  } catch (error) {
+      console.error('Error searching for tracks:', error);
+  }
+}
 
 async function search(input, setResults) {
   const accessToken = await ensureValidToken();
@@ -462,4 +491,4 @@ async function isConnectedToSpotify() {
 }
 
 
-export {getTokenAndSet, generateCustomPlaylist, getCurrentUserId, suggestPlaylist, fetchTopTracks, refreshSpotifyToken, getSpotifyTokens, generateSpotifyAuthRequest, ensureValidToken, fetchUserProfile, search, isConnectedToSpotify };
+export {getTokenAndSet, generateCustomPlaylist, getCurrentUserId, suggestPlaylist, fetchTopTracks, refreshSpotifyToken, getSpotifyTokens, generateSpotifyAuthRequest, ensureValidToken, fetchUserProfile, search, isConnectedToSpotify, getSong };

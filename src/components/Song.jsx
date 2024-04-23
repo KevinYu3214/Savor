@@ -49,9 +49,9 @@ const Song = ({ result }) => {
     getSongList();
   }, []);
 
-  //useEffect(() => {
-    //console.log(energy);
-  //}, []);
+  // useEffect(() => {
+  //   console.log(energy);
+  // }, []);
 
   const getSongList = async () => {
     const songData = await getDocs(songCollectionList);
@@ -61,7 +61,6 @@ const Song = ({ result }) => {
   };
   useEffect(() => {
     // This useEffect reacts to changes in either the rankingList or the result (selected song).
-
     const currentRankingDetails = rankingList.find(
       (ranking) => ranking.songId === result.id
     );
@@ -220,7 +219,7 @@ const Song = ({ result }) => {
               <div className="artistInfo"> Artist: {result.artists[0].name}</div>
             </div>
 
-            <Star className="songStar"> </Star>
+            <Star className="songStar" onChange={(e) => setRating(e.value)}> </Star>
 
             <input
               className="songDate"

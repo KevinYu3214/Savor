@@ -15,6 +15,7 @@ const SearchResultsList = ({ results }) => {
   useOnClickOutside(modalRef, () => setIsShown(false));
 
   const handleClick = (result) => {
+    console.log(result);
     setCurrResult(result);
     setIsShown(true);
   };
