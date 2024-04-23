@@ -12,17 +12,23 @@ const Account = () => {
   const [profile, setProfile] = useState(false);
   const [preference, setPreference] = useState(false);
   const [spotifyAuthRequest, setSpotifyAuthRequest] = useState('');
-  const [spotifyConnected, setSpotifyConnected] = useState(false);
+  const [spotifyConnected, setSpotifyConnected] = useState(() => {
+    // Load spotifyConnected from local storage, default to false if not found
+    return localStorage.getItem("spotifyConnected") === "true" ? true : false;
+  });
 
   const fetchSpotifyConnectionStatus = async () => {
     const connected = await isConnectedToSpotify();
     setSpotifyConnected(connected);
+    // Store spotifyConnected in local storage
+    localStorage.setItem("spotifyConnected", connected ? "true" : "false");
   };
 
   const profileClick = () => {
     setProfile(true);
     setPreference(false);
   };
+  
   const preferenceClick = () => {
     setProfile(false);
     setPreference(true);
@@ -56,12 +62,9 @@ const Account = () => {
     if (params.has('code')) {
       handleConnectSpotify();
     }
-    // should updated to true when signed in this Spotify call
     fetchSpotifyConnectionStatus();
   }, []);
   
-
-
   return (
     <>
       {missingUser && <Navigate to="/login" />}
