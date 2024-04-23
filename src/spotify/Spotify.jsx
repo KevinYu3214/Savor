@@ -171,8 +171,8 @@ async function getSong(songId, setResults) {
         'Authorization': 'Bearer ' + accessToken
     }
   };
-  const songFetch = "https://api.spotify.com/v1/tracks/" + {songId};
 
+  const songFetch = "https://api.spotify.com/v1/tracks/" + songId;
 
   try {
       const response = await fetch(songFetch, searchParameters);
@@ -181,11 +181,12 @@ async function getSong(songId, setResults) {
       }
 
       const data = await response.json();
-      setResults(data.tracks.items);
+      return data;
   } catch (error) {
       console.error('Error searching for tracks:', error);
   }
 }
+
 
 async function search(input, setResults) {
   const accessToken = await ensureValidToken();

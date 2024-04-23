@@ -5,15 +5,12 @@ import { db, auth } from "../firebase/firebase";
 import styles from "./Search/Search.module.scss";
 import useOnClickOutside from "./Search/useOnClickOutside"; // Adjust the path as needed
 import { getSong } from "../spotify/Spotify";
+import Song from "./Song";
 import {
   getDocs,
   collection,
-  addDoc,
-  deleteDoc,
   query,
-  where,
-  updateDoc,
-  doc,
+  where
 } from "firebase/firestore";
 
 const Listening = ({ }) => {
@@ -37,9 +34,15 @@ const Listening = ({ }) => {
     useOnClickOutside(modalRef, () => setIsShown(false));
 
     const handleClick = async (rankingSong) => {
-        getSong(rankingSong.songId, setCurrResult);
+        const result = await getSong(rankingSong.songId);
+        setCurrResult(result)
+        console.log(currResult)
         setIsShown(true);
     };
+
+    useEffect(() => {
+        getRankingList();
+    }, [isShown]);
 
     useEffect(() => {
         getRankingList();
@@ -78,10 +81,8 @@ const Listening = ({ }) => {
 
     const makeRankingSong = () => {
         var newRankingSongList = [];
-        console.log(rankingList);
         for(let i = 0; i < rankingList.length; i++){
             var song = songList.find((song) => song.songId === rankingList[i].songId)
-            console.log(song);
             newRankingSongList.push({id: rankingList[i].id, songId: rankingList[i].songId,
             title: song.title, artists: song.artist, album: song.album,
             image: song.image, ranking: rankingList[i].ranking, date: rankingList[i].date,
@@ -89,7 +90,7 @@ const Listening = ({ }) => {
         }
         setRankingSongList(newRankingSongList)
     };
-
+  
     return (
     <>
         <div className="l_conatiner"> 
@@ -98,18 +99,38 @@ const Listening = ({ }) => {
                 <div className="listen_list_boxes">
                     {rankingSongList.length > 0 && rankingSongList.map((rankingSong) =>
                         <div className="listen_list_box" 
-                        onClick={() => handleClick(rankingSong)}>
-                            <img
-                                src={rankingSong.image}
-                                alt="Song"
-                                className="listen_list_box__song__image"/>
-                            <div className="listen_list_box__song__contents__title">{rankingSong.title}</div>
-                            <div className="listen_list_box__song__contents__artist">{rankingSong.artists}</div>
-                            <div className="listen_list_box__song__contents__album">{rankingSong.album}</div>
-                            <div>{rankingSong.ranking}</div>
-                            <div>{rankingSong.date}</div>
-                            <div>{rankingSong.notes}</div>
-                            <div>{rankingSong.status}</div>
+                        onClick={() => handleClick(rankingSong)}
+                        key={rankingSong.id}>
+                            <div className="listen_list_box__song">
+                                <img
+                                    src={rankingSong.image}
+                                    alt="Song"
+                                    className="listen_list_box__song__image"/>
+                                <div className="listen_list_box__song__contents">
+                                    <div className="listen_list_box__song__contents__title">{rankingSong.title}</div>
+                                    <div className="listen_list_box__song__contents__artist">{rankingSong.artists}</div>
+                                    <div className="listen_list_box__song__contents__album">{rankingSong.album}</div>
+                                </div>
+                            </div>
+                            <div className="listen_list_box__ranking">
+                                <div className="listen_list_box__ranking__container">
+                                    <div className="listen_list_box__ranking__container__title">Ranking: </div>
+                                    <div className="listen_list_box__ranking__container__content">{rankingSong.ranking}</div>
+                                </div>
+                                <div className="listen_list_box__ranking__container">
+                                    <div className="listen_list_box__ranking__container__title">Date: </div>
+                                    <div className="listen_list_box__ranking__container__content">{rankingSong.date}</div>
+                                </div>
+                                <div className="listen_list_box__ranking__container">
+                                    <div className="listen_list_box__ranking__container__title">Notes: </div>
+                                    <div className="listen_list_box__ranking__container__content">{rankingSong.notes}</div>
+                                </div>
+                                <div className="listen_list_box__ranking__container">
+                                    <div className="listen_list_box__ranking__container__title">Status: </div>
+                                    <div className="listen_list_box__ranking__container__content">{rankingSong.status}</div>
+                                </div>
+                            </div>
+                        
                         </div>
                     )}  
                 </div>
