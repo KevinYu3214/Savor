@@ -410,7 +410,7 @@ const Playlists = () => {
                   handlePlaylistClick(topTracks, podium, "Your Top Tracks")
                 }
               />
-              <h3 className="playlistTitle">Your Top Tracks</h3>
+              <h3 className="playlist-title">Your Top Tracks</h3>
             </div>
             <div className="suggestedPlaylistContainer">
               <img
@@ -424,7 +424,7 @@ const Playlists = () => {
                   )
                 }
               />
-              <h3 className="playlistTitle">Suggested Tracks</h3>
+              <h3 className="playlist-title">Suggested Tracks</h3>
             </div>
             {playlistShown && (
               <div className="overlayStats" onClick={handleOverlayClick}>
@@ -479,9 +479,9 @@ const Playlists = () => {
         </div>
       )}
       {!isLoading && generatedPlaylist.length > 0 && (
-        <div className= "allPlaylistContainer">
-          <h2 className="playlistTitle">Suggested Playlist</h2>
-          <div className="topPlaylistContainer">
+        <div className= "suggested-playlist">
+          <h2 className="playlist-title">Suggested Playlist</h2>
+          <div>
             <img
               className="playlistIcon"
               src={podium}

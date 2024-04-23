@@ -257,21 +257,32 @@ html {
   }
   
 
-  .playlistTitle{
+  .playlist-title{
     margin-top: 5%;
     transform: translate(-1%, 0);
   }
 
   .light {
-    .playlistTitle {
+    .playlist-title {
       color: black;
     }
   }
 
   .dark {
-    .playlistTitle {
+    .playlist-title {
       color: white;
     }
+  }
+
+  .suggested-playlist {
+    background-color: $custom-color; // Use the CSS variable for background color
+    display: flex;
+    flex-direction: column;
+    margin-top: 80px;
+    height: 5vh;
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+    position: relative; /* Add position relative */
   }
 
   .wrapper{
