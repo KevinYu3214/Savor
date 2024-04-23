@@ -3,19 +3,17 @@ $secondary-color: var(--secondary-color);
 $tertiary-color: var(--secondary-color);
 @import "../global_styles/abstract/variables.scss";
 
-@import "../global_styles/abstract/variables.scss";
-
 .connectText {
+    color: $bg;
     position: relative;
     max-width: 425px;
-    margin-left: calc(8.7vw + 2.5px);
     font-weight: 300;
     font-size: calc(0.75vw + 1.25rem);
     letter-spacing: 2px;
-  
+    margin-top: calc(2.8vw + 75px);
+
     @include breakpoint(md) {
       max-width: 500px;
-      margin-top: calc(2.8vw + 130px);
     }
   }
   
@@ -257,35 +255,12 @@ html {
   }
   
 
-  .playlist-title{
+  .playlistTitle{
     margin-top: 5%;
     transform: translate(-1%, 0);
   }
-
-  .light {
-    .playlist-title {
-      color: black;
-    }
-  }
-
-  .dark {
-    .playlist-title {
-      color: white;
-    }
-  }
-
-  .suggested-playlist {
-    background-color: $custom-color; // Use the CSS variable for background color
-    display: flex;
-    flex-direction: column;
-    margin-top: 80px;
-    height: 5vh;
-    align-items: center; /* Center vertically */
-    justify-content: center; /* Center horizontally */
-    position: relative; /* Add position relative */
-  }
-
   .wrapper{
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -294,8 +269,8 @@ html {
   //https://codepen.io/sabin42/pen/odjvKy
   .loader{
      border-radius: 50%;
-    position: relative;
-    margin-top: 20vh;
+     position: relative;
+     margin-top: 10vh;
     display: inline-block;
     align-items: center;
     justify-content: center;
@@ -313,25 +288,25 @@ html {
       perspective: 100000px;
   }
   .loader span:nth-child(1) {
-      left:125px;
+      left:100px;
       animation: bounce2 1s cubic-bezier(0.04, 0.35, 0, 1) infinite;
       animation-delay: 0s;
       background: #ff756f;
   }
   .loader span:nth-child(2) {
-      left:50px;
+      left:30px;
       animation: bounce2 1s cubic-bezier(0.04, 0.35, 0, 1) infinite;
       animation-delay: .2s;
       background: #ffde6f;
   }
   .loader span:nth-child(3) {
-      left: -25px;
+      left: -45px;
       animation: bounce2 1s cubic-bezier(0.04, 0.35, 0, 1) infinite;
       animation-delay: .4s;
       background: #01de6f;
   }
   .loader span:nth-child(4) {
-      left: -100px;
+      left: -125px;
       animation: bounce2 1s cubic-bezier(0.04, 0.35, 0, 1) infinite;
       animation-delay: .6s;
       background: #6f75ff;

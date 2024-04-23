@@ -42,17 +42,14 @@ const ConnectText = () => {
 
 const LoadingComponent = () => {
   return (
-    <div className="center">
-      <ConnectText />
-      <section className="wrapper">
-        <div className="loader">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-      </section>
-    </div>
+    <section className="wrapper">
+      <div className="loader">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </section>
   );
 };
 
@@ -119,14 +116,7 @@ const Playlists = () => {
     return { secondaryColor, tertiaryColor };
   };
 
-  useEffect(() => {
-    const checkSpotifyConnection = async () => {
-      const connected = await isConnectedToSpotify();
-      setIsSpotifyConnected(connected);
-    };
-  
-    checkSpotifyConnection();
-  }, []);
+ 
 
   useEffect(() => {
     console.log("Fetching data...");
@@ -392,8 +382,29 @@ const Playlists = () => {
   console.log("Rendering component...");
   return (
     <div>
-      {isLoading && <LoadingComponent />}
+      {isLoading && ( 
+        <div className="center">
+          <LoadingComponent />
+          {!isSpotifyConnected && ( 
+            <ConnectText />
+          )}
+        </div>
+      )}
       {!isLoading && error && <p>Error: {error}</p>}
+      {!isLoading && profileName && <h2>Welcome, {profileName}</h2>}
+      {!isLoading && topTracks.length > 0 && (
+        <div>
+          <h2>Top Tracks</h2>
+          <ul>
+            {topTracks.map((track) => (
+              <li key={track.id}>
+                {track.name} by{" "}
+                {track.artists.map((artist) => artist.name).join(", ")}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
       {!isLoading && !profileName && <p>Loading profile...</p>}
       {!isLoading && !(topTracks.length > 0) && <p>Loading tracks ...</p>}
       {!isLoading && !(suggestedPlaylist.length > 0) && (
@@ -401,6 +412,7 @@ const Playlists = () => {
       )}
       {!isLoading && suggestedPlaylist.length > 0 && (
         <div>
+          <h1>Your Playlists</h1>
           <div className="allPlaylistsContainer">
             <div className="topPlaylistContainer">
               <img
@@ -410,7 +422,7 @@ const Playlists = () => {
                   handlePlaylistClick(topTracks, podium, "Your Top Tracks")
                 }
               />
-              <h3 className="playlist-title">Your Top Tracks</h3>
+              <h3 className="playlistTitle">Your Top Tracks</h3>
             </div>
             <div className="suggestedPlaylistContainer">
               <img
@@ -424,7 +436,7 @@ const Playlists = () => {
                   )
                 }
               />
-              <h3 className="playlist-title">Suggested Tracks</h3>
+              <h3 className="playlistTitle">Suggested Tracks</h3>
             </div>
             {playlistShown && (
               <div className="overlayStats" onClick={handleOverlayClick}>
@@ -479,9 +491,9 @@ const Playlists = () => {
         </div>
       )}
       {!isLoading && generatedPlaylist.length > 0 && (
-        <div className= "suggested-playlist">
-          <h2 className="playlist-title">Suggested Playlist</h2>
-          <div>
+        <div>
+          <h2>Suggested Playlist</h2>
+          <div className="TopPlaylistContainer">
             <img
               className="playlistIcon"
               src={podium}

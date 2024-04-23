@@ -15,8 +15,7 @@ const Account = () => {
   const [spotifyConnected, setSpotifyConnected] = useState(false);
 
   const fetchSpotifyConnectionStatus = async () => {
-    const connected = await getTokenAndSet();
-    console.log(connected)
+    const connected = await isConnectedToSpotify();
     setSpotifyConnected(connected);
   };
 
