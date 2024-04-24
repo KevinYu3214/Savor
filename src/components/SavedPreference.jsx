@@ -6,11 +6,9 @@ import PreferenceResultsList from "./Search/PreferenceResultsList";
 import {
   getDocs,
   collection,
-  addDoc,
   deleteDoc,
   query,
   where,
-  updateDoc,
   doc,
 } from "firebase/firestore";
 
@@ -26,7 +24,7 @@ const SavedPreference = () => {
   }, []);
 
   const getSongList = async () => {
-    //Query to find preferences
+    // Query to find preferences
     const preferencesQuery = query(
       preferencesCollectionList,
       where("userId", "==", auth.currentUser.uid)
@@ -34,7 +32,7 @@ const SavedPreference = () => {
     const preferencesQuerySnapshot = await getDocs(preferencesQuery);   
     const songIDList = preferencesQuerySnapshot.docs.map((doc) => doc.data().songId);
 
-    //Query to find songs
+    // Query to find songs
     if (songIDList.length !== 0) {
       const songQuery = query(
           songCollectionList,
@@ -43,36 +41,58 @@ const SavedPreference = () => {
       const songQuerySnapshot = await getDocs(songQuery);
       const songs = songQuerySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
       setSongList(songs);
-      setSongCount(songList.length);
+      setSongCount(songs.length); // Update song count here
     }
   };
 
-  const deletePreference = async (song) => {
+  const songAdded = () => {
+    getSongList();
+  };
+
+  const deletePreference = async (songId) => {
+    handleDelete(songId);
+  };
+
+  const handleDelete = async (songId) => {
+    if (!songId) return;
     
-  }
+    const preferencesQuery = query(
+      preferencesCollectionList,
+      where("songId", "==", songId),
+      where("userId", "==", auth.currentUser.uid)
+    );
+    const querySnapshot = await getDocs(preferencesQuery);
+
+    if (!querySnapshot.empty) {
+      const preferencesDoc = querySnapshot.docs[0];
+      await deleteDoc(doc(db, "Preferences", preferencesDoc.id));
+      console.log("Song deleted successfully");
+      getSongList(); // Refresh list
+    } else {
+      console.error("Song not found");
+    }
+  };
 
   return (
-  <>
+    <>
       <div className="basic">Add songs that will be used to generate playlists!</div>
       <div>5 choices maximum</div>
       <SearchBar setResults={setResults} /> 
-      {(songCount <= 4) &&<PreferenceResultsList results={results} onClick={getSongList}/>}
+      {songCount <= 4 && <PreferenceResultsList results={results} onClick={songAdded} />}
 
       <div>
         <div>Your Selections</div>
         {songList.length > 0 && songList.map((song) =>
           <div key={song.songId}>
-            <img
-              src={song.image}
-              alt="Song" />
+            <img src={song.image} alt="Song" />
             <div>{song.title}</div>
             <div>{song.artist}</div>
             <div>{song.album}</div>
-            <div onClick={deletePreference(song)}>delete</div>
+            <div onClick={() => deletePreference(song.songId)}>delete</div>
           </div>
         )}  
       </div>
-  </>
+    </>
   );
 };
 
