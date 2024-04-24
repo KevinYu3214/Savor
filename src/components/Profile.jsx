@@ -7,7 +7,6 @@ import {
     isConnectedToSpotify, 
     getTokenAndSet 
 } from "../spotify/Spotify";
-import { redirect } from "react-router-dom";
 
 const Profile = () => {
     const { currentUser } = useAuth();
