@@ -8,8 +8,10 @@
   margin-top: 0px;
   margin-bottom: 50px;
   width: 66vw;
+  width: 60vw;
   height: 70vh;
   background: white;
+  background: rgb(46, 22, 54);
   //padding-top: 10px;
   border-radius: 1vh;
   position: relative;
@@ -17,6 +19,7 @@
   .songBasicsContainer{
     flex-direction: row;
     background: purple;
+    background: rgb(81, 81, 81);
     height:50%;
     margin-top:0px;
   }
@@ -173,6 +176,7 @@
   position: right;
   //background: linear-gradient(-45deg, #4B0082, #ff6ea1, $dark-purple, pink);
   background: $bg3;
+  background: rgb(115, 40, 141);
   //background-size: 400% 400%; /* Adding this line */
   animation: gradient 15s ease infinite;
 
@@ -192,8 +196,10 @@
   }
   .songDate {
    transform: translate(8px, 0);
+   width: 40px;
   }
   
+
   .songNotes{
     transform: translate(8px, 0);
   }
@@ -208,6 +214,14 @@
    // z-index: 200;
    // transform: translate(0, -7.2px);
  // }
+  .sec-center {
+    position: relative;
+    max-width: 220px;
+    margin: auto;
+    text-align: center;
+    z-index: 200;
+    transform: translate(0, -7.2px);
+  }
 
   .dropdown:checked + label,
   .dropdown:not(:checked) + label {
@@ -218,6 +232,7 @@
     height: 50px;
     width: 220px;
     background-color: $bg4;
+    background-color: rgb(95, 95, 95);
     color: white;
     font-size: 15px;
     border-radius: 4px;
@@ -289,8 +304,10 @@
 
   .addFirebaseButton {
     background-color: $bg4; // Green background for "add" action
+    background-color: rgb(147, 146, 146); // Green background for "add" action
     color: white;
     transform: translate(0, -7.2px);
+    transform: translate(0, 50px);
     box-shadow: 0 10px 30px rgba(255,235,167,.15);
     &:hover {
       background-color: green;
@@ -299,10 +316,12 @@
 
   .deleteButton {
     background-color: $bg4; // Red background for "delete" action
+    background-color: rgb(147, 146, 146); // Red background for "delete" action
     color: white;
     margin-left: 10px; // Add some space between the add and delete buttons
     box-shadow: 0 8px 28px rgba(255,235,167,.15);
     transform: translate(0, -14.7px);
+    transform: translate(0, 50px);
     &:hover {
       background-color: red;
     }

@@ -13,7 +13,7 @@ import {
   doc,
 } from "firebase/firestore";
 import Star from "../components/Star.jsx";
-//import { getFeatures } from "../spotify/Spotify.jsx";
+import { getFeatures } from "../spotify/Spotify.jsx";
 
 const Song = ({ result }) => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -27,11 +27,21 @@ const Song = ({ result }) => {
   const [notes, setNotes] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  //const [energy, setEnergy] = useState(0);
+  var energy = 0;
 
   const songCollectionList = collection(db, "Song");
   const rankingCollectionList = collection(db, "Ranking");
 
-  //var energy = getFeatures(result.id, "energy");
+  async function test(){
+    var r = await getFeatures(result.id, "energy");
+    console.log("r: " + r);
+    return r;
+    //r.then((result) => {
+     // console.log(result);
+      //setMyEnergy(result);
+    //})
+  }
 
   useEffect(() => {
     const newAudio = new Audio(result.preview_url);
@@ -49,9 +59,11 @@ const Song = ({ result }) => {
     getSongList();
   }, []);
 
-  // useEffect(() => {
-  //   console.log(energy);
-  // }, []);
+  useEffect(() => {
+    energy = test();
+    console.log("xxxxxxxxxxxxxxxx")
+    console.log("energy: " + energy);
+  }, []);  
 
   const getSongList = async () => {
     const songData = await getDocs(songCollectionList);

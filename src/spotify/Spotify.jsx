@@ -528,5 +528,39 @@ async function isConnectedToSpotify() {
   }
 }
 
+async function getFeatures(song_id, feature) {
+  try{
+    const accessToken = await ensureValidToken();
 
-export {getTokenAndSet, deleteSpotifyTokenFromFirestore, generateCustomPlaylist, getCurrentUserId, suggestPlaylist, fetchTopTracks, refreshSpotifyToken, getSpotifyTokens, generateSpotifyAuthRequest, ensureValidToken, fetchUserProfile, search, isConnectedToSpotify, getSong };
+
+    if (!accessToken) {
+        console.error("Access token not found in Firestore");
+        return;
+    }
+    //console.log(accessToken);
+    var searchParameters = {
+      method: 'GET',
+      headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + accessToken
+      }
+  };
+
+
+    var r = await fetch('https://api.spotify.com/v1/audio-features/' + song_id, searchParameters);
+    var audio_features = await r.json();
+
+
+    if(feature == "energy"){ return audio_features.energy; }
+    if(feature == "valence"){ return audio_features.valence; }
+    if(feature == "danceability"){ return audio_features.danceability; }
+ 
+    else return;
+  }
+  catch (error) {
+    console.error('Error getting audio features: ', error);
+    return false; // Assume user is not connected to Spotify in case of error
+  }
+}
+
+export {getFeatures, getTokenAndSet, deleteSpotifyTokenFromFirestore, generateCustomPlaylist, getCurrentUserId, suggestPlaylist, fetchTopTracks, refreshSpotifyToken, getSpotifyTokens, generateSpotifyAuthRequest, ensureValidToken, fetchUserProfile, search, isConnectedToSpotify, getSong };
