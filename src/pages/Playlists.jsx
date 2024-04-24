@@ -30,6 +30,9 @@ import studying from "../assets/generatePlaylistImages/activity/studying.jpeg";
 import workout from "../assets/generatePlaylistImages/activity/workout.jpeg";
 import podium from "../assets/playlist icons/podium.png"; // Import
 import suggestion from "../assets/playlist icons/suggestion.png"; // Import
+import custom from "../assets/playlist icons/custom.png"; // Import
+import custom2 from "../assets/playlist icons/custom2.png"; // Import
+import custom3 from "../assets/playlist icons/custom3.png"; // Import
 
 import high_energy from "../assets/generatePlaylistImages/energy/high_energy.jpeg";
 import low_energy from "../assets/generatePlaylistImages/energy/low_energy.jpeg";
@@ -39,6 +42,9 @@ import calm from "../assets/generatePlaylistImages/mood/calm.jpeg";
 import energetic from "../assets/generatePlaylistImages/mood/energetic.jpeg";
 import happy from "../assets/generatePlaylistImages/mood/happy.jpeg";
 import sad from "../assets/generatePlaylistImages/mood/sad.jpeg";
+import { LuTrophy } from "react-icons/lu";
+import { MdAccountCircle } from "react-icons/md";
+
 import "./Playlists.scss";
 
 const ConnectText = () => {
@@ -374,8 +380,10 @@ const Playlists = () => {
       preferencesCollectionList,
       where("userId", "==", auth.currentUser.uid)
     );
-    const preferencesQuerySnapshot = await getDocs(preferencesQuery);   
-    const songIds = preferencesQuerySnapshot.docs.map((doc) => doc.data().songId);
+    const preferencesQuerySnapshot = await getDocs(preferencesQuery);
+    const songIds = preferencesQuerySnapshot.docs.map(
+      (doc) => doc.data().songId
+    );
 
     if (fetchedToken) {
       console.log(fetchedToken, energy, mood, activity, songIds);
@@ -388,10 +396,11 @@ const Playlists = () => {
       );
       await delay(1000); // Wait for 1 second before making the next request
       setGeneratedPlaylist(tracks);
-      handlePlaylistClick(tracks, playlistImage, playlistName);
+      handlePlaylistClick(tracks, custom2, "Custom Playlist");
     }
     console.log(fetchedToken);
   };
+
   const delay = (milliseconds) => {
     return new Promise((resolve) => setTimeout(resolve, milliseconds));
   };
