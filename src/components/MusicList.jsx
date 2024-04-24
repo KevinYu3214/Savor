@@ -58,7 +58,7 @@ function MusicList(props) {
   return (
     <div className={styles.musicBox}>
       {songs.map((song) => (
-        <div className={styles.songItem}>
+        <div className={styles.songItem} key={song.id}>
           <img src={song.album.images[1].url} className={styles.album} alt="" />
           <span className={styles.songTitleML}>{song.name}</span>
           <div className={styles.artistNameML}>

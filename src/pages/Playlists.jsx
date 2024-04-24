@@ -11,6 +11,15 @@ import Song from "../components/Song";
 import PlaylistComponent from "../components/PlaylistComponent";
 import { ColorExtractor } from "react-color-extractor";
 import tinycolor from "tinycolor2"; // Import tinycolor2 library
+import { db, auth } from "../firebase/firebase";
+import {
+  getDocs,
+  collection,
+  deleteDoc,
+  query,
+  where,
+  doc,
+} from "firebase/firestore";
 
 import sleeping from "../assets/generatePlaylistImages/activity/sleeping.jpeg";
 import cleaning from "../assets/generatePlaylistImages/activity/cleaning.jpeg";
@@ -72,6 +81,7 @@ const Playlists = () => {
   const [token, setToken] = useState(null); // State to store the token
   const [generatedPlaylist, setGeneratedPlaylist] = useState([]);
   const [isSpotifyConnected, setIsSpotifyConnected] = useState(false);
+  const preferencesCollectionList = collection(db, "Preferences");
 
   useEffect(() => {
     const spotifyConnected = localStorage.getItem("spotifyConnected");
@@ -359,13 +369,22 @@ const Playlists = () => {
   const handleGeneratePlaylistClick = async () => {
     const fetchedToken = await ensureValidToken();
     console.log("Generate Playlist");
+
+    const preferencesQuery = query(
+      preferencesCollectionList,
+      where("userId", "==", auth.currentUser.uid)
+    );
+    const preferencesQuerySnapshot = await getDocs(preferencesQuery);   
+    const songIds = preferencesQuerySnapshot.docs.map((doc) => doc.data().songId);
+
     if (fetchedToken) {
-      console.log(fetchedToken, energy, mood, activity);
+      console.log(fetchedToken, energy, mood, activity, songIds);
       let tracks = await generateCustomPlaylist(
         fetchedToken,
         energy,
         mood,
-        activity
+        activity,
+        songIds
       );
       await delay(1000); // Wait for 1 second before making the next request
       setGeneratedPlaylist(tracks);

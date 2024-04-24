@@ -387,12 +387,12 @@ async function suggestPlaylist(token, seedTracks) {
       throw new Error(`Failed to fetch recommendations: ${error.message}`);
   }
 }
-const generateCustomPlaylist = async (token, energy, mood, activity) => {
+const generateCustomPlaylist = async (token, energy, mood, activity, songIds) => {
   try {
     console.log("Generating custom playlist...");
 
     // Map energy, mood, and activity to seed parameters
-    const seedParams = mapEnergyMoodActivityToSeeds(energy, mood, activity);
+    const seedParams = mapEnergyMoodActivityToSeeds(energy, mood, activity, songIds);
 
     // Fetch recommendations from Spotify API based on the selected energy, mood, and activity
     const response = await fetch(`https://api.spotify.com/v1/recommendations?limit=20&${seedParams}`, {
@@ -413,16 +413,16 @@ const generateCustomPlaylist = async (token, energy, mood, activity) => {
   }
 };
 
-const mapEnergyMoodActivityToSeeds = (energy, mood, activity) => {
+const mapEnergyMoodActivityToSeeds = (energy, mood, activity, songIds) => {
   // Map energy, mood, and activity values to corresponding seed parameters
   let seedParams = '';
 
   if (energy >= 0.7) {
-    seedParams += 'seed_genres=party';
+    seedParams += '&seed_genres=party';
   } else if (energy >= 0.4) {
-    seedParams += 'seed_genres=pop';
+    seedParams += '&seed_genres=pop';
   } else {
-    seedParams += 'seed_genres=acoustic';
+    seedParams += '&seed_genres=acoustic';
   }
 
   if (mood >= 0.7) {
