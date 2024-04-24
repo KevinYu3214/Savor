@@ -7,14 +7,11 @@ import {
     getDocs,
     collection,
     addDoc,
-    deleteDoc,
     query,
     where,
-    updateDoc,
-    doc,
   } from "firebase/firestore";
 
-const PreferenceResultsList = ({ results }) => {
+const PreferenceResultsList = ({ results, setParam }) => {
   const { theme } = useContext(ThemeContext);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -23,10 +20,11 @@ const PreferenceResultsList = ({ results }) => {
   const songCollectionList = collection(db, "Song");
 
   const handleClick = (result) => {
-    console.log(result);
     addPreference(result);
     console.log("added to firebase")
+    setParam(result);
     setIsVisible(false);
+
   };
 
   const addPreference = async (song) => {
@@ -51,7 +49,6 @@ const PreferenceResultsList = ({ results }) => {
   
         if (preferencesQuerySnapshot.empty) {
           // Song exists, update it
-          const preferencesDoc = preferencesQuerySnapshot.docs[0];
           await addDoc(preferencesCollectionList, {
             userId: auth.currentUser.uid,
             songId: song.id
