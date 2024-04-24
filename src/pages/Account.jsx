@@ -11,28 +11,6 @@ const Account = () => {
   const [missingUser, setMissingUser] = useState(currentUser ? false : true);
   const [profile, setProfile] = useState(true);
   const [preference, setPreference] = useState(false);
-  const [spotifyAuthRequest, setSpotifyAuthRequest] = useState('');
-  const [spotifyConnected, setSpotifyConnected] = useState(() => {
-    // Load spotifyConnected from local storage, default to false if not found
-    return localStorage.getItem("spotifyConnected") === "true" ? true : false;
-  });
-
-  const fetchSpotifyConnectionStatus = async () => {
-    const connected = await isConnectedToSpotify();
-    setSpotifyConnected(connected);
-    // Store spotifyConnected in local storage
-    localStorage.setItem("spotifyConnected", connected ? "true" : "false");
-  };
-  const deleteSpotifyToken = async () => {
-    // Delete token from Firestore
-    try {
-      await deleteSpotifyTokenFromFirestore();
-      localStorage.setItem("spotifyConnected", "false");
-      setSpotifyConnected(false);
-    } catch (error) {
-      console.error('Error deleting Spotify token:', error);
-    }
-  };
   
   const profileClick = () => {
     setProfile(true);
@@ -46,34 +24,11 @@ const Account = () => {
 
   const logOut = (e) => {
     e.preventDefault();
-    setMissingUser(false);
+    setMissingUser(true);
     logout()
       .then(() => setMissingUser(true))
       .catch((err) => console.log(err));
   };
-
-  const handleConnectSpotify = async () => {
-    try {
-      await getTokenAndSet()
-    } catch (error) {
-      console.error('Error refreshing Spotify token:', error);
-    }
-  };
-
-  useEffect(() => {
-    console.log("Fetching auth URL...");
-    const fetchAuthUrl = async () => {
-      const url = await generateSpotifyAuthRequest();
-      setSpotifyAuthRequest(url);
-    };
-    fetchAuthUrl();
-  
-    const params = new URLSearchParams(window.location.search);
-    if (params.has('code')) {
-      handleConnectSpotify();
-    }
-    fetchSpotifyConnectionStatus();
-  }, []);
   
   return (
     <>
@@ -95,23 +50,6 @@ const Account = () => {
               Preferences
             </div>
           </div>
-
-          {!spotifyConnected ? (
-            <a href={spotifyAuthRequest}>
-              <div className="page_selector">
-                <div className="page_selector__text">Connect Spotify</div>
-              </div>
-            </a>
-          ) : (
-            <div>
-              <div className={`page_selector ${spotifyConnected ? 'spotify_connected' : ''}`}>
-                  <div className="page_selector__text">Spotify Connected</div>
-              </div>
-              <div>
-                <button onClick={deleteSpotifyToken} className="delete_spotify_button">Delete Spotify Token</button>
-              </div>
-            </div>
-          )}
         </div>
         <div className="info">
           {profile && <Profile />}

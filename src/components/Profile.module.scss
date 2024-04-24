@@ -40,7 +40,7 @@
 
 .info_change input{
   height: 50px;
-  width: 150px;
+  width: 200px;
   border: none;
   background: transparent;
   outline: none;
@@ -67,7 +67,7 @@
   .user__text {
     color: $darkest-purple;
   }
-  .spotify__text {
+  .info_change_label {
     color: $darkest-purple;
   }
 }
@@ -76,7 +76,7 @@
   .user__text {
     color: $white
   }
-  .spotify__text {
+  .info_change_label {
     color: $white;
   }
 }
