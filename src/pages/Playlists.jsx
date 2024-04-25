@@ -9,7 +9,7 @@ import {
 } from "../spotify/Spotify"; // Import necessary functions from Spotify module
 import Song from "../components/Song";
 import PlaylistComponent from "../components/PlaylistComponent";
-//import { ColorExtractor } from "react-color-extractor";
+import { ColorExtractor } from "react-color-extractor";
 //import tinycolor from "tinycolor2"; // Import tinycolor2 library
 import { db, auth } from "../firebase/firebase";
 import {

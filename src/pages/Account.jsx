@@ -4,7 +4,6 @@ import { Navigate } from "react-router-dom";
 import "../global_styles/Account.scss";
 import Profile from "../components/Profile";
 import SavedPreference from "../components/SavedPreference";
-import { generateSpotifyAuthRequest, deleteSpotifyTokenFromFirestore, isConnectedToSpotify, getTokenAndSet } from "../spotify/Spotify";
 
 const Account = () => {
   const { logout, currentUser } = useAuth();
@@ -25,9 +24,8 @@ const Account = () => {
   const logOut = (e) => {
     e.preventDefault();
     setMissingUser(true);
-    logout()
-      .then(() => setMissingUser(true))
-      .catch((err) => console.log(err));
+    logout();
+    setMissingUser(true);
   };
   
   return (

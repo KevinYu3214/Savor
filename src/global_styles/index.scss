@@ -93,19 +93,20 @@ button {
 }
 
 .l_container {
-  width: 100%;
+  width: 90%;
   display: flex;
   flex-direction: column;
+  margin:auto;
 }
 
 .listen_list_containter {
   display: flex;
   flex-direction: column;
-
+  margin: auto;
 }
 
 .listen_list_header {
-  font-size: 32px;
+  font-size: 48px;
   //margin-left: 10%;
   margin-top: 5px;
 }
@@ -115,8 +116,8 @@ button {
   flex-direction: row;
   flex-wrap: wrap;
   height: 300px;
-  //width: 150px;
   gap: 3px;
+  margin: auto;
 }
 
 .listen_list_box {
@@ -187,6 +188,85 @@ button {
   .listen_list_box {
       background: $pink;
   }
+}
+
+.sec_stats {
+  display: flex;
+  flex-direction: column;
+  //position: relative;
+  //max-width: 400px;
+  //margin: auto;
+  //text-align: center;
+  //z-index: 200;
+  transform: translate(0, -7.2px);
+}
+
+.dropdown:checked + label,
+.dropdown:not(:checked) + label {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  width: 200px;
+  background-color: $bg2;
+  color: black;
+  font-size: 30px;
+  border-radius: 4px;
+  border-color: black;
+  cursor: pointer;
+  box-shadow: 0 12px 35px rgba(255,235,167,.15);
+  transition: color 0.3s, background-color 0.5s;
+  &:hover {
+    color: $white;
+    background-color: rgb(95, 95, 95);
+  }
+}
+
+.section-dropdown_stats {
+  position: absolute;
+  margin-top: 5px;
+  margin-left: 40px;
+  width: 220px;
+  background-color: #111;
+  border-radius: 4px;
+  box-shadow: 0 14px 35px rgba(9,9,12,0.4);
+  z-index: 2;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(20px);
+  transition: all 200ms linear;
+  
+}
+
+.dropdown-link_stats {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;  
+  color: #fff;
+  padding: 15px 20px;
+  text-decoration: none;
+  align-items: center;
+  transition: color 0.3s, background-color 0.3s;
+
+  &:hover {
+    background-color: #292929; // Slightly lighter than the dropdown background
+    color: #e88eed; // Contrast color for text on hover
+  }
+
+  .toggle-icon {
+    transition: transform 150ms ease;
+  }
+
+  &.active .toggle-icon {
+    transform: rotate(135deg); // Indicates an "active" state with a rotated icon
+  }
+}
+
+.dropdown:checked ~ .section-dropdown_stats {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
 }
 
 .subtitle {

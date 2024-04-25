@@ -2,6 +2,7 @@ import { useAuth } from "../contexts/AuthContext";
 import React, { useState, useEffect, useRef } from "react";
 import "../components/Song.scss";
 import { db, auth } from "../firebase/firebase";
+import "../global_styles/Account.scss";
 import styles from "../components/Search/Search.module.scss";
 import useOnClickOutside from "../components/Search/useOnClickOutside"; // Adjust the path as needed
 import { getSong } from "../spotify/Spotify";
@@ -32,71 +33,146 @@ const Stats = () => {
  
      // Use the hook to close the modal when clicking outside
      useOnClickOutside(modalRef, () => setIsShown(false));
- 
-     const handleClick = async (rankingSong) => {
-         const result = await getSong(rankingSong.songId);
-         setCurrResult(result)
-         console.log(currResult)
-         setIsShown(true);
-     };
- 
+
      useEffect(() => {
-         getRankingList();
-     }, [isShown]);
- 
+        getRankingList();
+    }, [isShown]);
+
+    const handleClick = async (rankingSong) => {
+        const result = await getSong(rankingSong.songId);
+        setCurrResult(result)
+        setIsShown(true);
+    };
+
+     //For the drop down menu
+     const [selectedDropdownText, setSelectedDropdownText] =
+        useState("All Songs");
+
      useEffect(() => {
-         getRankingList();
+        getRankingList();
       }, []);
  
-     useEffect(() => {
-         if(rankingList.length > 0 ){
-             makeRankingSong();
-             rankingSongList.sort((a, b) => new Date(b.date) - new Date(a.date));
-         }
-     }, [rankingList]);
+      useEffect(() => {
+        if (rankingList.length > 0) {
+            makeRankingSong();
+        }
+        setSelectedDropdownText(selectedDropdownText)
+    }, [rankingList]);
  
      const getRankingList = async () => {
-         //Query to find rankings
-         const rankingQuery = query(
-             rankingCollectionList,
-             where("userId", "==", auth.currentUser.uid)
-         );
-         const rankingQuerySnapshot = await getDocs(rankingQuery);   
-         const songIDList = rankingQuerySnapshot.docs.map((doc) => doc.data().songId);
-             
-         //Query to find songs
-         if (songIDList.length !== 0) {
-             const songQuery = query(
-                 songCollectionList,
-                 where("songId", "in", songIDList)
-             );
-             const songQuerySnapshot = await getDocs(songQuery);
-             const songs = songQuerySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-             setSongList(songs);
-         }
-     
-         const rankings = rankingQuerySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-         setRankingList(rankings);
-     };
+        // Query to find rankings
+        const rankingQuery = query(
+            rankingCollectionList,
+            where("userId", "==", auth.currentUser.uid)
+        );
+        const rankingQuerySnapshot = await getDocs(rankingQuery);
+        const songIDList = rankingQuerySnapshot.docs.map((doc) => doc.data().songId);
+    
+        // Query to find songs
+        if (songIDList.length !== 0) {
+            const songQuery = query(
+                songCollectionList,
+                where("songId", "in", songIDList)
+            );
+            const songQuerySnapshot = await getDocs(songQuery);
+            const songs = songQuerySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+            setSongList(songs);
+        }
+    
+        const rankings = rankingQuerySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+        setRankingList(rankings);
+    };
  
-     const makeRankingSong = () => {
-         var newRankingSongList = [];
-         for(let i = 0; i < rankingList.length; i++){
-             var song = songList.find((song) => song.songId === rankingList[i].songId)
-             newRankingSongList.push({id: rankingList[i].id, songId: rankingList[i].songId,
-             title: song.title, artists: song.artist, album: song.album,
-             image: song.image, ranking: rankingList[i].ranking, date: rankingList[i].date,
-             notes: rankingList[i].notes, status: rankingList[i].status});
-         }
-         setRankingSongList(newRankingSongList)
-     };
+    const makeRankingSong = () => {
+        var i = 0;
+        var newRankingSongList = rankingList.map((ranking) => {
+            console.log(ranking, i++);
+            const song = songList.find((song) => song.songId === ranking.songId);
+            console.log(song);
+            return {
+                id: ranking.id,
+                songId: ranking.songId,
+                title: song.title,
+                artists: song.artist,
+                album: song.album,
+                image: song.image,
+                ranking: ranking.ranking,
+                date: ranking.date,
+                notes: ranking.notes,
+                status: ranking.status
+            };
+        });
+        console.log('should', newRankingSongList)
+        setRankingSongList(newRankingSongList);
+    };
+
+     const handleDropdownChange = (text) => {
+        setSelectedDropdownText(text);
+        
+        makeRankingSong();
+        console.log("rankingSongList", rankingSongList)
+        var newRankingSongList = [];
+
+        switch (text) {
+            case "All Songs":
+                newRankingSongList = rankingSongList;
+                break
+            case "Listened":
+            case "Plan to Listen":
+            case "Favorites":
+                newRankingSongList = rankingSongList.filter((song) => song.status === text);
+                break;
+            case "Highest Rated":
+                newRankingSongList = rankingSongList.slice().sort((a, b) => b.ranking - a.ranking);
+                break;
+            case "Lowest Rated":
+                newRankingSongList = rankingSongList.slice().sort((a, b) => a.ranking - b.ranking);
+                break;
+            default:
+                break;
+        }
+    
+        setRankingSongList(newRankingSongList);
+      };
    
      return (
      <>
-         <div className="l_conatiner"> 
-             <div className="listen_list_container">
-                 <div className="listen_list_header">Ranked Songs</div>
-                 <div className="listen_list_boxes">
+        <div className="lift"></div>
+        <div className="l_container"> 
+            <div className="listen_list_container">
+                <div className="sec_stats">
+                    <div className="listen_list_header"> Your Ranked Songs! </div>
+                    {/* Dropdown for song status */}
+                    <input
+                        className="dropdown"
+                        type="checkbox"
+                        id="dropdown"
+                        name="dropdown"
+                    />
+                    <label className="for-dropdown" htmlFor="dropdown">
+                        {selectedDropdownText} <i className="uil uil-arrow-down"></i>
+                    </label>
+                    <div className="section-dropdown_stats">
+                        {["All Songs", "Listened", "Plan to Listen", "Favorites", "Highest Rated", "Lowest Rated"].map(
+                        (text, index) => (
+                            <a
+                            key={index}
+                            href="#"
+                            className={`dropdown-link_stats ${
+                                selectedDropdownText === text ? "active" : ""
+                            }`}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                handleDropdownChange(text);
+                            }}
+                            >
+                            {text} <i className="uil uil-plus toggle-icon"></i>
+                            </a>
+                        )
+                        )}
+                    </div>
+                </div>
+                <div className="listen_list_boxes">
                      {rankingSongList.length > 0 && rankingSongList.map((rankingSong) =>
                          <div className="listen_list_box" 
                          onClick={() => handleClick(rankingSong)}
@@ -113,22 +189,22 @@ const Stats = () => {
                                  </div>
                              </div>
                              <div className="listen_list_box__ranking">
-                                 <div className="listen_list_box__ranking__container">
+                                 {(rankingSong.ranking != null) && <div className="listen_list_box__ranking__container">
                                      <div className="listen_list_box__ranking__container__title">Ranking: </div>
                                      <div className="listen_list_box__ranking__container__content">{rankingSong.ranking}</div>
-                                 </div>
-                                 <div className="listen_list_box__ranking__container">
+                                 </div>}
+                                 {(rankingSong.date != null) && <div className="listen_list_box__ranking__container">
                                      <div className="listen_list_box__ranking__container__title">Date: </div>
                                      <div className="listen_list_box__ranking__container__content">{rankingSong.date}</div>
-                                 </div>
-                                 <div className="listen_list_box__ranking__container">
+                                 </div>}
+                                 {(rankingSong.notes != null) && <div className="listen_list_box__ranking__container">
                                      <div className="listen_list_box__ranking__container__title">Notes: </div>
                                      <div className="listen_list_box__ranking__container__content">{rankingSong.notes}</div>
-                                 </div>
-                                 <div className="listen_list_box__ranking__container">
+                                 </div>}
+                                 {(rankingSong.status != null) &&<div className="listen_list_box__ranking__container">
                                      <div className="listen_list_box__ranking__container__title">Status: </div>
                                      <div className="listen_list_box__ranking__container__content">{rankingSong.status}</div>
-                                 </div>
+                                 </div>}
                              </div>
                          
                          </div>
@@ -148,4 +224,4 @@ const Stats = () => {
    );
 }
 
-export default Stats
+export default Stats;
