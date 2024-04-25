@@ -1,60 +1,74 @@
-//got component from https://codepen.io/chriskirknielsen/pen/LJzLzr
 import React from "react";
 import "../components/Star.scss";
 
-const Star = () => {
+const Star = ({ song_id }) => {
   return (
-    <span class="star__container">
+    <span className={`star__container song_${song_id}`}>
       <input
         type="radio"
-        name="rating"
+        name={`rating_${song_id}`}
         value="1"
-        id="star-1"
-        class="star__radio visuhide"
+        id={`star-1_${song_id}`}
+        className={`star__radio visuhide song_${song_id}`}
       ></input>
       <input
         type="radio"
-        name="rating"
+        name={`rating_${song_id}`}
         value="2"
-        id="star-2"
-        class="star__radio visuhide"
+        id={`star-2_${song_id}`}
+        className={`star__radio visuhide song_${song_id}`}
       ></input>
       <input
         type="radio"
-        name="rating"
+        name={`rating_${song_id}`}
         value="3"
-        id="star-3"
-        class="star__radio visuhide"
+        id={`star-3_${song_id}`}
+        className={`star__radio visuhide song_${song_id}`}
       ></input>
       <input
         type="radio"
-        name="rating"
+        name={`rating_${song_id}`}
         value="4"
-        id="star-4"
-        class="star__radio visuhide"
+        id={`star-4_${song_id}`}
+        className={`star__radio visuhide song_${song_id}`}
       ></input>
       <input
         type="radio"
-        name="rating"
+        name={`rating_${song_id}`}
         value="5"
-        id="star-5"
-        class="star__radio visuhide"
+        id={`star-5_${song_id}`}
+        className={`star__radio visuhide song_${song_id}`}
       ></input>
 
-      <label class="star__item" for="star-1">
-        <span class="visuhide">1 star</span>
+      <label
+        className={`star__item song_${song_id}`}
+        htmlFor={`star-1_${song_id}`}
+      >
+        <span className="visuhide">1 star</span>
       </label>
-      <label class="star__item" for="star-2">
-        <span class="visuhide">2 stars</span>
+      <label
+        className={`star__item song_${song_id}`}
+        htmlFor={`star-2_${song_id}`}
+      >
+        <span className="visuhide">2 stars</span>
       </label>
-      <label class="star__item" for="star-3">
-        <span class="visuhide">3 stars</span>
+      <label
+        className={`star__item song_${song_id}`}
+        htmlFor={`star-3_${song_id}`}
+      >
+        <span className="visuhide">3 stars</span>
       </label>
-      <label class="star__item" for="star-4">
-        <span class="visuhide">4 stars</span>
+      <label
+        className={`star__item song_${song_id}`}
+        htmlFor={`star-4_${song_id}`}
+      >
+        <span className="visuhide">4 stars</span>
       </label>
-      <label class="star__item" for="star-5">
-        <span class="visuhide">5 stars</span>
+      <label
+        className={`star__item song_${song_id}`}
+        htmlFor={`star-5_${song_id}`}
+      >
+        <span className="visuhide">5 stars</span>
       </label>
     </span>
   );
