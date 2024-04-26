@@ -270,6 +270,9 @@ const Song = ({ result }) => {
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
             />
+          </div>
+          <div className="songMisc">
+
             <button onClick={onSubmitMusic} className="addFirebaseButton">
               Save
             </button>
