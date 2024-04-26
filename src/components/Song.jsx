@@ -27,21 +27,16 @@ const Song = ({ result }) => {
   const [notes, setNotes] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  //const [energy, setEnergy] = useState(0);
-  var energy = 0;
+  const [energy, setEnergy] = useState(0);
 
   const songCollectionList = collection(db, "Song");
   const rankingCollectionList = collection(db, "Ranking");
 
-  async function test(){
-    var r = await getFeatures(result.id, "energy");
-    console.log("r: " + r);
-    return r;
-    //r.then((result) => {
-     // console.log(result);
-      //setMyEnergy(result);
-    //})
-  }
+  //async function test(){
+   // var r = await getFeatures(result.id, "energy");
+   // console.log("r: " + r);
+   // return r;
+  //}
 
   useEffect(() => {
     const newAudio = new Audio(result.preview_url);
@@ -60,10 +55,16 @@ const Song = ({ result }) => {
   }, []);
 
   useEffect(() => {
-    energy = test();
+    getFeatures(result.id, "energy").then(feat => {
+      console.log(feat);
+      setEnergy(feat);
+    })
+  }, []);  
+
+  useEffect(() => {
     console.log("xxxxxxxxxxxxxxxx")
     console.log("energy: " + energy);
-  }, []);  
+  }, [energy]);
 
   const getSongList = async () => {
     const songData = await getDocs(songCollectionList);
@@ -71,6 +72,7 @@ const Song = ({ result }) => {
     setSongList(songData.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     setRankingList(rankingData.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
   };
+
   useEffect(() => {
     // This useEffect reacts to changes in either the rankingList or the result (selected song).
     const currentRankingDetails = rankingList.find(
@@ -241,6 +243,7 @@ const Song = ({ result }) => {
               <div className="songTitle">{result.name}</div>
               <div className="artistInfo">Albumtest: {result.album.name}</div>
               <div className="artistInfo"> Artist: {result.artists[0].name}</div>
+              <div className="artistInfo"> test: {energy} </div>
             </div>
 
             <Star className="songStar" onChange={(e) => setRating(e.value)}> </Star>
