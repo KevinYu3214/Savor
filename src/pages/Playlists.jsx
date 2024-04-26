@@ -213,8 +213,7 @@ const Playlists = () => {
               );
               setSuggestedPlaylist(suggestedTracks);
               await delay(1000); // Wait for 1 second before making the next request
-            }
-            if (tracks != null) {
+            } else {
               // Ensure topTracksData.items is defined
               console.log("Fetching suggested playlist...");
               suggestedTracks = await suggestPlaylist(fetchedToken, tracks);
