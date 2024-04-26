@@ -1,8 +1,12 @@
 import React from "react";
 import MusicList from "./MusicList";
 import Star from "../components/Star.jsx";
-import { createNewPlaylist, ensureValidToken, fetchUserProfile } from "../spotify/Spotify.jsx";
-import "./PlayListComponent.scss"
+import {
+  createNewPlaylist,
+  ensureValidToken,
+  fetchUserProfile,
+} from "../spotify/Spotify.jsx";
+import "./PlayListComponent.scss";
 
 const PlaylistComponent = ({ songs, image, name, id, token }) => {
   return (
@@ -12,8 +16,9 @@ const PlaylistComponent = ({ songs, image, name, id, token }) => {
         <div className="playlistName"> {name} </div>
         <div className="playlistExport">
           <button
-            onClick={()=> {
-              createNewPlaylist(id, token, songs, name)}}
+            onClick={() => {
+              createNewPlaylist(id, token, songs, name);
+            }}
             className="buttons"
           >
             Export to Spotify
@@ -24,7 +29,7 @@ const PlaylistComponent = ({ songs, image, name, id, token }) => {
         <div className="blank">K </div>
         <div className="title"> Title </div>
         <div className="artistPC"> Artist </div>
-        <div> Rank </div>
+        <div> Album </div>
         <div> Duration </div>
       </div>
       <MusicList songs={songs} />

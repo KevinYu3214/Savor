@@ -64,7 +64,8 @@ function MusicList(props) {
           <div className={styles.artistNameML}>
             {song.artists.map((artist) => artist.name).join(", ")}
           </div>
-          <Star className={styles.rank} song_id={song.id} />
+          <div className={styles.album}>{song.album.name}</div>
+          {/*<Star className={styles.rank} song_id={song.id} />*/}
           <div className={styles.duration}>
             {" "}
             {formatDuration(song.duration_ms)}{" "}
