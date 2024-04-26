@@ -21,7 +21,6 @@ const PreferenceResultsList = ({ results, setParam }) => {
 
   const handleClick = (result) => {
     addPreference(result);
-    console.log("added to firebase")
     setParam(result);
     setIsVisible(false);
 

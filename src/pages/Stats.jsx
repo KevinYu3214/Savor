@@ -22,6 +22,7 @@ const Stats = () => {
      //Firebase info
      const [songList, setSongList] = useState([]);
      const [rankingList, setRankingList] = useState([]);
+     var rsl = [];
      const [rankingSongList, setRankingSongList] = useState([]);
      const songCollectionList = collection(db, "Song");
      const rankingCollectionList = collection(db, "Ranking");
@@ -54,9 +55,10 @@ const Stats = () => {
  
       useEffect(() => {
         if (rankingList.length > 0) {
-            makeRankingSong();
+            makeRankingSong(rankingList);
         }
-        setSelectedDropdownText(selectedDropdownText)
+        setSelectedDropdownText(selectedDropdownText);
+        handleDropdownChange(selectedDropdownText);
     }, [rankingList]);
  
      const getRankingList = async () => {
@@ -83,12 +85,10 @@ const Stats = () => {
         setRankingList(rankings);
     };
  
-    const makeRankingSong = () => {
+    const makeRankingSong = (modList) => {
         var i = 0;
-        var newRankingSongList = rankingList.map((ranking) => {
-            console.log(ranking, i++);
+        var newRankingSongList = modList.map((ranking) => {
             const song = songList.find((song) => song.songId === ranking.songId);
-            console.log(song);
             return {
                 id: ranking.id,
                 songId: ranking.songId,
@@ -102,38 +102,32 @@ const Stats = () => {
                 status: ranking.status
             };
         });
-        console.log('should', newRankingSongList)
+        console.log('should', newRankingSongList);
         setRankingSongList(newRankingSongList);
     };
 
-     const handleDropdownChange = (text) => {
+    const handleDropdownChange = (text) => {
         setSelectedDropdownText(text);
-        
-        makeRankingSong();
-        console.log("rankingSongList", rankingSongList)
-        var newRankingSongList = [];
-
+    
         switch (text) {
             case "All Songs":
-                newRankingSongList = rankingSongList;
-                break
+                makeRankingSong([...rankingList]); // Copy the original list
+                break;
             case "Listened":
             case "Plan to Listen":
             case "Favorites":
-                newRankingSongList = rankingSongList.filter((song) => song.status === text);
+                makeRankingSong(rankingList.filter(song => song.status === text));
                 break;
             case "Highest Rated":
-                newRankingSongList = rankingSongList.slice().sort((a, b) => b.ranking - a.ranking);
+                makeRankingSong([...rankingList].sort((a, b) => b.ranking - a.ranking));
                 break;
             case "Lowest Rated":
-                newRankingSongList = rankingSongList.slice().sort((a, b) => a.ranking - b.ranking);
+                 makeRankingSong([...rankingList].sort((a, b) => a.ranking - b.ranking));
                 break;
             default:
                 break;
         }
-    
-        setRankingSongList(newRankingSongList);
-      };
+    };
    
      return (
      <>

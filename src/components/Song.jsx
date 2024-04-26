@@ -298,7 +298,7 @@ const Song = ({ result }) => {
                 {selectedDropdownText} <i className="uil uil-arrow-down"></i>
               </label>
               <div className="section-dropdown">
-                {["Plan to Listen", "Listened", "Favorites", "Recommendations"].map(
+                {["Plan to Listen", "Listened", "Favorites"].map(
                   (text, index) => (
                     <a
                       key={index}

@@ -12,7 +12,6 @@ const Star = ({ song_id, onRankingClick, startValue }) => {
   // Inside handleClick function
   const handleClick = (e) => {
     const value = parseInt(e.target.value);
-    console.log(value);
     setSelectedValue(value);
     onRankingClick(value); // Pass the selected rating back to the parent component
   };
