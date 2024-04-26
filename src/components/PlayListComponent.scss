@@ -50,6 +50,14 @@
             margin-left: auto;
             color: black;
         }
+
+        .playlistExport{
+            font-weight: 900;
+            font-size: calc(2vw + 1.2rem);
+            margin-left: auto;
+            color: black;
+            cursor: pointer;
+        }
     } 
 
     .musicListDetails{
@@ -71,4 +79,19 @@
     }
 
 }
+.buttons{
+    background-color: lightgray;
+    color: #000;
+    border: none;
+    padding: 20px 30px; /* Increase padding */
+    border-radius: 10px; /* Increase border radius */
+    cursor: pointer;
+    font-size: 20px; /* Increase font size */
+    white-space: nowrap; /* Prevent text from wrapping */
+    margin-right: 10px;
+}
 
+.buttons:hover{
+    background-color: rgb(166, 167, 175);
+    transition-duration: 190ms;
+  }

@@ -9,7 +9,7 @@ import {
 } from "../spotify/Spotify"; // Import necessary functions from Spotify module
 import Song from "../components/Song";
 import PlaylistComponent from "../components/PlaylistComponent";
-//import { ColorExtractor } from "react-color-extractor";
+import { ColorExtractor } from "react-color-extractor";
 //import tinycolor from "tinycolor2"; // Import tinycolor2 library
 import { db, auth } from "../firebase/firebase";
 import {
@@ -66,6 +66,7 @@ const LoadingComponent = () => {
 
 const Playlists = () => {
   const [profileName, setProfileName] = useState("");
+  const [spotifyId, setSpotifyId] = useState("");
   const [topTracks, setTopTracks] = useState([]);
   const [suggestedPlaylist, setSuggestedPlaylist] = useState([]);
   const [error, setError] = useState("");
@@ -139,21 +140,27 @@ const Playlists = () => {
         const fetchedToken = await ensureValidToken();
         if (fetchedToken) {
           console.log("Token retrieved:", fetchedToken);
+          setToken(fetchedToken); // Set the token in state
           if (!localStorage.getItem("profileName")) {
             console.log("Fetching user profile...");
-            setToken(fetchedToken); // Set the token in state
             console.log("Token retrieved:", token);
-            const { display_name } = await fetchUserProfile(fetchedToken);
+            const { display_name, id } = await fetchUserProfile(fetchedToken);
             console.log("User profile fetched:", display_name);
+            setSpotifyId(id);
+            console.log("User profile fetched:", id);
             localStorage.setItem("profileName", display_name); // Store profileName in local storage
+            localStorage.setItem("spotifyId", id);
             setProfileName(display_name);
             await delay(1000); // Wait for 1 second before making the next request
           } else {
             const display_name = localStorage.getItem("profileName");
+            const id = localStorage.getItem("spotifyId");
             console.log(
               "User profile fetched from local storage:",
               display_name
             );
+            console.log("User profile fetched from local storage", id);
+            setSpotifyId(id);
             setProfileName(display_name);
           }
           if (!localStorage.getItem("topTracks")) {
@@ -452,6 +459,8 @@ const Playlists = () => {
                     songs={toDisplay}
                     image={playlistImage}
                     name={playlistName}
+                    id={spotifyId}
+                    token={token}
                   />
                 </div>
               </div>

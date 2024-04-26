@@ -11,7 +11,7 @@ export const clientSecret = 'f6db2bf108264ec88a61a0a3aefd49e3'
 const redirectUrl = 'http://localhost:5173/account'; // Your redirect URL - must be localhost URL and/or HTTPS
 const authorizationEndpoint = "https://accounts.spotify.com/authorize";
 const tokenEndpoint = "https://accounts.spotify.com/api/token"; // Token endpoint for exchanging codes and refreshing tokens
-const scope = 'user-read-private user-read-email user-top-read';
+const scope = 'user-read-private user-read-email user-top-read playlist-modify-public playlist-modify-private';
 
 // Generates a code verifier and challenge for PKCE
 async function generateCodeChallenge() {
@@ -494,6 +494,53 @@ async function fetchTopTracks(token) {
   }
 }
 
+// creates a new playlist and returns the URI to spotify
+async function createNewPlaylist(spotifyId, token, tracks, name) {
+  const params = JSON.stringify({
+      name: name,
+      description: "",
+      public: false,
+  });
+
+  const response = await fetch(`https://api.spotify.com/v1/users/${spotifyId}/playlists`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: params,
+  },);
+
+  const data = await response.json();
+  const {external_urls} = data;
+  const {id} = data;
+  
+  const tracksList = tracks.map(track => track.uri);
+
+  console.log(tracksList);
+  addToPlaylist(tracksList, id, token);
+  const win = window.open(external_urls.spotify, '_blank');
+  win.focus();
+}
+
+async function addToPlaylist(tracks, playlistId, token) {
+  const params = JSON.stringify({
+    uris: tracks,
+    position: 0,
+  });
+
+  const response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: params,
+  },);
+
+  await response.json();
+}
+
 async function getCurrentUserId() {
   const auth = getAuth();
   const user = auth.currentUser;
@@ -563,4 +610,4 @@ async function getFeatures(song_id, feature) {
   }
 }
 
-export {getFeatures, getTokenAndSet, deleteSpotifyTokenFromFirestore, generateCustomPlaylist, getCurrentUserId, suggestPlaylist, fetchTopTracks, refreshSpotifyToken, getSpotifyTokens, generateSpotifyAuthRequest, ensureValidToken, fetchUserProfile, search, isConnectedToSpotify, getSong };
+export {getFeatures, getTokenAndSet, deleteSpotifyTokenFromFirestore, generateCustomPlaylist, getCurrentUserId, suggestPlaylist, fetchTopTracks, refreshSpotifyToken, getSpotifyTokens, generateSpotifyAuthRequest, ensureValidToken, fetchUserProfile, search, isConnectedToSpotify, getSong, createNewPlaylist };
