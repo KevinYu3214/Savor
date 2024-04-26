@@ -39,7 +39,6 @@ const SavedPreference = () => {
       const songs = songQuerySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
       setSongList(songs);
       setSongCount(songs.length); // Update song count here
-      localStorage.removeItem("suggested_playlist");
     } else {
       // If no songs found, reset the song list
       setSongList([]);

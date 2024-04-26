@@ -62,6 +62,7 @@ const PreferenceResultsList = ({ results, setParam }) => {
                 songId: song.id,
             });
             }   
+            localStorage.removeItem("suggested_playlist");
         }
         setErrorMessage(""); // Clear error message
       } catch (error) {
