@@ -21,7 +21,7 @@ const Song = ({ result }) => {
   const [songList, setSongList] = useState([]);
   const [rankingList, setRankingList] = useState([]);
   const [selectedDropdownText, setSelectedDropdownText] =
-    useState("Dropdown Menu");
+    useState("Listened");
   const [ranking, setRanking] = useState("");
   const [date, setDate] = useState("");
   const [notes, setNotes] = useState("");
@@ -89,13 +89,13 @@ const Song = ({ result }) => {
       setRanking(currentRankingDetails.ranking || "");
       setDate(currentRankingDetails.date || "");
       setNotes(currentRankingDetails.notes || "");
-      setSelectedDropdownText(currentRankingDetails.status || "Status");
+      setSelectedDropdownText(currentRankingDetails.status || "Listened");
     } else {
       // Reset to default values if the song is not found (useful for when a new song is selected).
       setRanking("");
       setDate("");
       setNotes("");
-      setSelectedDropdownText("Status");
+      setSelectedDropdownText("Listened");
     }
   }, [rankingList, result]);
   

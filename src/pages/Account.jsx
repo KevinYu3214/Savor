@@ -10,7 +10,7 @@ const Account = () => {
   const [missingUser, setMissingUser] = useState(currentUser ? false : true);
   const [profile, setProfile] = useState(true);
   const [preference, setPreference] = useState(false);
-  
+
   const profileClick = () => {
     setProfile(true);
     setPreference(false);
@@ -25,7 +25,7 @@ const Account = () => {
     e.preventDefault();
     setMissingUser(true);
     logout();
-    setMissingUser(true);
+    location.href = "/login";
   };
   
   return (

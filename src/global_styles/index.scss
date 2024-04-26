@@ -189,6 +189,7 @@ button {
 /* Styles for the ".listen_list_box__ranking__container__content" class */
 .listen_list_box__ranking__container__content {
   font-size: 14px;
+  max-width: 250px;
 }
 
 .light {
@@ -244,7 +245,7 @@ button {
   justify-content: center;
   margin-bottom: 5px;
   height: 50px;
-  width: 200px;
+  max-width: 300px;
   background-color: $bg2;
   color: black;
   font-size: 30px;

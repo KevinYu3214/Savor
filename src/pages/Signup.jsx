@@ -33,6 +33,7 @@ const SignUp = () => {
 
   return (
     <>
+      <div className="lift"></div>
       {currentUser && <Navigate to="/account" />}
       <div className="container">
         <div className="header">
