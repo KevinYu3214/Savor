@@ -2,7 +2,7 @@
 @import "../global_styles/abstract/_colors";
 
 .container {
-    height: 200px;
+    height: 100%;
     display: flex;
     flex-direction: column;
     padding: 20px;
@@ -10,27 +10,30 @@
     border-radius: 8px;
 }
 
-.user{
-    height: 25%;
-    &__text{
-        font-size:36px;
-        font-weight: 400; 
-    }
+.user {
+  height: 25%;
+  display: flex;
+  flex-direction: column; // Display email and user text vertically
 }
-
-.spotify{
-    height: 10%;
-    width: 80%;
-    margin-left: 20px;
-    &__text{
-        font-size:24px;
-        font-weight: 400;
-    }
+.user__text {
+  font-size: 36px;
+  font-weight: 400;
+  margin-bottom: 10px; // Add margin between email and user text
+}
+.spotify {
+  height: 10%;
+  width: 80%;
+  margin-left: 20px;
+  margin-top: 20px; // Adjust the margin-top value to create reasonable spacing
+  &__text {
+      font-size: 24px;
+      font-weight: 400;
+  }
 }
 
 .info_change{
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   margin-top: 10px;
 }
 
@@ -47,6 +50,7 @@
 
 .light {
   .user__text {
+    
     color: $darkest-purple;
   }
   .info_change_label {
@@ -69,20 +73,33 @@
   font-size: 24px;
   font-weight: 400;
   margin-right: 10px;
+  margin-bottom: 15px;
 }
 
 .info_change_button {
   display: inline-block;
   padding: 10px 20px;
-  background-color: #007bff;
-  color: #fff;
+  background-color: $primary; // Updated to use a variable
+  color: $white; // Updated to use a variable
   border: none;
   border-radius: 25px;
   font-size: 18px;
   font-weight: 500;
   cursor: pointer;
   transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: darken($primary, 10%); // Darken the background color on hover
+  }
+
+  @media screen and (max-width: 768px) {
+    width: 100%; // Set width to 100% on smaller screens
+    max-width: 200px; // Limit maximum width for better readability
+    margin: 10px auto; // Center the button horizontally with margin
+  }
 }
+
+
 
 .info_change_button:hover {
   background-color: #0056b3;

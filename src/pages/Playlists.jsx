@@ -437,12 +437,8 @@ const Playlists = () => {
         </div>
       )}
       {!isLoading && error && <p>Error: {error}</p>}
-      {!isLoading && profileName && (
-        <h2 className="welcomeText">Welcome, {profileName}</h2>
-      )}
       {!isLoading && suggestedPlaylist.length > 0 && (
         <div>
-          <h1>Your Playlists</h1>
           <div className="allPlaylistsContainer">
             <div className="topPlaylistContainer">
               <img
@@ -534,18 +530,6 @@ const Playlists = () => {
           >
             Generate Custom Playlist
           </button>
-        </div>
-      )}
-      {!isLoading && generatedPlaylist.length > 0 && (
-        <div>
-          <h2>Suggested Playlist</h2>
-          <div className="TopPlaylistContainer">
-            <img
-              className="playlistIcon"
-              src={podium}
-              onClick={() => handlePlaylistClick(generatedPlaylist)}
-            />
-          </div>
         </div>
       )}
     </div>

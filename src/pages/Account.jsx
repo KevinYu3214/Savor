@@ -4,6 +4,8 @@ import { Navigate } from "react-router-dom";
 import "../global_styles/Account.scss";
 import Profile from "../components/Profile";
 import SavedPreference from "../components/SavedPreference";
+import { FiLogOut } from 'react-icons/fi';
+import { FaUser, FaCog } from 'react-icons/fa';
 
 const Account = () => {
   const { logout, currentUser } = useAuth();
@@ -34,25 +36,23 @@ const Account = () => {
       <div className="lift"></div>
       <div className="a_header">
         <div className="a_header_text">Account</div>
-        <button onClick={logOut} className="a_header_button">Log out</button>
+        <button onClick={logOut} className="a_header_button">
+            <FiLogOut className="logout-icon" />
+          </button>
       </div>
       <div className="a_container">
         <div className="sidebar">
           <div className="page_selector" onClick={profileClick}>
-            <div className="page_selector__text">
               User Info
             </div>
-          </div>
-          <div className="page_selector" onClick={preferenceClick}>
-            <div className="page_selector__text">
+            <div className="page_selector" onClick={preferenceClick}>
               Preferences
             </div>
           </div>
-        </div>
-        <div className="info">
-          {profile && <Profile />}
-          {preference && <SavedPreference />}
-        </div>
+          <div className="info">
+            {profile && <Profile />}
+            {preference && <SavedPreference />}
+          </div>
       </div>
     </>
   );

@@ -73,11 +73,16 @@ const Profile = () => {
     return (
     <>
         <div className={styles.container}>
-            <div className={styles.user}>
-                <div className={styles.user__text}>Current User: {email}</div>
-            </div>
+            
             <div className={styles.info_change}>
-                <div className={styles.info_change_label}>Spotify: {connection}</div>
+                <div className={styles.info_change_label}>
+                    <div className={styles.user__text}>Email:</div>
+                    <div className={styles.info_change_label}>{email}</div>
+                </div>
+                <div className={styles.info_change_label}>
+                    <div className={styles.user__text}>Spotify:</div>
+                    <div className={styles.info_change_label}>{connection}</div>
+                </div>
                 {spotifyConnected &&
                     <div className={styles.info_change_button} onClick={disconnect}>Disconnect Spotify</div>}
                 {!spotifyConnected && 
