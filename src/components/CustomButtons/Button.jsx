@@ -14,8 +14,8 @@ const Button = (props) => {
     }, 400); // Adjust the duration according to your transition animation
   };
 
-    return (
-      <div>      
+  return (
+    <div>      
       <div className={`buttons ${isClicked ? 'clicked' : ''}`}>
         <button className={`blob-btn ${theme === 'light' ? 'light' : 'dark'}`} onClick={handleClick} type={props.type}>
           {props.text}

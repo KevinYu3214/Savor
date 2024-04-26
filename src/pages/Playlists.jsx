@@ -19,6 +19,7 @@ import {
   query,
   where,
   doc,
+  QuerySnapshot,
 } from "firebase/firestore";
 
 import sleeping from "../assets/generatePlaylistImages/activity/sleeping.jpeg";
@@ -189,18 +190,34 @@ const Playlists = () => {
 
           if (!localStorage.getItem("suggested_playlist")) {
             let suggestedTracks = [];
-            let tracks = await fetchTopTracks(fetchedToken);
-            console.log(tracks);
-            console.log(tracks.items);
-            if (tracks && tracks.items) {
-              // Ensure topTracksData.items is defined
-              console.log("Fetching suggested playlist...");
+
+            const preferencesQuery = query(
+              preferencesCollectionList,
+              where("userId", "==", auth.currentUser.uid)
+            );
+            const preferencesQuerySnapshot = await getDocs(preferencesQuery);
+            const tracks = preferencesQuerySnapshot.docs.map(
+              (doc) => doc.data().songId
+            );
+            if (tracks.length == 0) {
+              let tracks = await fetchTopTracks(fetchedToken);
               const slicedTracks = tracks.items.slice(0, 5);
               console.log(slicedTracks);
               suggestedTracks = await suggestPlaylist(
                 fetchedToken,
                 slicedTracks.map((track) => track.id)
               );
+              localStorage.setItem(
+                "suggested_playlist",
+                JSON.stringify(suggestedTracks)
+              );
+              setSuggestedPlaylist(suggestedTracks);
+              await delay(1000); // Wait for 1 second before making the next request
+            }
+            if (tracks != null) {
+              // Ensure topTracksData.items is defined
+              console.log("Fetching suggested playlist...");
+              suggestedTracks = await suggestPlaylist(fetchedToken, tracks);
               console.log("Suggested playlist fetched:", suggestedTracks);
               localStorage.setItem(
                 "suggested_playlist",

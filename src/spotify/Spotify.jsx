@@ -517,7 +517,6 @@ async function createNewPlaylist(spotifyId, token, tracks, name) {
   
   const tracksList = tracks.map(track => track.uri);
 
-  console.log(tracksList);
   addToPlaylist(tracksList, id, token);
   const win = window.open(external_urls.spotify, '_blank');
   win.focus();

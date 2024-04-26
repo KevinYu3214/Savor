@@ -39,6 +39,7 @@ const SavedPreference = () => {
       const songs = songQuerySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
       setSongList(songs);
       setSongCount(songs.length); // Update song count here
+      localStorage.removeItem("suggested_playlist");
     } else {
       // If no songs found, reset the song list
       setSongList([]);
@@ -64,7 +65,7 @@ const SavedPreference = () => {
       const preferencesDoc = querySnapshot.docs[0];
       await deleteDoc(doc(db, "Preferences", preferencesDoc.id));
       console.log("Song deleted successfully");
-
+      localStorage.removeItem("suggested_playlist");
       // Remove the deleted song from the songList state
       setSongList((prevSongList) => prevSongList.filter((song) => song.songId !== songId));
     } else {
