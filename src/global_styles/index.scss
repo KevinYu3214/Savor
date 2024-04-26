@@ -269,6 +269,57 @@ button {
   transform: translateY(0);
 }
 
+.preference_saved-preference-container {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+
+  .preference_header {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .preference_instruction {
+    margin-bottom: 10px;
+  }
+
+  .preference_selections {
+    margin-top: 20px;
+
+    .preference_selections-header {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .preference_song-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+
+      img {
+        width: 50px;
+        height: 50px;
+        margin-right: 10px;
+      }
+
+      .preference_song-details {
+        flex: 1;
+
+        .preference_title {
+          font-weight: bold;
+        }
+      }
+
+      .preference_delete {
+        color: red;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
 .subtitle {
   position: absolute;
   max-width: 425px;
