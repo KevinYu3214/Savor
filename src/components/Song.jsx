@@ -93,6 +93,7 @@ const Song = ({ result }) => {
   }, [rankingList, result]);
   
   const onSubmitMusic = async () => {
+    console.log("check1")
     if (!auth.currentUser?.uid) {
       setErrorMessage("You need to sign in to add a song.");
       window.alert(errorMessage);
@@ -105,6 +106,8 @@ const Song = ({ result }) => {
         where("userId", "==", auth.currentUser.uid),
         where("songId", "==", result.id)
       );
+      var songId = result.id;
+      console.log(songId)
       const songsQuery = query(
         songCollectionList,
         where("songId", "==", result.id)
@@ -113,7 +116,7 @@ const Song = ({ result }) => {
       const rankingQuerySnapshot = await getDocs(rankingQuery);
       const songsQuerySnapshot = await getDocs(songsQuery);
 
-      if (!rankingQuerySnapshot.empty || !songsQuerySnapshot.empty) {
+      if (!rankingQuerySnapshot.empty && !songsQuerySnapshot.empty) {
         // Song exists, update it
         const rankingDoc = rankingQuerySnapshot.docs[0];
         await updateDoc(doc(db, "Ranking", rankingDoc.id), {
@@ -121,6 +124,15 @@ const Song = ({ result }) => {
           rating,
           date,
           notes,
+        });
+      } else if (rankingQuerySnapshot.empty && !songsQuerySnapshot.empty){
+        await addDoc(rankingCollectionList, {
+          status: selectedDropdownText,
+          rating,
+          date,
+          notes,
+          userId: auth.currentUser.uid,
+          songId: result.id,
         });
       } else {
         // Song doesn't exist, add it
