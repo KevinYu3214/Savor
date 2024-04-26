@@ -15,14 +15,9 @@ import {
 } from "firebase/firestore";
 
 const Stats = () => {
-     //Auth info
-     const { currentUser } = useAuth();
-     const email = currentUser ? currentUser.email: "";
- 
      //Firebase info
      const [songList, setSongList] = useState([]);
      const [rankingList, setRankingList] = useState([]);
-     var rsl = [];
      const [rankingSongList, setRankingSongList] = useState([]);
      const songCollectionList = collection(db, "Song");
      const rankingCollectionList = collection(db, "Ranking");
@@ -46,7 +41,7 @@ const Stats = () => {
     };
 
      //For the drop down menu
-     const [selectedDropdownText, setSelectedDropdownText] =
+    const [selectedDropdownText, setSelectedDropdownText] =
         useState("All Songs");
 
      useEffect(() => {
@@ -83,6 +78,7 @@ const Stats = () => {
     
         const rankings = rankingQuerySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
         setRankingList(rankings);
+        console.log(rankingList);
     };
  
     const makeRankingSong = (modList) => {
@@ -126,6 +122,7 @@ const Stats = () => {
                 break;
             default:
                 break;
+
         }
     };
    
@@ -134,10 +131,8 @@ const Stats = () => {
         <div className="lift"></div>
         <div className="l_container"> 
             <div className="listen_list_container">
-                {/* <div className="sec_stats"> */}
                     <div className="listen_list_header"> Your Ranked Songs! </div>
                     {/* Dropdown for song status */}
-
                     <div id="app"></div>
                     <input
                         className="dropdown_stats"
@@ -167,7 +162,6 @@ const Stats = () => {
                         )
                         )}
                     </div>
-                {/* </div> */}
                 <div className="listen_list_boxes">
                      {rankingSongList.length > 0 && rankingSongList.map((rankingSong) =>
                          <div className="listen_list_box" 
