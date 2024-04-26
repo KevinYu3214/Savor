@@ -16,7 +16,7 @@ const Button = (props) => {
 
   return (
     <div>      
-      <div className={`buttons ${isClicked ? 'clicked' : ''}`}>
+      <div>
         <button className={`blob-btn ${theme === 'light' ? 'light' : 'dark'}`} onClick={handleClick} type={props.type}>
           {props.text}
           <span className={`blob-btn__inner ${theme === 'light' ? 'light' : 'dark'}`}>
