@@ -72,10 +72,31 @@ const Song = ({ result }) => {
   //}, [energy]);
 
   const getSongList = async () => {
-    const songData = await getDocs(songCollectionList);
-    const rankingData = await getDocs(rankingCollectionList);
-    setSongList(songData.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-    setRankingList(rankingData.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+    // const songData = await getDocs(songCollectionList);
+    // const rankingData = await getDocs(rankingCollectionList);
+    // setSongList(songData.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    // setRankingList(rankingData.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+    const rankingQuery = query(
+      rankingCollectionList,
+      where("userId", "==", auth.currentUser.uid)
+    );
+    const rankingQuerySnapshot = await getDocs(rankingQuery);
+    // const songIDList = rankingQuerySnapshot.docs.map((doc) => doc.data().songId);
+
+    // // Query to find songs
+    // if (songIDList.length !== 0) {
+    //     const songQuery = query(
+    //         songCollectionList,
+    //         where("songId", "in", songIDList)
+    //     );
+    //     const songQuerySnapshot = await getDocs(songQuery);
+    //     const songs = songQuerySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+    //     setSongList(songs);
+    // }
+
+    const rankings = rankingQuerySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+    setRankingList(rankings);
+    console.log(rankingList);
   };
 
   useEffect(() => {

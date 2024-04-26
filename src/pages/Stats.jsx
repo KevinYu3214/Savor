@@ -25,9 +25,21 @@ const Stats = () => {
   const [isShown, setIsShown] = useState(false);
   const [selectedDropdownText, setSelectedDropdownText] = useState("All Songs");
 
-  useEffect(() => {
-      getRankingList();
-  }, []);
+  useOnClickOutside(modalRef, () => setIsShown(false));
+
+     useEffect(() => {
+        if (isShown == false){
+            getRankingList();
+        }
+    }, [isShown]);
+
+    useEffect(() => {
+        if (rankingList.length > 0) {
+            makeRankingSong(rankingList);
+        }
+        setSelectedDropdownText(selectedDropdownText);
+        handleDropdownChange(selectedDropdownText);
+    }, [rankingList]);
 
   const getRankingList = async () => {
       try {
