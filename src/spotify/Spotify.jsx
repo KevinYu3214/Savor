@@ -600,6 +600,14 @@ async function getFeatures(song_id, feature) {
     if(feature == "energy"){ return audio_features.energy; }
     if(feature == "valence"){ return audio_features.valence; }
     if(feature == "danceability"){ return audio_features.danceability; }
+    
+    if(feature == "acousticness"){return audio_features.acousticness;}
+    if(feature == "instrumentalness"){return audio_features.instrumentalness;}
+    if(feature == "speechiness"){return audio_features.speechiness;}
+    //if(feature == "timesig"){return audio_features.acousticness;}
+    //if(feature == "key"){return audio_features.acousticness;}
+    //if(feature == "mode"){return audio_features.acousticness;}
+    //if(feature == "tempo"){return audio_features.acousticness;}
  
     else return;
   }

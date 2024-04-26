@@ -30,6 +30,9 @@ const Song = ({ result }) => {
   const [energy, setEnergy] = useState(0);
   const [valence, setValence] = useState(0);
   const [danceability, setDanceability] = useState(0);
+  const [acousticness, setAcousticness] = useState(0);
+  const [instrumentalness, setInstrumentalness] = useState(0);
+  const[speechiness, setSpeechiness] = useState(0);
 
   const songCollectionList = collection(db, "Song");
   const rankingCollectionList = collection(db, "Ranking");
@@ -68,6 +71,18 @@ const Song = ({ result }) => {
     getFeatures(result.id, "danceability").then(feat => {
       console.log(feat);
       setDanceability(feat);
+    })
+    getFeatures(result.id, "acousticness").then(feat => {
+      console.log(feat);
+      setAcousticness(feat);
+    })
+    getFeatures(result.id, "instrumentalness").then(feat => {
+      console.log(feat);
+      setInstrumentalness(feat);
+    })
+    getFeatures(result.id, "speechiness").then(feat => {
+      console.log(feat);
+      setSpeechiness(feat);
     })
   }, []);  
 
@@ -374,6 +389,10 @@ const Song = ({ result }) => {
             </div>
           </div>
           <div className="songInstruments">
+            <div className="songTitle">Instruments + Vocals</div>
+            <div> Acousticness: {acousticness}</div>
+            <div> Instrumentalness: {instrumentalness}</div>
+            <div> Speechiness: {speechiness}</div>
           </div>
         </div>
 
