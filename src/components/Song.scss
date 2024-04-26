@@ -360,11 +360,43 @@
   }
 
   .songFeatures {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .songVibes{
     box-sizing: border-box;
     padding: 10px;
     display: flex;
     flex-direction: column;
     color: white;
     font-size: calc(.5vw + 0.5rem);
+  }
+  .songInstruments{
+    background-color:rgb(70, 40, 81);
+    box-sizing: border-box;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    font-size: calc(.5vw + 0.5rem);
+  }
+  .songNerdy{
+    height:100%;
+    background-color: rgb(99, 66, 111);
+    box-sizing: border-box;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    font-size: calc(.5vw + 0.5rem);
+  }
+
+  .halfSongFeatures{
+    transform: translate(0,6px);
+    width: 50%;
+    height:100%;
+    display: flex;
+    flex-direction: column;
   }
 }

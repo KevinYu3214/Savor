@@ -29,6 +29,7 @@ const Song = ({ result }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [energy, setEnergy] = useState(0);
   const [valence, setValence] = useState(0);
+  const [danceability, setDanceability] = useState(0);
 
   const songCollectionList = collection(db, "Song");
   const rankingCollectionList = collection(db, "Ranking");
@@ -63,6 +64,10 @@ const Song = ({ result }) => {
     getFeatures(result.id, "valence").then(feat => {
       console.log(feat);
       setValence(feat);
+    })
+    getFeatures(result.id, "danceability").then(feat => {
+      console.log(feat);
+      setDanceability(feat);
     })
   }, []);  
 
@@ -342,20 +347,39 @@ const Song = ({ result }) => {
         </div>
       </div>
       <div className="songFeatures"> 
-        <div className="songTitle">Vibes</div>
-        <div>energy: {energy > 0.33 ? 
-          energy > 0.66 ? ("high energy") : ("medium energy")
-          : ("low energy")
-        }
+        
+        <div className="halfSongFeatures">
+          <div className="songVibes">
+            <div className="songTitle">Vibes</div>
+            <div>energy: {energy > 0.33 ? 
+              energy > 0.66 ? ("high energy") : ("medium energy")
+              : ("low energy")
+            }
+            </div>
+            <div>emotion: {valence > 0.25 ?
+                valence > 0.5 ?
+                    valence > 0.75 ? ("Very positive vibes")
+                    : ("Mildly positive vibes")
+                : ("Mildly negative vibes.")
+              : ("Very negative vibes.")
+            }
+            </div>
+            <div>danceability: {danceability > 0.25 ?
+                danceability > 0.5 ?
+                    danceability > 0.75 ? ("How can you not dance?")
+                    : ("A good dance song")
+                : ("Not a very good dance song")
+              : ("Impossible to dance to")
+            }
+            </div>
+          </div>
+          <div className="songInstruments">
+          </div>
         </div>
-        <div>emotion: {valence > 0.25 ?
-            valence > 0.5 ?
-                valence > 0.75 ? ("Very positive vibes")
-                : ("Mildly positive vibes")
-            : ("Mildly negative vibes.")
-          : ("Very negative vibes.")
-        }
+
+        <div className="halfSongFeatures">
         </div>
+
       </div>
     </div>
   );
