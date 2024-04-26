@@ -22,7 +22,7 @@ const Song = ({ result }) => {
   const [rankingList, setRankingList] = useState([]);
   const [selectedDropdownText, setSelectedDropdownText] =
     useState("Dropdown Menu");
-  const [rating, setRating] = useState("");
+  const [ranking, setRanking] = useState("");
   const [date, setDate] = useState("");
   const [notes, setNotes] = useState("");
   const [loading, setLoading] = useState(false);
@@ -81,13 +81,13 @@ const Song = ({ result }) => {
 
     if (currentRankingDetails) {
       // Update local states with the details from the found song entry.
-      setRating(currentRankingDetails.rating || "");
+      setRanking(currentRankingDetails.ranking || "");
       setDate(currentRankingDetails.date || "");
       setNotes(currentRankingDetails.notes || "");
       setSelectedDropdownText(currentRankingDetails.status || "Status");
     } else {
       // Reset to default values if the song is not found (useful for when a new song is selected).
-      setRating("");
+      setRanking("");
       setDate("");
       setNotes("");
       setSelectedDropdownText("Status");
@@ -123,14 +123,14 @@ const Song = ({ result }) => {
         const rankingDoc = rankingQuerySnapshot.docs[0];
         await updateDoc(doc(db, "Ranking", rankingDoc.id), {
           status: selectedDropdownText,
-          rating,
+          ranking,
           date,
           notes,
         });
       } else if (rankingQuerySnapshot.empty && !songsQuerySnapshot.empty){
         await addDoc(rankingCollectionList, {
           status: selectedDropdownText,
-          rating,
+          ranking,
           date,
           notes,
           userId: auth.currentUser.uid,
@@ -147,7 +147,7 @@ const Song = ({ result }) => {
         });
         await addDoc(rankingCollectionList, {
           status: selectedDropdownText,
-          rating,
+          ranking,
           date,
           notes,
           userId: auth.currentUser.uid,
@@ -218,6 +218,15 @@ const Song = ({ result }) => {
     }
   };
 
+  const handleRankingClick = (value) => {
+    setRanking(value);
+  };
+
+  useEffect(() => {
+    // Log the selected ranking whenever it changes
+    console.log("Selected ranking:", ranking);
+  }, [ranking]); // Run this effect whenever the ranking changes
+
   return (
     <div className="songContainer">
       <div class="songBasicsContainer">
@@ -246,7 +255,7 @@ const Song = ({ result }) => {
               <div className="artistInfo"> test: {energy} </div>
             </div>
 
-            <Star className="songStar" onChange={(e) => setRating(e.value)}> </Star>
+            <Star className="songStar" onRankingClick={handleRankingClick} startValue={ranking}> </Star>
 
             <input
               className="songDate"

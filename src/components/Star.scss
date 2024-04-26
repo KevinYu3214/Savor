@@ -1,9 +1,6 @@
-//Got styling from : https://codepen.io/chriskirknielsen/pen/LJzLzr
 $rating-emoji: '⭐️' !default;
 //$rating-emoji: '💛';
 *, *::before, *::after { box-sizing: border-box; }
-
-
 
 .visuhide {
   position: absolute !important;
@@ -14,7 +11,8 @@ $rating-emoji: '⭐️' !default;
 }
 
 %star-active { 
-  filter: grayscale(0); }
+  filter: grayscale(0); 
+}
 %star-inactive { 
   filter: grayscale(1);
 }
@@ -34,7 +32,6 @@ $rating-emoji: '⭐️' !default;
     }
   }
   
-
   &__container {
     display: flex;
     width: 10%;
@@ -50,15 +47,15 @@ $rating-emoji: '⭐️' !default;
   
   &__item {
     display: inline-flex;
-    width: 1.25em;
-    height: 1.5em;
+    width: 3em;
+    height: 3em;
     @extend %star-inactive;
     
     &::before {
       content: $rating-emoji;
       display: inline-block;
       margin: auto;
-      font-size: .75em;
+      font-size: 1.5em;
       vertical-align: top;
       backface-visibility: hidden;
       transform-origin: 50% 33.3%;
