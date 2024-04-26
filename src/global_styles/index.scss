@@ -120,64 +120,91 @@ button {
   margin: auto;
 }
 
+/* Styles for the ".listen_list_box" class */
 .listen_list_box {
-  // display:flex;
-  // flex-direction: column;
-  //align-items: center;
-  width: 350px;
-  height: 100%;
-  border-radius: 10px;
   cursor: pointer;
-  &__song {
-    display: flex;
-    flex-direction: row;
-    &__image{
-      margin-top: 1vh; 
-      margin-left: 2vh;
-      width: 100px;
-      height: 100px;
-      float: left;
-    }
-    &__contents{
-      display: flex;
-      flex-direction: column;
-      &__title{
-        font-size: 24px;
-        color: white;
-      }
-      &__artist{
-        font-size: 18px;
-      }
-      &__album{
-        font-size: 18px;
-      }
-    }
-  }
-  &__ranking {
-    display: flex;
-    flex-direction: column;
-    margin-left: 5px;
-    &__container {
-      display: flex;
-      flex-direction: column;
-      &__title {
-        font-size: 18px;
-      }
-      &__content{
-        margin-left: 10px;
-        font-size: 18px;
-      }
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-    }
-  }
+.listen_list_box:hover {
+  background-color: #f5f5f5;
+}
+
+/* Styles for the ".listen_list_box__song" class */
+.listen_list_box__song {
+  display: flex;
+  align-items: center;
+  margin-right: 15px;
+}
+
+/* Styles for the ".listen_list_box__song__image" class */
+.listen_list_box__song__image {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-right: 20px;
+}
+
+/* Styles for the ".listen_list_box__song__contents" class */
+.listen_list_box__song__contents {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Styles for the ".listen_list_box__song__contents__title" class */
+.listen_list_box__song__contents__title {
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+/* Styles for the ".listen_list_box__song__contents__artist" class */
+.listen_list_box__song__contents__artist,
+.listen_list_box__song__contents__album {
+  font-size: 14px;
+}
+
+/* Styles for the ".listen_list_box__ranking" class */
+.listen_list_box__ranking {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Styles for the ".listen_list_box__ranking__container" class */
+.listen_list_box__ranking__container {
+  margin-bottom: 5px;
+}
+
+/* Styles for the ".listen_list_box__ranking__container__title" class */
+.listen_list_box__ranking__container__title {
+  font-weight: bold;
+}
+
+/* Styles for the ".listen_list_box__ranking__container__content" class */
+.listen_list_box__ranking__container__content {
+  font-size: 14px;
 }
 
 .light {
   .listen_list_header {
-      color: $darkest-purple;
+    color: $darkest-purple;
   }
   .listen_list_box {
-      background: $pink;
+    background: $dark-purple;
+  }
+
+  .listen_list_box__song__contents__title,
+  .listen_list_box__song__contents__artist,
+  .listen_list_box__song__contents__album,
+  .listen_list_box__ranking__container__title,
+  .listen_list_box__ranking__container__content {
+    color: $white;
   }
 }
 
@@ -186,7 +213,15 @@ button {
       color: $white;
   }
   .listen_list_box {
-      background: $pink;
+      background: $white;
+  }
+
+  .listen_list_box__song__contents__title,
+  .listen_list_box__song__contents__artist,
+  .listen_list_box__song__contents__album,
+  .listen_list_box__ranking__container__title,
+  .listen_list_box__ranking__container__content {
+    color: $darkest-purple;
   }
 }
 
@@ -201,12 +236,13 @@ button {
   transform: translate(0, -7.2px);
 }
 
-.dropdown:checked + label,
-.dropdown:not(:checked) + label {
+.dropdown_stats:checked + label,
+.dropdown_stats:not(:checked) + label {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 5px;
   height: 50px;
   width: 200px;
   background-color: $bg2;
@@ -225,8 +261,7 @@ button {
 
 .section-dropdown_stats {
   position: absolute;
-  margin-top: 5px;
-  margin-left: 40px;
+  margin-left: 30px;
   width: 220px;
   background-color: #111;
   border-radius: 4px;
@@ -263,7 +298,7 @@ button {
   }
 }
 
-.dropdown:checked ~ .section-dropdown_stats {
+.dropdown_stats:checked ~ .section-dropdown_stats {
   opacity: 1;
   pointer-events: auto;
   transform: translateY(0);
@@ -271,7 +306,7 @@ button {
 
 .preference_saved-preference-container {
   padding: 20px;
-  background-color: #f9f9f9;
+  background-color: $bg2;
   border-radius: 8px;
 
   .preference_header {
@@ -319,6 +354,7 @@ button {
     }
   }
 }
+
 
 .subtitle {
   position: absolute;

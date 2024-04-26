@@ -140,16 +140,18 @@ const Stats = () => {
         <div className="lift"></div>
         <div className="l_container"> 
             <div className="listen_list_container">
-                <div className="sec_stats">
+                {/* <div className="sec_stats"> */}
                     <div className="listen_list_header"> Your Ranked Songs! </div>
                     {/* Dropdown for song status */}
+
+                    <div id="app"></div>
                     <input
-                        className="dropdown"
+                        className="dropdown_stats"
                         type="checkbox"
-                        id="dropdown"
+                        id="dropdown_stats"
                         name="dropdown"
                     />
-                    <label className="for-dropdown" htmlFor="dropdown">
+                    <label className="for-dropdown_stats" htmlFor="dropdown_stats">
                         {selectedDropdownText} <i className="uil uil-arrow-down"></i>
                     </label>
                     <div className="section-dropdown_stats">
@@ -171,7 +173,7 @@ const Stats = () => {
                         )
                         )}
                     </div>
-                </div>
+                {/* </div> */}
                 <div className="listen_list_boxes">
                      {rankingSongList.length > 0 && rankingSongList.map((rankingSong) =>
                          <div className="listen_list_box" 
@@ -193,7 +195,7 @@ const Stats = () => {
                                      <div className="listen_list_box__ranking__container__title">Ranking: </div>
                                      <div className="listen_list_box__ranking__container__content">{rankingSong.ranking}</div>
                                  </div>}
-                                 {(rankingSong.date != null) && <div className="listen_list_box__ranking__container">
+                                 {(rankingSong.date != "") && <div className="listen_list_box__ranking__container">
                                      <div className="listen_list_box__ranking__container__title">Date: </div>
                                      <div className="listen_list_box__ranking__container__content">{rankingSong.date}</div>
                                  </div>}

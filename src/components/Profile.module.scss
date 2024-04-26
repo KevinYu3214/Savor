@@ -5,13 +5,16 @@
     height: 200px;
     display: flex;
     flex-direction: column;
+    padding: 20px;
+    background-color: $bg2;
+    border-radius: 8px;
 }
 
 .user{
     height: 25%;
     &__text{
         font-size:36px;
-        font-weight: 400;
+        font-weight: 400; 
     }
 }
 
@@ -31,12 +34,6 @@
   margin-top: 10px;
 }
 
-.info_change_label{
-  font-size: 24px;
-  font-weight: 400;
-  margin-right:5px;
-  margin: auto;
-}
 
 .info_change input{
   height: 50px;
@@ -46,21 +43,6 @@
   outline: none;
   color: #797979;
   font-size: 15px;
-}
-
-.info_change_button{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: auto;
-  width: 150px;
-  height: 50px;
-  background-color: red;
-  border-radius: 50px;
-  font-size: 18px;
-  font-weight: 500;
-  box-shadow: 0 0 0.5em 0 $primary;
-  cursor: pointer;
 }
 
 .light {
@@ -73,10 +55,35 @@
 }
 
 .dark {
-  .user__text {
-    color: $white
+  .user {
+    &__text {
+      color: $white
+    }
   }
   .info_change_label {
     color: $white;
   }
+}
+
+.info_change_label {
+  font-size: 24px;
+  font-weight: 400;
+  margin-right: 10px;
+}
+
+.info_change_button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.info_change_button:hover {
+  background-color: #0056b3;
 }
