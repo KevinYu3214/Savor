@@ -28,6 +28,7 @@ const Song = ({ result }) => {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [energy, setEnergy] = useState(0);
+  const [valence, setValence] = useState(0);
 
   const songCollectionList = collection(db, "Song");
   const rankingCollectionList = collection(db, "Ranking");
@@ -59,12 +60,16 @@ const Song = ({ result }) => {
       console.log(feat);
       setEnergy(feat);
     })
+    getFeatures(result.id, "valence").then(feat => {
+      console.log(feat);
+      setValence(feat);
+    })
   }, []);  
 
-  useEffect(() => {
-    console.log("xxxxxxxxxxxxxxxx")
-    console.log("energy: " + energy);
-  }, [energy]);
+  //useEffect(() => {
+   // console.log("xxxxxxxxxxxxxxxx")
+    //console.log("energy: " + energy);
+  //}, [energy]);
 
   const getSongList = async () => {
     const songData = await getDocs(songCollectionList);
@@ -250,9 +255,8 @@ const Song = ({ result }) => {
             
             <div className="songText">
               <div className="songTitle">{result.name}</div>
-              <div className="artistInfo">Albumtest: {result.album.name}</div>
+              <div className="artistInfo">Album: {result.album.name}</div>
               <div className="artistInfo"> Artist: {result.artists[0].name}</div>
-              <div className="artistInfo"> test: {energy} </div>
             </div>
 
             <Star className="songStar" onRankingClick={handleRankingClick} startValue={ranking}> </Star>
@@ -314,6 +318,22 @@ const Song = ({ result }) => {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+      <div className="songFeatures"> 
+        <div className="songTitle">Vibes</div>
+        <div>energy: {energy > 0.33 ? 
+          energy > 0.66 ? ("high energy") : ("medium energy")
+          : ("low energy")
+        }
+        </div>
+        <div>emotion: {valence > 0.25 ?
+            valence > 0.5 ?
+                valence > 0.75 ? ("Very positive vibes")
+                : ("Mildly positive vibes")
+            : ("Mildly negative vibes.")
+          : ("Very negative vibes.")
+        }
         </div>
       </div>
     </div>
